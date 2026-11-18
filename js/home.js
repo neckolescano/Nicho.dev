@@ -548,7 +548,7 @@
     howStack.style.transform = `rotateX(${H.rx.toFixed(2)}deg) rotateZ(${H.rz.toFixed(2)}deg) scale(${H.sc.toFixed(4)})`;
     const any = Math.max(...OUT), total = ps * H.sc;
     // where a pulled layer lands: facing you, left of the labels, a little larger than the stack
-    const tx = W * .37 - (W * .5 + px), ty = Hh * .5 - (Hh * .52 + py), [lx, ly, lz] = toLocal(tx, ty, 120, total), big = .98 / total;
+    const want = Math.min(W * .56, Hh * .62 * 1.6, 620), tx = W * .5 - (W * .5 + px), ty = Hh * .5 - (Hh * .52 + py), [lx, ly, lz] = toLocal(tx, ty, 30, total), big = want / (howStack.offsetWidth || want) / total;
     hLayers.forEach((l, i) => {
       const o = OUT[i], k = i - 1.5, bz = k * H.gap;
       const x = lx * o, y = ly * o, z = bz + (lz - bz) * o, sc = 1 + (big - 1) * o;
@@ -559,16 +559,26 @@
     if (annOn >= 0) placeAnns();
   };
   // the lines: from each anchor on the slid-out layer to its label in the column on the right
+  // the lines: scattered around the layer. Parts in its top half get a label above it, the bottom half below it,
+  // each label near its own part, spread apart so none overlap
   const placeAnns = () => {
-    const d = detail.getBoundingClientRect(), pts = [...hLayers[annOn].querySelectorAll('.hpt')].map(p => { const r = p.getBoundingClientRect(); return [r.left - d.left, r.top - d.top]; });
-    const order = pts.map((p, k) => k).sort((a, b) => pts[a][1] - pts[b][1]);
-    const lx = d.width * .79 - 14, top = d.height * .12, step = Math.max(54, (d.height * .76) / 4);
-    order.forEach((k, j) => {
-      const [px, py] = pts[k], ly = top + j * step + step / 2, el = annEls[k];
-      if (!el) return;
-      el.path.setAttribute('d', `M${px.toFixed(1)} ${py.toFixed(1)} L${(lx - 30).toFixed(1)} ${ly.toFixed(1)} L${lx.toFixed(1)} ${ly.toFixed(1)}`);
-      el.dot.setAttribute('cx', px.toFixed(1)); el.dot.setAttribute('cy', py.toFixed(1)); el.ring.setAttribute('cx', px.toFixed(1)); el.ring.setAttribute('cy', py.toFixed(1));
-      el.label.style.top = ly + 'px';
+    const d = detail.getBoundingClientRect(), card = hLayers[annOn].getBoundingClientRect();
+    const cT = card.top - d.top, cB = card.bottom - d.top, cL = card.left - d.left, cR = card.right - d.left, mid = (cT + cB) / 2;
+    const pts = [...hLayers[annOn].querySelectorAll('.hpt')].map(p => { const r = p.getBoundingClientRect(); return [r.left - d.left, r.top - d.top]; });
+    const GAP = 190;
+    ['t', 'b'].forEach(side => {
+      const ids = pts.map((p, k) => k).filter(k => (pts[k][1] < mid) === (side === 't')).sort((a, b) => pts[a][0] - pts[b][0]);
+      let last = -Infinity;
+      ids.forEach(k => {
+        const el = annEls[k]; if (!el) return;
+        const [px, py] = pts[k];
+        let lx = Math.max(cL, Math.min(cR - 150, px - 8)); if (lx < last + GAP) lx = last + GAP; last = lx;
+        const edge = side === 't' ? cT - 16 : cB + 16;
+        el.path.setAttribute('d', `M${px.toFixed(1)} ${py.toFixed(1)} L${px.toFixed(1)} ${edge.toFixed(1)} L${(lx + 4).toFixed(1)} ${edge.toFixed(1)}`);
+        el.dot.setAttribute('cx', px.toFixed(1)); el.dot.setAttribute('cy', py.toFixed(1)); el.ring.setAttribute('cx', px.toFixed(1)); el.ring.setAttribute('cy', py.toFixed(1));
+        el.label.className = 'how-ann ' + side;
+        el.label.style.left = lx + 'px'; el.label.style.top = (side === 't' ? edge - 8 - el.label.offsetHeight : edge + 8) + 'px';
+      });
     });
   };
   const clearAnns = () => { annOn = -1; annEls = []; lines.innerHTML = ''; anns.innerHTML = ''; };
