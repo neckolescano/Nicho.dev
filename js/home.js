@@ -525,19 +525,36 @@
   howStack.innerHTML = KIND.map((k, i) => `<div class="layer ${k}"><div class="lc">${content(howP, i)}</div>${ANNS[i].map(([x, y]) => `<i class="hpt" style="left:${x}%;top:${y}%"></i>`).join('')}</div>`).join('');
   const hLayers = [...howStack.children], hPanels = $('.how-panels li'), hTabs = $('.how-tabs button'), hBar = howSec.querySelector('.how-bar i'), hPct = howSec.querySelector('.how-pct');
   const lines = document.getElementById('howLines'), anns = document.getElementById('howAnns'), detail = howSec.querySelector('.how-detail');
-  // the pose: closed for the brief, opened into layers, closed again at the end; `out` is how far each layer has slid out
-  const H = { rx: 8, rz: 0, gap: 0, sc: .94 }, OUT = [0, 0, 0, 0];
+  // the pose: closed for the brief, opened into layers, closed again at the end.
+  // `OUT` is how far each layer has come out; `away` moves the whole stack aside (to the left, smaller) while one is out.
+  const H = { rx: 8, rz: 0, gap: 0, sc: .94, away: 0 }, OUT = [0, 0, 0, 0];
+  const hScene = howSec.querySelector('.how-scene'), copyCol = howSec.querySelector('.how-left');
   let annOn = -1, annEls = [];
+  const rad = d => d * Math.PI / 180;
+  // a screen-space offset, expressed in the stack's own (rotated, scaled) space: undo rotateX then rotateZ, then the scale
+  const toLocal = (x, y, z, s) => {
+    const ax = rad(-H.rx), az = rad(-H.rz);
+    const y1 = y * Math.cos(ax) - z * Math.sin(ax), z1 = y * Math.sin(ax) + z * Math.cos(ax);
+    const x2 = x * Math.cos(az) - y1 * Math.sin(az), y2 = x * Math.sin(az) + y1 * Math.cos(az);
+    return [x2 / s, y2 / s, z1 / s];
+  };
   const renderHow = () => {
+    const W = detail.clientWidth, Hh = detail.clientHeight, a = H.away;
+    // where the stack sits: centre stage, or aside in the bottom-left corner under the text
+    const d = detail.getBoundingClientRect(), c = copyCol.getBoundingClientRect();
+    const asideX = (c.left + c.width * .5) - (d.left + W * .5), asideY = Hh * .24;
+    const px = asideX * a, py = asideY * a, ps = 1 - .45 * a;
+    hScene.style.transform = `translate(-50%, -50%) translate(${px.toFixed(1)}px, ${py.toFixed(1)}px) scale(${ps.toFixed(4)})`;
     howStack.style.transform = `rotateX(${H.rx.toFixed(2)}deg) rotateZ(${H.rz.toFixed(2)}deg) scale(${H.sc.toFixed(4)})`;
-    const any = Math.max(...OUT);
+    const any = Math.max(...OUT), total = ps * H.sc;
+    // where a pulled layer lands: facing you, left of the labels, a little larger than the stack
+    const tx = W * .37 - (W * .5 + px), ty = Hh * .5 - (Hh * .52 + py), [lx, ly, lz] = toLocal(tx, ty, 120, total), big = .98 / total;
     hLayers.forEach((l, i) => {
-      const o = OUT[i];
-      // out along the layer's own width (toward the labels), and lifted a little above the rest
-      // the pulled layer rises to the top of the stack as it slides out, whichever slot it came from
-      const k = i - 1.5;
-      l.style.transform = `translate3d(${(o * 62).toFixed(2)}%, ${(o * 4).toFixed(2)}%, ${(k * H.gap + o * ((1.5 - k) * H.gap + 70)).toFixed(1)}px)`;
-      l.style.opacity = (1 - (any - o) * .84).toFixed(3);
+      const o = OUT[i], k = i - 1.5, bz = k * H.gap;
+      const x = lx * o, y = ly * o, z = bz + (lz - bz) * o, sc = 1 + (big - 1) * o;
+      l.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${z.toFixed(1)}px) rotateZ(${(-H.rz * o).toFixed(2)}deg) rotateX(${(-H.rx * o).toFixed(2)}deg) scale(${sc.toFixed(4)})`;
+      l.style.opacity = (1 - (any - o) * .7).toFixed(3);
+      l.style.zIndex = o > .01 ? 5 : '';
     });
     if (annOn >= 0) placeAnns();
   };
@@ -578,21 +595,28 @@
   const pullOut = n => {
     if (move) move.kill();
     clearAnns();
-    if (!hasGsap || !motion) { OUT.fill(0); if (n > 0) OUT[n - 1] = 1; renderHow(); drawAnns(n); return; }
-    const t = { k: 0 }, from = OUT.slice(), to = [0, 0, 0, 0]; if (n > 0) to[n - 1] = 1;
-    const home = from.some((v, i) => v > .01 && to[i] === 0);
-    move = gsap.timeline({ onUpdate: renderHow })
-      .to(t, { k: 1, duration: home ? .55 : 0, ease: 'power2.inOut', onUpdate: () => from.forEach((v, i) => { if (to[i] === 0) OUT[i] = v * (1 - t.k); }) })
-      .to(OUT, { ...Object.fromEntries(to.map((v, i) => [i, v]).filter(([i, v]) => v === 1)), duration: .85, ease: 'power3.inOut' }, home ? '-=.12' : 0)
-      .call(() => drawAnns(n));
+    const layer = n >= 1 && n <= 4 ? n - 1 : -1;
+    if (!hasGsap || !motion) { OUT.fill(0); if (layer >= 0) OUT[layer] = 1; H.away = layer >= 0 ? 1 : 0; renderHow(); drawAnns(layer + 1); return; }
+    const from = OUT.slice(), back = { k: 0 }, homeNeeded = from.some((v, i) => v > .01 && i !== layer);
+    move = gsap.timeline({ onUpdate: renderHow });
+    // the layer that was out goes home first
+    if (homeNeeded) move.to(back, { k: 1, duration: .6, ease: 'power2.inOut', onUpdate: () => from.forEach((v, i) => { if (i !== layer) OUT[i] = v * (1 - back.k); }) });
+    if (layer >= 0) {
+      move.to(H, { away: 1, duration: .7, ease: 'power3.inOut' }, homeNeeded ? '-=.35' : 0)
+          .to(OUT, { [layer]: 1, duration: .95, ease: 'power3.inOut' }, homeNeeded ? '-=.3' : '-=.45')
+          .call(() => drawAnns(layer + 1));
+    } else {
+      move.to(H, { away: 0, duration: .8, ease: 'power3.inOut' }, homeNeeded ? '-=.2' : 0);   // back to centre, still in 3D
+    }
   };
   const setHow = n => {
     if (n === howNow) return; howNow = n;
-    hPanels.forEach((li, i) => li.classList.toggle('on', i === n));
-    hTabs.forEach((b, i) => i === n ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
+    const m = Math.min(4, n);   // step 5 is "done": the last panel stays, and the stack goes back together
+    hPanels.forEach((li, i) => li.classList.toggle('on', i === m));
+    hTabs.forEach((b, i) => i === m ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
     pullOut(n);
   };
-  const howProgress = p => { hBar.style.width = (p * 100).toFixed(1) + '%'; hPct.textContent = Math.round(p * 100) + '%'; setHow(Math.min(4, Math.floor(p * 5))); };
+  const howProgress = p => { hBar.style.width = (p * 100).toFixed(1) + '%'; hPct.textContent = Math.round(p * 100) + '%'; setHow(p > .95 ? 5 : Math.min(4, Math.floor(p * 5))); };
   renderHow(); setTimeout(() => { if (howNow < 0) setHow(0); }, 0);
   addEventListener('resize', () => { if (annOn >= 0) placeAnns(); });
 

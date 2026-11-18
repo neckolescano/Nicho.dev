@@ -505,7 +505,7 @@ body.home { background: #07080A; }
 .how-pin { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; padding: clamp(64px, 8vh, 90px) 0 20px; box-sizing: border-box; }
 .how-ref { margin-left: 0; color: var(--muted) !important; }
 .how-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(260px, 3.6fr) minmax(0, 8.4fr); gap: clamp(16px, 2.5vw, 40px); align-items: stretch; }
-.how-left { display: grid; align-content: center; min-height: 0; }
+.how-left { display: grid; align-content: start; padding-top: 4vh; min-height: 0; }
 .how-copy { position: relative; }
 .how-panels { list-style: none; position: relative; min-height: 230px; }
 .how-panels li { position: absolute; inset: 0 0 auto; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity .22s ease, transform .3s ease; }
@@ -518,7 +518,7 @@ body.home { background: #07080A; }
 .how-panels li > p:last-child { color: var(--muted); font-size: .95rem; line-height: 1.6; max-width: 36ch; }
 /* the stack, centre stage; the active layer slides out of it toward the labels */
 .how-detail { position: relative; min-height: 0; }
-.how-scene { position: absolute; left: 34%; top: 58%; transform: translate(-50%, -50%); perspective: 1700px; perspective-origin: 50% 40%; display: grid; place-items: center; --cw: min(34vw, 500px); }
+.how-scene { position: absolute; left: 50%; top: 52%; transform: translate(-50%, -50%); transform-origin: 50% 50%; perspective: 1700px; perspective-origin: 50% 40%; display: grid; place-items: center; --cw: min(34vw, 500px); }
 .how-stack { cursor: default; }
 .how-stack .layer { will-change: transform, opacity; }
 .how-stack .hpt { position: absolute; width: 2px; height: 2px; pointer-events: none; }
@@ -557,3 +557,6 @@ body.home { background: #07080A; }
 /* the landing shows the layers; the breakdown lives in How it works */
 .layer-hint, .hud, .hud-close, .vpanel { display: none !important; }
 .intro .stack { cursor: default; }
+
+.how-detail { overflow: visible; }
+.how-stack .layer { backface-visibility: hidden; }
