@@ -129,3 +129,12 @@ html:not(.motion) .r-load path, html:not(.motion) .r-load rect { animation: none
 .r-desk > *:hover span, .r-desk > *:focus-visible span { opacity: 1; }
 .r-desk .dk-clock { display: none; }
 .desk-mode .r-card, .desk-mode .r-hint, .desk-mode .r-head { opacity: 0 !important; pointer-events: none; }
+
+/* the card always fits the window: it scrolls inside itself on short screens, and lists get tighter */
+.r-card { max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+@media (max-height: 820px) and (min-width: 761px) {
+  .r-card { gap: 10px; padding: 18px 20px 16px; }
+  .r-card .rc-title { font-size: 1.7rem; }
+  .r-card .rc-text { font-size: .9rem; line-height: 1.5; }
+  .rc-files button { padding-top: 7px; padding-bottom: 7px; }
+}

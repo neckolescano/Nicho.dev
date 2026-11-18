@@ -444,53 +444,67 @@ at(box(dW - .03, .006, dD, mat('#2a1e16', { roughness: .9 })), 0, .003, 0, drawe
 [-1, 1].forEach(s => at(box(.008, dH - .02, dD, innerWood), s * (dW / 2 - .02), dH / 2 - .01, 0, drawer));
 at(box(dW - .04, dH - .02, .008, innerWood), 0, dH / 2 - .01, -dD / 2 + .004, drawer);
 const drawerLight = new THREE.PointLight('#FFD9A8', 0, .8, 2); at(drawerLight, 0, .2, .1, drawer);
-const tabTex = p => liveTex(320, 80, (g, w, h) => { g.fillStyle = p.c; g.fillRect(0, 0, w, h); g.fillStyle = '#0b0c10'; g.font = '600 44px "IBM Plex Sans Condensed", Arial Narrow, sans-serif'; g.fillText(p.name.toUpperCase(), 16, 56); });
-// a white sticker on the cover: "PROJECT FILE" and the name
-const labelTex = p => liveTex(360, 96, (g, w, h) => {
-  g.fillStyle = '#F7F4EC'; g.fillRect(0, 0, w, h); g.fillStyle = p.c; g.fillRect(0, 0, 12, h);
-  g.fillStyle = '#6a6f78'; g.font = '500 16px "IBM Plex Mono", monospace'; g.fillText('PROJECT FILE · ' + p.no, 28, 30);
-  g.fillStyle = '#161B26'; g.font = '600 44px "IBM Plex Sans Condensed", Arial Narrow, sans-serif'; g.fillText(p.name.toUpperCase(), 28, 76);
+// each project is a dark envelope of proofs: printed screens of the real thing, closed with a button and string
+const PROOFS = {
+  kuwago: [['kuwago-home', 'Home', '390×844'], ['kuwago-timer', 'Focus', '390×844'], ['kuwago-flashcard', 'Flashcards', '390×844']],
+  cinematheque: [['cinematheque-home', 'Home', '1440×900'], ['cinematheque-seats', 'Seats', '1440×900'], ['cinematheque-staff-dashboard', 'Staff', '1440×900']],
+  xpera: [['xpera-sales', 'Sales', '1782×1053'], ['xpera-customers', 'Customers', '1782×1053'], ['xpera-payments', 'Payments', '1782×1053']]
+};
+// the label printed on the pocket: a red rule, the number and kind, the name, how many proofs
+const labelTex = p => liveTex(520, 150, (g, w, h) => {
+  g.clearRect(0, 0, w, h);
+  g.fillStyle = '#E0533F'; g.fillRect(0, 10, 5, h - 20);
+  g.font = '500 22px "IBM Plex Mono", monospace'; g.fillText(`${p.no} · ${p.kind.split(' · ')[0]}`, 22, 34);
+  g.fillStyle = '#ECE9E2'; let fs = 66; do { g.font = `600 ${fs}px "IBM Plex Sans Condensed", Arial Narrow, sans-serif`; fs -= 2; } while (g.measureText(p.name.toUpperCase()).width > w - 30 && fs > 30);
+  g.fillText(p.name.toUpperCase(), 20, 96);
+  g.fillStyle = 'rgba(236,233,226,.6)'; g.font = '500 20px "IBM Plex Mono", monospace'; g.fillText(`${PROOFS[p.id].length} PROOFS`, 22, 132);
 });
-// the sheet inside: a one-page summary with a screenshot
-const thumbs = {};
-const sheetTex = p => {
-  const t = liveTex(640, 440, (g, w, h) => {
-    g.fillStyle = '#FBFAF6'; g.fillRect(0, 0, w, h);
-    g.fillStyle = p.c; g.fillRect(0, 0, w, 12);
-    g.fillStyle = '#6a6f78'; g.font = '500 18px "IBM Plex Mono", monospace'; g.fillText(p.kind.toUpperCase(), 30, 50);
-    g.fillStyle = '#161B26'; g.font = '600 54px "IBM Plex Sans Condensed", Arial Narrow, sans-serif'; g.fillText(p.name.toUpperCase(), 30, 104);
-    const img = thumbs[p.id];
-    g.fillStyle = '#e8e4da'; g.fillRect(30, 128, 230, 280);
-    if (img) { const s = Math.max(230 / img.width, 280 / img.height); g.save(); g.beginPath(); g.rect(30, 128, 230, 280); g.clip(); g.drawImage(img, 30 + (230 - img.width * s) / 2, 128, img.width * s, img.height * s); g.restore(); }
-    g.strokeStyle = 'rgba(22,27,38,.25)'; g.strokeRect(30, 128, 230, 280);
-    g.fillStyle = '#2a2d33'; g.font = '400 21px "IBM Plex Sans", sans-serif';
-    let y = 150; p.points.forEach(pt => { g.fillStyle = p.c; g.fillRect(286, y - 12, 8, 8); g.fillStyle = '#2a2d33';
-      const words = pt.split(' '); let line = ''; words.forEach(wd => { if (g.measureText(line + wd).width > 310) { g.fillText(line, 304, y); line = ''; y += 28; } line += wd + ' '; }); g.fillText(line, 304, y); y += 44; });
-    g.fillStyle = p.c; g.font = '500 18px "IBM Plex Mono", monospace'; g.fillText('SEE ITS LAYERS →', 286, 396);
+// a proof: the screen on top, a white caption strip underneath
+const proofTex = (p, [shot, name, size]) => {
+  const tall = p.id === 'kuwago';
+  const hold = { img: null };
+  const t = liveTex(420, 330, (g, w, h) => {
+    const ih = h - 46;
+    if (tall) { const r = g.createRadialGradient(w / 2, ih * .3, 10, w / 2, ih * .3, w * .7); r.addColorStop(0, '#2f3d33'); r.addColorStop(1, '#121418'); g.fillStyle = r; } else g.fillStyle = '#e8e6e1';
+    g.fillRect(0, 0, w, ih);
+    const im = hold.img;
+    if (im) {
+      if (tall) { const k = (ih - 16) / im.height, iw = im.width * k; g.drawImage(im, (w - iw) / 2, 8, iw, ih - 16); }
+      else { const k = w / im.width; g.save(); g.beginPath(); g.rect(0, 0, w, ih); g.clip(); g.drawImage(im, 0, 0, w, im.height * k); g.restore(); }
+    }
+    g.fillStyle = '#ffffff'; g.fillRect(0, ih, w, h - ih);
+    g.fillStyle = '#C4432D'; g.beginPath(); g.arc(20, ih + 23, 6, 0, 7); g.fill();
+    g.fillStyle = '#161B26'; g.font = '600 17px "IBM Plex Mono", monospace'; g.fillText(p.name.toUpperCase(), 34, ih + 29);
+    g.fillStyle = '#5C6270'; g.font = '500 15px "IBM Plex Mono", monospace'; g.textAlign = 'right'; g.fillText(`${name.toUpperCase()}   ${size}`, w - 14, ih + 29); g.textAlign = 'left';
   });
-  const img = new Image(); manager.itemStart('thumb-' + p.id);
-  img.onload = () => { thumbs[p.id] = img; t.userData.redraw(); manager.itemEnd('thumb-' + p.id); };
-  img.onerror = () => manager.itemEnd('thumb-' + p.id);
-  img.src = p.thumb;
+  const im = new Image(); manager.itemStart('proof-' + shot);
+  im.onload = () => { hold.img = im; t.userData.redraw(); manager.itemEnd('proof-' + shot); };
+  im.onerror = () => manager.itemEnd('proof-' + shot);
+  im.src = `assets/shots/${shot}.jpg`;
   return t;
 };
 const SLOTS = [-.09, .03, .15];
 const FX = -.08;
-const manila = mat('#D8C49A', { roughness: .85 }), manilaDark = mat('#CDB78A', { roughness: .85 }), paperM = mat('#F2F0EA', { roughness: .9 });
-const clipM = mat('#B9BEC6', { roughness: .25, metalness: .9 });
+const envBack = mat('#2a2f37', { roughness: .88 }), envFront = mat('#343a44', { roughness: .85 }), envFlap = mat('#30363f', { roughness: .88, side: THREE.DoubleSide });
+const btnM = mat('#E4E1D9', { roughness: .4 }), threadM = mat('#C4432D', { roughness: .7 });
+const flapShape = new THREE.Shape([new THREE.Vector2(-.18, 0), new THREE.Vector2(.18, 0), new THREE.Vector2(.12, .04), new THREE.Vector2(-.12, .04)]);
 const folders = PROJ.map((p, i) => {
   const f = new THREE.Group(); at(f, FX, .006, SLOTS[i], drawer); f.rotation.x = -.12;
-  at(box(.36, .1, .003, manila), 0, .05, 0, f);                                     // back cover
-  const t = tabTex(p);
-  const tab = new THREE.Mesh(new THREE.PlaneGeometry(.11, .026), new THREE.MeshStandardMaterial({ map: t, roughness: .6, emissive: '#ffffff', emissiveMap: t, emissiveIntensity: .08, side: THREE.DoubleSide }));
-  tab.position.set(-.11 + i * .1, .108, .0018); f.add(tab);
-  const loose = new THREE.Mesh(new THREE.PlaneGeometry(.33, .094), paperM); loose.position.set(.006, .056, .0024); loose.rotation.z = .025; f.add(loose);   // a loose page
-  const sheet = new THREE.Mesh(new THREE.PlaneGeometry(.33, .094), mat('#c9c5bc', { map: sheetTex(p), roughness: .95, envMapIntensity: .1 })); sheet.position.set(0, .052, .0032); f.add(sheet);
-  const cover = new THREE.Group(); at(cover, 0, 0, .0052, f);                        // the front cover, hinged at the bottom
-  at(box(.36, .088, .003, manilaDark), 0, .044, 0, cover);
-  const lab = new THREE.Mesh(new THREE.PlaneGeometry(.13, .035), mat('#ffffff', { map: labelTex(p), roughness: .7 })); lab.position.set(-.08, .05, .0017); cover.add(lab);
-  const clip = new THREE.Mesh(new THREE.TorusGeometry(.009, .0011, 6, 20), clipM); clip.scale.set(.6, 1.6, 1); clip.position.set(.12, .095, .004); f.add(clip);
-  f.userData = { p, slot: i, cover, sheet };
+  at(box(.36, .1, .003, envBack), 0, .05, 0, f);                                    // the back of the envelope
+  const flap = new THREE.Mesh(new THREE.ShapeGeometry(flapShape), envFlap); flap.position.set(0, .1, -.001); flap.rotation.x = -.5; flap.castShadow = true; f.add(flap);   // the flap, folded open
+  // the proofs inside: they rise and fan out when the envelope is opened
+  const proofs = PROOFS[p.id].map((pr, k) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(.11, .0864), mat('#ffffff', { map: proofTex(p, pr), roughness: .8 }));
+    m.position.set((k - 1) * .012, .046, .0016 + k * .0009); m.castShadow = true; f.add(m); return m;
+  });
+  const cover = new THREE.Group(); at(cover, 0, 0, .0052, f);                        // the pocket, hinged at the bottom
+  at(box(.36, .088, .003, envFront), 0, .044, 0, cover);
+  const lab = new THREE.Mesh(new THREE.PlaneGeometry(.17, .049), new THREE.MeshStandardMaterial({ map: labelTex(p), transparent: true, roughness: .7 }));
+  lab.position.set(-.085, .032, .0017); cover.add(lab);
+  // the button-and-string closure, at the top centre
+  [.078, .056].forEach(y => { const b = cyl(.0065, .0065, .002, btnM, 16); b.rotation.x = Math.PI / 2; at(b, .02, y, .0026, cover); });
+  [.072, .062].forEach(y => { const t = new THREE.Mesh(new THREE.TorusGeometry(.0058, .0007, 6, 22), threadM); t.position.set(.02, y, .0034); cover.add(t); });
+  f.userData = { p, slot: i, cover, proofs, flap };
   return f;
 });
 let order = [0, 1, 2];   // which folder sits in which slot
@@ -576,8 +590,14 @@ const settleFolders = (instant) => folders.forEach(f => {
   const y = .006 + (drawerOpen ? (open ? CHOSEN : f === hoverFolder ? POP + .015 : POP) : 0);
   if (f === dragging) return;
   tween(f.position, { y, z: SLOTS[s] + (open ? .07 : 0), duration: instant ? 0 : .6, ease: open ? 'power3.out' : 'back.out(1.6)', overwrite: true, onUpdate: shadowsDirty });
-  tween(f.rotation, { x: open ? -.78 : -.12, duration: instant ? 0 : .7, ease: 'power3.out', overwrite: true });
-  tween(f.userData.cover.rotation, { x: open ? 1.9 : 0, duration: instant ? 0 : .75, delay: open ? .25 : 0, ease: 'power3.inOut', overwrite: true });
+  tween(f.rotation, { x: open ? -.55 : -.12, duration: instant ? 0 : .7, ease: 'power3.out', overwrite: true });
+  tween(f.userData.cover.rotation, { x: open ? .32 : 0, duration: instant ? 0 : .6, delay: open ? .15 : 0, ease: 'power3.out', overwrite: true });
+  tween(f.userData.flap.rotation, { x: open ? -1.2 : -.5, duration: instant ? 0 : .6, ease: 'power3.out', overwrite: true });
+  f.userData.proofs.forEach((m, k) => {
+    const d = k - 1;
+    tween(m.position, { x: open ? d * .118 : d * .012, y: open ? .118 - Math.abs(d) * .012 : .046, z: open ? .0045 + k * .0009 : .0016 + k * .0009, duration: instant ? 0 : .7, delay: open ? .2 + k * .06 : 0, ease: open ? 'back.out(1.5)' : 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
+    tween(m.rotation, { z: open ? -d * .09 : 0, duration: instant ? 0 : .7, delay: open ? .2 + k * .06 : 0, ease: 'power3.out', overwrite: true });
+  });
 });
 const setDrawer = on => {
   drawerOpen = on; if (!on) { chosen = null; hoverFolder = null; }
@@ -616,11 +636,11 @@ const settleNotes = () => notes.forEach(n => tween(n.position, { z: n === chosen
 const boardView = () => {
   const p = new THREE.Vector3(); board.getWorldPosition(p);
   const aspect = canvas.clientWidth / Math.max(1, canvas.clientHeight), t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-  const halfW = wide() ? 1.4 : 1.0;   // on wide screens the card sits to the right, so leave room for it
+  const halfW = wide() ? 1.75 : 1.05;   // on wide screens the card sits to the right, so leave room for it
   const d = Math.min(4.2, Math.max(1.6, halfW / (t * aspect), (BH / 2 + .14) / t));
   const sx = wide() ? .36 : 0, dy = wide() ? 0 : -.1;
   // from a little above, so the view clears the laptop lid
-  camTo(V3(p.x + sx, p.y + .6 + dy, p.z + d), V3(p.x + sx, p.y + .03 + dy, p.z));
+  camTo(V3(p.x + sx, p.y + .55 + dy, p.z + d), V3(p.x + sx, p.y - .04 + dy, p.z));
 };
 
 /* ---------- light switch ---------- */
@@ -706,7 +726,7 @@ const drawerCard = () => {
     return;
   }
   card.style.setProperty('--c', s.c);
-  card.innerHTML = `${topLine(s, 'Drawer')}<h2 class="rc-title">Project files</h2><p class="rc-text">One folder for each build. Drag them into any order, or pick one to see it pulled apart into its layers.</p>
+  card.innerHTML = `${topLine(s, 'Drawer')}<h2 class="rc-title">Project files</h2><p class="rc-text">One envelope of proofs for each build. Drag them into any order, or pick one to open it.</p>
     <div class="rc-files">${order.map(i => PROJ[i]).map(p => `<button type="button" data-f="${PROJ.indexOf(p)}" style="--fc:${p.c}"><i aria-hidden="true"></i><span><b>${p.name}</b><small class="mono">${p.kind}</small></span><em aria-hidden="true">→</em></button>`).join('')}</div>${navRow()}`;
   card.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => choose(folders[+b.dataset.f])));
   wireNav(s);
@@ -720,9 +740,9 @@ const phoneCard = () => {
 const choose = f => {
   chosen = f; settleFolders(); drawerCard();
   if (!f) { drawerView(); return; }
-  // lean in so the summary sheet can be read
+  // lean in so the proofs can be read
   const c = drawer.localToWorld(V3(FX, CHOSEN + .05, SLOTS[order.indexOf(folders.indexOf(f))] + .07)).add(V3(0, 0, DR.open - (drawer.position.z - DR.z)));
-  camTo(V3(c.x + (wide() ? .1 : 0), c.y + .33, c.z + .3 + (wide() ? 0 : .12)), V3(c.x + (wide() ? .1 : 0), c.y - (wide() ? 0 : .08), c.z), 1);
+  camTo(V3(c.x + (wide() ? .12 : 0), c.y + .5, c.z + .46 + (wide() ? 0 : .16)), V3(c.x + (wide() ? .12 : 0), c.y + .03 - (wide() ? 0 : .08), c.z - .02), 1);
 };
 const boardCard = () => {
   const s = SPOTS[1];
