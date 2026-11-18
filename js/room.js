@@ -4,7 +4,7 @@
    On the shelf: kuwaGO's owl, Cinematheque's popcorn and xpera's boxed graphics card.
    On the glass desk: the ASUS laptop (its screen is the landing page; click to dive in) and the phone.
    In the drawer: one folder per project; they pop up and can be dragged into a new order.
-   On the wall: a sketched task board, one note for each part of the main page, and a few pinned photos. */
+   On the wall behind the laptop: a desk-wide task board, one note for each part of the main page, photos and sticky notes; drag them around. */
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RectAreaLightUniformsLib } from 'three/addons/lights/RectAreaLightUniformsLib.js';
@@ -19,7 +19,7 @@ const loader = document.querySelector('.r-load');
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const G = window.gsap;
 // ?shot: a still of the room for the About section (renders on demand, even in a background tab)
-if (/[?&]shot/.test(location.search)) window.__shot = () => { Object.assign(view, cam); for (let i = 0; i < 3; i++) frame(); return canvas; };
+if (/[?&]shot/.test(location.search)) window.__shot = home => { if (home) { cam.px = HOME.pos.x; cam.py = HOME.pos.y; cam.pz = HOME.pos.z; cam.lx = HOME.look.x; cam.ly = HOME.look.y; cam.lz = HOME.look.z; } Object.assign(view, cam); for (let i = 0; i < 3; i++) frame(); return canvas; };
 const setLoad = p => { if (!loader) return; loader.style.setProperty('--p', p.toFixed(3)); const o = loader.querySelector('.rl-pct'); if (o) o.textContent = Math.round(p * 100); };
 
 let renderer;
@@ -180,6 +180,36 @@ lampLight.castShadow = true; lampLight.shadow.mapSize.set(1024, 1024); lampLight
 head.add(lampLight); lampLight.position.set(0, -.03, 0);
 const lampTarget = new THREE.Object3D(); at(lampTarget, -.42, DESK_Y, .06); lampLight.target = lampTarget;
 
+/* ---------- the rest of the desk: things that are actually on it ---------- */
+// a pen cup with pencils, by the lamp
+const penCup = new THREE.Group(); at(penCup, -.56, DESK_Y, -.4);
+at(cyl(.03, .027, .095, mat('#2a2d33', { roughness: .5, metalness: .3 }), 24), 0, .0475, 0, penCup);
+[['#E8B04A', .08, .12], ['#E0533F', -.1, .13], ['#ECE9E2', .02, .11], ['#5BB06A', -.03, .125], ['#1b1b1b', .12, .12]].forEach(([c, tilt, h], i) => {
+  const pc = cyl(.0032, .0032, h, mat(c, { roughness: .6 }), 6); const a = i / 5 * Math.PI * 2;
+  pc.rotation.set(Math.sin(a) * tilt, 0, Math.cos(a) * tilt); at(pc, Math.cos(a) * .012, .06 + h / 2 - .02, Math.sin(a) * .012, penCup);
+});
+// a pad of sticky notes, top sheet written on
+const padTex = liveTex(160, 160, (g, w, h) => { g.fillStyle = '#F2D64B'; g.fillRect(0, 0, w, h); g.fillStyle = '#2a2d33'; g.font = `700 34px "Caveat", cursive`; g.fillText('call', 16, 58); g.fillText('client 3pm', 16, 102); });
+const pad = new THREE.Group(); at(pad, -.31, DESK_Y, .11); pad.rotation.y = .35;
+at(box(.07, .012, .07, mat('#E8C93A', { roughness: .9 })), 0, .006, 0, pad);
+const padTop = new THREE.Mesh(new THREE.PlaneGeometry(.07, .07), mat('#ffffff', { map: padTex, roughness: .9 })); padTop.rotation.x = -Math.PI / 2; padTop.position.y = .0125; pad.add(padTop);
+// a game controller (games)
+const ctrl = new THREE.Group(); at(ctrl, .47, DESK_Y, -.3); ctrl.rotation.y = -.5;
+const padM = mat('#1d1f24', { roughness: .45 });
+at(box(.11, .022, .055, padM, .01), 0, .013, 0, ctrl);
+[-.045, .045].forEach(x => { const grip = new THREE.Mesh(new THREE.SphereGeometry(.026, 16, 12), padM); grip.scale.set(1, .45, 1.25); grip.castShadow = true; at(grip, x, .011, .02, ctrl); });
+[[-.03, -.008], [.018, .012]].forEach(([x, z]) => { at(cyl(.008, .009, .008, mat('#2b2e35'), 14), x, .027, z, ctrl); });
+[['#5BB06A', .04, -.016], ['#E0533F', .052, -.006], ['#6FA8DC', .028, -.006], ['#E8B04A', .04, .004]].forEach(([c, x, z]) => at(new THREE.Mesh(new THREE.SphereGeometry(.004, 8, 6), mat(c, { roughness: .3 })), x, .025, z, ctrl));
+// a die-cast car (cars)
+const car = new THREE.Group(); at(car, .32, DESK_Y, -.47); car.rotation.y = .6;
+at(box(.09, .018, .038, mat('#C4432D', { roughness: .3, metalness: .5 }), .006), 0, .017, 0, car);
+at(box(.044, .016, .032, mat('#15171b', { roughness: .2, metalness: .4 }), .005), -.006, .032, 0, car);
+[[-.028, .02], [.028, .02], [-.028, -.02], [.028, -.02]].forEach(([x, z]) => { const wh = cyl(.01, .01, .008, mat('#0e0f12'), 14); wh.rotation.x = Math.PI / 2; at(wh, x, .01, z, car); });
+// a shuttlecock (badminton)
+const shuttle = new THREE.Group(); at(shuttle, .74, DESK_Y, .12); shuttle.rotation.set(0, .8, Math.PI / 2 - .25);
+at(new THREE.Mesh(new THREE.SphereGeometry(.011, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2), mat('#F2EFE8', { roughness: .6 })), 0, .012, 0, shuttle).rotation.x = Math.PI;
+const skirt = cyl(.028, .01, .05, new THREE.MeshStandardMaterial({ color: '#F7F5F0', roughness: .8, side: THREE.DoubleSide, transparent: true, opacity: .92 }), 16, true); at(skirt, 0, .037, 0, shuttle);
+
 /* ---------- shelf with its LED strip ---------- */
 const SHELF_Y = 1.5;
 at(box(1.36, .032, .22, WALNUT, .006), -.12, SHELF_Y, -.5);
@@ -259,13 +289,14 @@ const TASKS = [
   { id: 'contact', no: '06', t: 'Contact', d: 'email · GitHub · resume', c: '#F4506A', icon: 'mail' }
 ];
 const HAND = '"Caveat", "Comic Sans MS", cursive';
-const board = new THREE.Group(); at(board, -1.16, 1.5, -.575);
-const corkTex = canvasTex(640, 460, (g, w, h) => {
+const BW = 1.8, BH = .48;   // the board is as wide as the desk
+const board = new THREE.Group(); at(board, 0, 1.115, -.575);
+const corkTex = canvasTex(1280, 340, (g, w, h) => {
   g.fillStyle = '#9b7653'; g.fillRect(0, 0, w, h);
-  for (let i = 0; i < 6000; i++) { g.fillStyle = Math.random() < .5 ? 'rgba(70,45,25,.35)' : 'rgba(210,170,120,.28)'; g.fillRect(Math.random() * w, Math.random() * h, 1 + Math.random() * 2.5, 1 + Math.random() * 2.5); }
+  for (let i = 0; i < 16000; i++) { g.fillStyle = Math.random() < .5 ? 'rgba(70,45,25,.35)' : 'rgba(210,170,120,.28)'; g.fillRect(Math.random() * w, Math.random() * h, 1 + Math.random() * 2.5, 1 + Math.random() * 2.5); }
 });
-at(box(.8, .58, .02, mat('#121315', { roughness: .5 })), 0, 0, 0, board);
-const cork = new THREE.Mesh(new THREE.PlaneGeometry(.76, .54), mat('#ffffff', { map: corkTex, roughness: .95 })); cork.position.z = .0105; cork.receiveShadow = true; board.add(cork);
+at(box(BW, BH, .02, mat('#121315', { roughness: .5 })), 0, 0, 0, board);
+const cork = new THREE.Mesh(new THREE.PlaneGeometry(BW - .04, BH - .04), mat('#ffffff', { map: corkTex, roughness: .95 })); cork.position.z = .0105; cork.receiveShadow = true; board.add(cork);
 
 // a wobbly pencil line, so everything looks hand drawn
 const wob = (g, pts, close) => {
@@ -304,9 +335,10 @@ const noteTex = n => liveTex(320, 240, (g, w, h) => {
   g.fillStyle = n.c; g.font = `700 28px ${HAND}`; g.fillText('→ on the main page', 22, h - 32);
   doodle(g, n.icon, w - 82, 20, 62, n.c);
 });
+const NOTE_AT = [[-.71, .09], [-.49, .125], [-.25, .135], [.27, .12], [.5, .085], [.72, .11]];
 const notes = TASKS.map((n, i) => {
-  const g = new THREE.Group(); const c = i % 3, r = Math.floor(i / 3);
-  at(g, -.29 + c * .175, .12 - r * .2, .014, board);
+  const g = new THREE.Group();
+  at(g, NOTE_AT[i][0], NOTE_AT[i][1], .014, board);
   g.rotation.z = (Math.random() - .5) * .16;
   const paper = new THREE.Mesh(new THREE.PlaneGeometry(.16, .12), mat('#ffffff', { map: noteTex(n), roughness: .85, transparent: true, alphaTest: .5 }));
   paper.castShadow = true; g.add(paper);
@@ -314,6 +346,7 @@ const notes = TASKS.map((n, i) => {
   g.userData = { n, z: .014 };
   return g;
 });
+const pinned = notes.slice();   // everything on the board that can be moved by hand
 
 // three pinned photos of things I like: cars, games, badminton (drawn as sketches)
 const photoTex = (kind, cap, tint) => liveTex(240, 290, (g, w, h) => {
@@ -343,16 +376,46 @@ const photoTex = (kind, cap, tint) => liveTex(240, 290, (g, w, h) => {
   g.fillStyle = '#2a2d33'; g.font = `700 40px ${HAND}`; g.textAlign = 'center'; g.fillText(cap, w / 2, h - 30);
 });
 const PHOTOS = [['car', 'cars', '#C9D6DF'], ['pad', 'games', '#D9CCE8'], ['shuttle', 'badminton', '#CFE3C8']];
+const PHOTO_AT = [[-.6, -.11], [.42, -.1], [.66, -.12]];
 PHOTOS.forEach(([k, cap, tint], i) => {
-  const g = new THREE.Group(); at(g, .29, .17 - i * .16, .02 + i * .002, board); g.rotation.z = [-.12, .1, -.06][i];
+  const g = new THREE.Group(); at(g, PHOTO_AT[i][0], PHOTO_AT[i][1], .02 + i * .002, board); g.rotation.z = [-.12, .1, -.06][i];
+  g.userData = { z: .02 + i * .002 }; pinned.push(g);
   const ph = new THREE.Mesh(new THREE.PlaneGeometry(.1, .121), mat('#ffffff', { map: photoTex(k, cap, tint), roughness: .7 })); ph.castShadow = true; g.add(ph);
   const tape = new THREE.Mesh(new THREE.PlaneGeometry(.05, .016), new THREE.MeshStandardMaterial({ color: '#E8DDBF', transparent: true, opacity: .75, roughness: .9 }));
   tape.position.set(0, .058, .002); tape.rotation.z = (Math.random() - .5) * .3; g.add(tape);
 });
+// two sticky notes: what is on this week
+const stickyTex = (txt, c) => liveTex(200, 200, (g, w, h) => {
+  g.fillStyle = c; g.fillRect(0, 0, w, h); g.fillStyle = 'rgba(0,0,0,.06)'; g.fillRect(0, 0, w, 26);
+  g.fillStyle = '#2a2d33'; g.font = `700 38px ${HAND}`; txt.split('|').forEach((l, i) => g.fillText(l, 18, 76 + i * 44));
+});
+[['ship xpera|lab 2 ✓', '#F2D64B', -.37, -.1, .08], ['ideas:|more games', '#9ED6C0', .2, -.09, -.1]].forEach(([t, c, x, y, r]) => {
+  const g = new THREE.Group(); at(g, x, y, .016, board); g.rotation.z = r; g.userData = { z: .016 };
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(.075, .075), mat('#ffffff', { map: stickyTex(t, c), roughness: .9 })); m.castShadow = true; g.add(m);
+  pinned.push(g);
+});
 // a loose bit of red string from the first note to the last, like a plan
-const stringPts = [notes[0], notes[2], notes[5]].map(n => V3(n.position.x, n.position.y + .047, .022));
-const stringLine = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([stringPts[0], V3(-.03, .2, .03), stringPts[1], V3(.08, .02, .03), stringPts[2]]), 60, .0012, 5), mat('#C4432D', { roughness: .7 }));
+const STRUNG = [0, 2, 3, 5];
+const stringGeo = () => {
+  const pts = STRUNG.map(i => { const n = notes[i]; return V3(n.position.x - Math.sin(n.rotation.z) * .047, n.position.y + .047, n.position.z + .008); });
+  const path = [pts[0]]; for (let i = 1; i < pts.length; i++) { const a = pts[i - 1], b = pts[i]; path.push(V3((a.x + b.x) / 2, Math.min(a.y, b.y) - .04 - Math.abs(b.x - a.x) * .06, .03), b); }
+  return new THREE.TubeGeometry(new THREE.CatmullRomCurve3(path), 90, .0012, 5);
+};
+const stringLine = new THREE.Mesh(stringGeo(), mat('#C4432D', { roughness: .7 }));
 board.add(stringLine);
+const restring = () => { stringLine.geometry.dispose(); stringLine.geometry = stringGeo(); };
+
+/* ---------- a framed print on the wall where the board used to be ---------- */
+const printTex = liveTex(400, 540, (g, w, h) => {
+  g.fillStyle = '#0b0c0f'; g.fillRect(0, 0, w, h);
+  g.fillStyle = 'rgba(236,233,226,.08)'; for (let x = 12; x < w; x += 24) for (let y = 12; y < h; y += 24) g.fillRect(x - 1, y - 1, 2, 2);
+  g.fillStyle = '#ECE9E2'; g.font = '600 96px "IBM Plex Sans Condensed", Arial Narrow, sans-serif'; g.fillText('DRAW', 36, 170); g.fillText('IT', 36, 266);
+  g.strokeStyle = '#ECE9E2'; g.lineWidth = 2; g.strokeText('FIRST', 36, 362); g.fillStyle = '#E0533F'; g.fillRect(266, 334, 26, 26);
+  g.fillStyle = 'rgba(236,233,226,.5)'; g.font = '500 15px "IBM Plex Mono", monospace'; g.fillText('NICHO.DEV  ·  SHEET A-100', 36, h - 40);
+});
+const print = new THREE.Group(); at(print, -1.5, 1.1, -.6);
+at(box(.44, .58, .02, mat('#1a1b1f', { roughness: .4, metalness: .3 })), 0, 0, 0, print);
+const printM = new THREE.Mesh(new THREE.PlaneGeometry(.38, .52), mat('#ffffff', { map: printTex, roughness: .6 })); printM.position.z = .0105; print.add(printM);
 
 /* ---------- the drawer: folders that pop up, and a phone ---------- */
 const PROJ = [
@@ -461,7 +524,7 @@ const stripLight = new THREE.RectAreaLight('#FFB070', 0, 1.26, .03); stripLight.
 const washLight = new THREE.RectAreaLight('#E5603F', 0, 1.1, .35); washLight.position.set(.04, 1.0, -.5); washLight.lookAt(.04, 1.2, -.62); scene.add(washLight);
 const screenLight = new THREE.PointLight('#BFD0FF', 0, 1.4, 2); screenLight.position.set(-.02, DESK_Y + .26, .08); scene.add(screenLight);
 const fill = new THREE.PointLight('#FFC9A0', 0, 4, 2); fill.position.set(-.1, 1.6, 1.6); scene.add(fill);
-const boardLight = new THREE.SpotLight('#FFE2BC', 0, 2.2, .5, .6, 2); boardLight.position.set(-1.1, 2.4, .2); boardLight.target = board; scene.add(boardLight);
+const boardLight = new THREE.SpotLight('#FFE2BC', 0, 2.6, .72, .7, 2); boardLight.position.set(0, 2.25, .45); boardLight.target = board; scene.add(boardLight);
 const ceiling = new THREE.PointLight('#FFE7C8', 0, 0, 2); ceiling.position.set(0, 2.5, .6); scene.add(ceiling);
 const L = { hemi: .42, win: 3.4, strip: 9, wash: 2.2, screen: .9, lamp: 7.5, bulb: 3, stripK: 3, fill: .7, board: 3, ceil: 16, ceilHemi: 2.2 };
 const LK = { hemi: 0, win: 0, strip: 0, wash: 0, screen: 0, lamp: 0, lap: 0, ceil: 0 };
@@ -552,8 +615,12 @@ let chosenNote = null, hoverNote = null;
 const settleNotes = () => notes.forEach(n => tween(n.position, { z: n === chosenNote ? .06 : n === hoverNote ? .035 : n.userData.z, duration: .4, ease: 'power3.out', overwrite: true }));
 const boardView = () => {
   const p = new THREE.Vector3(); board.getWorldPosition(p);
-  const dy = wide() ? 0 : -.2;   // on phones the card covers the bottom, so the board sits high
-  camTo(V3(p.x + (wide() ? .26 : 0), p.y + dy * .3, p.z + (wide() ? 1.45 : 2.0)), V3(p.x + (wide() ? .26 : 0), p.y + dy, p.z));
+  const aspect = canvas.clientWidth / Math.max(1, canvas.clientHeight), t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const halfW = wide() ? 1.4 : 1.0;   // on wide screens the card sits to the right, so leave room for it
+  const d = Math.min(4.2, Math.max(1.6, halfW / (t * aspect), (BH / 2 + .14) / t));
+  const sx = wide() ? .36 : 0, dy = wide() ? 0 : -.1;
+  // from a little above, so the view clears the laptop lid
+  camTo(V3(p.x + sx, p.y + .6 + dy, p.z + d), V3(p.x + sx, p.y + .03 + dy, p.z));
 };
 
 /* ---------- light switch ---------- */
@@ -570,8 +637,8 @@ const toggleLamp = () => { lampOn = !lampOn; tween(LK, { lamp: lampOn ? 1 : 0, d
 /* ---------- what can be looked at ---------- */
 const layersHref = id => `index.html?project=${id}`;
 const SPOTS = [
-  { id: 'drawer', obj: drawerFront, at: [0, 0, .012], label: 'Drawer', small: 'Project files and a phone', c: '#D8C49A', kind: 'drawer', side: 'left' },
-  { id: 'board', obj: board, at: [.38, .28, .03], label: 'Task board', small: 'Every part of the main page', c: '#E8B04A', kind: 'board' },
+  { id: 'drawer', obj: drawerFront, at: [0, 0, .012], label: 'Drawer', small: 'Project folders', c: '#D8C49A', kind: 'drawer', side: 'left' },
+  { id: 'board', obj: board, at: [.84, .2, .03], label: 'Task board', small: 'Every part of the main page', c: '#E8B04A', kind: 'board' },
   { id: 'kuwago', obj: owl, at: [0, .07, 0], label: 'kuwaGO', small: 'The study owl', c: '#5BB06A', title: 'The study owl',
     text: "kuwaGO's mascot on its pot. Finish a focus session and the sprout grows; give up and it wilts. It's pixel art, because the whole app is.",
     dl: [['System', 'kuwaGO · mobile app'], ['Built with', 'Flutter · Firebase · Gemini'], ['Status', 'v1.0.5 · 18 testers']], project: 'kuwago',
@@ -668,12 +735,18 @@ const boardCard = () => {
     return;
   }
   card.style.setProperty('--c', s.c);
-  card.innerHTML = `${topLine(s, 'Task board')}<h2 class="rc-title">The task board</h2><p class="rc-text">One note for each part of the main page; pick one to jump straight to it. Pinned on the side: cars, games and badminton, what I do off the clock.</p>
+  card.innerHTML = `${topLine(s, 'Task board')}<h2 class="rc-title">The task board</h2><p class="rc-text">One note for each part of the main page; pick one to jump straight to it. Drag any note or photo to move it around. The photos are cars, games and badminton, what I do off the clock.</p>
     <div class="rc-files">${TASKS.map((n, i) => `<button type="button" data-n="${i}" style="--fc:${n.c}"><i aria-hidden="true"></i><span><b>${n.no} · ${n.t}</b><small class="mono">${n.d}</small></span><em aria-hidden="true">→</em></button>`).join('')}</div>${navRow()}`;
   card.querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => pickNote(notes[+b.dataset.n])));
   wireNav(s);
 };
-const pickNote = n => { chosenNote = n; settleNotes(); boardCard(); };
+// picking a note brings the camera in close so it can be read; picking none goes back to the whole board
+const noteView = n => {
+  const p = new THREE.Vector3(); n.getWorldPosition(p);
+  const sx = wide() ? .14 : 0, dy = wide() ? 0 : -.06;
+  camTo(V3(p.x + sx, p.y + .16 + dy, p.z + .62), V3(p.x + sx, p.y + dy, p.z));
+};
+const pickNote = n => { chosenNote = n; settleNotes(); boardCard(); if (focus && focus.kind === 'board') n ? noteView(n) : boardView(); };
 
 const openDesk = () => {
   // fly into the laptop screen, then the screen becomes a full desktop (js/os.js)
@@ -766,7 +839,8 @@ const hit = e => {
     if (h) { const o = owner(h.object, folders); if (o) return { folder: o }; }
   }
   if (focus && focus.kind === 'board') {
-    const h = ray.intersectObjects(notes, true)[0]; if (h) return { note: owner(h.object, notes) };
+    const h = ray.intersectObjects(pinned, true)[0];
+    if (h) { const o = owner(h.object, pinned); return notes.includes(o) ? { note: o, pin: o } : { pin: o }; }
   }
   const h = ray.intersectObjects(spotObjs, true)[0]; if (!h) return null;
   const o = owner(h.object, spotObjs);
@@ -776,9 +850,18 @@ const hit = e => {
 // dragging a folder slides it along the drawer; the others make room
 const dragPlane = new THREE.Plane(), dragHit = new THREE.Vector3(), local = new THREE.Vector3();
 let downAt = null;
+let pinDrag = null;
+const boardPlane = new THREE.Plane();
 canvas.addEventListener('pointerdown', e => {
   downAt = { x: e.clientX, y: e.clientY };
   const h = hit(e);
+  if (h && h.pin) {   // a note or photo on the board: press and drag to move it
+    pinDrag = { o: h.pin, moved: false, off: null }; try { canvas.setPointerCapture(e.pointerId); } catch {}
+    const n = V3(0, 0, 1).applyQuaternion(board.getWorldQuaternion(new THREE.Quaternion())), wp = new THREE.Vector3(); board.getWorldPosition(wp);
+    boardPlane.setFromNormalAndCoplanarPoint(n, wp.add(n.clone().multiplyScalar(.03)));
+    G && G.killTweensOf(h.pin.position);
+    return;
+  }
   if (h && h.folder && focus && focus.kind === 'drawer') {
     dragging = h.folder; dragging.userData.moved = false; canvas.setPointerCapture(e.pointerId);
     const wpos = new THREE.Vector3(); dragging.getWorldPosition(wpos);
@@ -787,6 +870,20 @@ canvas.addEventListener('pointerdown', e => {
   }
 });
 canvas.addEventListener('pointermove', e => {
+  if (pinDrag) {
+    if (!pinDrag.moved && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) < 5) return;
+    setRay(e);
+    if (ray.ray.intersectPlane(boardPlane, dragHit)) {
+      board.worldToLocal(local.copy(dragHit));
+      const o = pinDrag.o;
+      if (!pinDrag.moved) { pinDrag.moved = true; pinDrag.off = [o.position.x - local.x, o.position.y - local.y]; document.body.classList.add('dragging'); tween(o.position, { z: .05, duration: .2 }); tween(o.scale, { x: 1.06, y: 1.06, z: 1, duration: .2 }); }
+      const mx = BW / 2 - .1, my = BH / 2 - .08;
+      o.position.x = Math.max(-mx, Math.min(mx, local.x + pinDrag.off[0])); o.position.y = Math.max(-my, Math.min(my, local.y + pinDrag.off[1]));
+      if (notes.includes(o)) restring();
+      shadowsDirty();
+    }
+    return;
+  }
   if (dragging) {
     if (!dragging.userData.moved && Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y) < 5) return;
     dragging.userData.moved = true; document.body.classList.add('dragging');
@@ -824,7 +921,20 @@ const endDrag = () => {
   if (moved) { drawerCard(); return true; }
   choose(f === chosen ? null : f); return true;
 };
-canvas.addEventListener('pointerup', () => { if (endDrag()) downAt = null; });
+const endPin = () => {
+  if (!pinDrag) return false;
+  const { o, moved } = pinDrag; pinDrag = null;
+  if (!moved) return false;   // a plain press: the click picks the note
+  document.body.classList.remove('dragging');
+  // pinned again where it was dropped, at a slightly new angle, like a real board
+  const re = () => notes.includes(o) && restring();
+  tween(o.position, { z: o === chosenNote ? .06 : o.userData.z, duration: .25, ease: 'power2.out', onUpdate: re });
+  tween(o.scale, { x: 1, y: 1, z: 1, duration: .25 });
+  tween(o.rotation, { z: (Math.random() - .5) * .22, duration: .3, ease: 'back.out(2)', onUpdate: re, onComplete: re });
+  shadowsDirty();
+  return true;
+};
+canvas.addEventListener('pointerup', () => { if (endPin() || endDrag()) downAt = null; });
 canvas.addEventListener('click', e => {
   if (!downAt) return;   // a drag or a folder press already handled it
   const h = hit(e); downAt = null;

@@ -492,7 +492,7 @@ body.home { background: #07080A; }
 .bg-dots { position: fixed; inset: 0; z-index: 0; pointer-events: none; transform: translateZ(0);
   background-image: radial-gradient(rgba(236,233,226,.06) 1px, transparent 1.3px); background-size: 28px 28px; }
 /* the room preview: a line drawing instead of a live 3D scene, so scrolling past it costs nothing */
-.dp-view { background: #050608; aspect-ratio: 1204 / 800; }
+.dp-view { background: #050608; aspect-ratio: 1410 / 1000; }
 .dp-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease), filter .6s; filter: brightness(.92); }
 .desk-plate:hover .dp-img, .desk-plate:focus-visible .dp-img { transform: scale(1.035); filter: brightness(1.05); }
 .desk-plate:hover 
