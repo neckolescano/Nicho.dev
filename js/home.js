@@ -565,19 +565,33 @@
     const d = detail.getBoundingClientRect(), card = hLayers[annOn].getBoundingClientRect();
     const cT = card.top - d.top, cB = card.bottom - d.top, cL = card.left - d.left, cR = card.right - d.left, mid = (cT + cB) / 2;
     const pts = [...hLayers[annOn].querySelectorAll('.hpt')].map(p => { const r = p.getBoundingClientRect(); return [r.left - d.left, r.top - d.top]; });
-    const GAP = 190;
+    const GAP = 190, W = d.width, OUTX = Math.min(70, Math.max(30, (cL - 170) * .5));
     ['t', 'b'].forEach(side => {
       const ids = pts.map((p, k) => k).filter(k => (pts[k][1] < mid) === (side === 't')).sort((a, b) => pts[a][0] - pts[b][0]);
+      const edge = side === 't' ? cT - 26 : cB + 26;
       let last = -Infinity;
-      ids.forEach(k => {
+      ids.forEach((k, j) => {
         const el = annEls[k]; if (!el) return;
-        const [px, py] = pts[k];
-        let lx = Math.max(cL, Math.min(cR - 150, px - 8)); if (lx < last + GAP) lx = last + GAP; last = lx;
-        const edge = side === 't' ? cT - 16 : cB + 16;
-        el.path.setAttribute('d', `M${px.toFixed(1)} ${py.toFixed(1)} L${px.toFixed(1)} ${edge.toFixed(1)} L${(lx + 4).toFixed(1)} ${edge.toFixed(1)}`);
+        const [px, py] = pts[k], h = el.label.offsetHeight, w = el.label.offsetWidth;
+        // the outermost parts reach out past the layer's corners; any in between stay above or below it
+        const where = ids.length > 1 && j === 0 ? 'left' : ids.length > 1 && j === ids.length - 1 ? 'right' : 'mid';
+        let d2, lx, ly;
+        if (where === 'left') {
+          const ex = cL - OUTX; lx = Math.max(0, ex - 10 - w); ly = edge - h / 2;
+          d2 = `M${px.toFixed(1)} ${py.toFixed(1)} L${px.toFixed(1)} ${edge.toFixed(1)} L${ex.toFixed(1)} ${edge.toFixed(1)}`;
+        } else if (where === 'right') {
+          const ex = cR + OUTX; lx = Math.min(W - w, ex + 10); ly = edge - h / 2;
+          d2 = `M${px.toFixed(1)} ${py.toFixed(1)} L${px.toFixed(1)} ${edge.toFixed(1)} L${ex.toFixed(1)} ${edge.toFixed(1)}`;
+        } else {
+          lx = Math.max(cL, Math.min(cR - 150, px - 8)); if (lx < last + GAP) lx = last + GAP; last = lx;
+          const e2 = side === 't' ? cT - 56 : cB + 56;
+          ly = side === 't' ? e2 - 8 - h : e2 + 8;
+          d2 = `M${px.toFixed(1)} ${py.toFixed(1)} L${px.toFixed(1)} ${e2.toFixed(1)} L${(lx + 4).toFixed(1)} ${e2.toFixed(1)}`;
+        }
+        el.path.setAttribute('d', d2);
         el.dot.setAttribute('cx', px.toFixed(1)); el.dot.setAttribute('cy', py.toFixed(1)); el.ring.setAttribute('cx', px.toFixed(1)); el.ring.setAttribute('cy', py.toFixed(1));
-        el.label.className = 'how-ann ' + side;
-        el.label.style.left = lx + 'px'; el.label.style.top = (side === 't' ? edge - 8 - el.label.offsetHeight : edge + 8) + 'px';
+        el.label.className = 'how-ann ' + side + (where === 'left' ? ' l' : '');
+        el.label.style.left = lx + 'px'; el.label.style.top = ly + 'px';
       });
     });
   };

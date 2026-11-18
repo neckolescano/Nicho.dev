@@ -564,3 +564,4 @@ body.home { background: #07080A; }
 /* labels sit above and below the pulled layer, near the part they describe */
 .how-ann { right: auto; width: auto; max-width: 180px; transform: none; }
 .how-ann b { white-space: nowrap; }
+.how-ann.l { text-align: right; }
