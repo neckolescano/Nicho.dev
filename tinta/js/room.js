@@ -528,45 +528,77 @@ at(box(dW - .03, .006, dD, mat('#2a1e16', { roughness: .9 })), 0, .003, 0, drawe
 at(box(dW - .04, dH - .02, .008, innerWood), 0, dH / 2 - .01, -dD / 2 + .004, drawer);
 const drawerLight = new THREE.PointLight('#FFD9A8', 0, .8, 2); at(drawerLight, 0, .2, .1, drawer);
 // each project is a dark envelope of proofs: printed screens of the real thing, closed with a button and string
-const PROOFS = {
-  kuwago: [['kuwago-home', 'Home', '390×844'], ['kuwago-timer', 'Focus', '390×844'], ['kuwago-flashcard', 'Flashcards', '390×844']],
-  cinematheque: [['cinematheque-home', 'Home', '1440×900'], ['cinematheque-seats', 'Seats', '1440×900'], ['cinematheque-staff-dashboard', 'Staff', '1440×900']],
-  xpera: [['xpera-sales', 'Sales', '1782×1053'], ['xpera-customers', 'Customers', '1782×1053'], ['xpera-payments', 'Payments', '1782×1053']]
+// the drawer is the archive: what happened before the polished case study
+const ARCHIVE = {
+  kuwago: { kind: 'The promo', count: 'v1 → v7', title: 'How the promo got better',
+    text: 'Seven versions of the kuwaGO promo video. v1 opened on a phone mock-up; by v4 it asked a question first; v7 tightened the frame. Click a still to bring it forward.',
+    items: [{ img: 'tinta/assets/archive/kuwago-promo-v1.jpg', tall: true, name: 'Draft v1', size: '30 s' },
+            { img: 'tinta/assets/archive/kuwago-promo-v4.jpg', tall: true, name: 'Draft v4', size: '47 s' },
+            { img: 'tinta/assets/archive/kuwago-promo-v7.jpg', tall: true, name: 'Final v7', size: '47.5 s' }] },
+  cinematheque: { kind: 'What I cut', count: '3 cuts', title: 'What I cut',
+    text: 'Features that were built or planned for the cinema, then removed. Taking things out was as much of the work as putting them in.',
+    items: [{ card: ['Staff approval', 'Every booking waited in a "pending" list for staff to approve it, with an extra email.', 'A paid booking now confirms itself.'] },
+            { card: ['Payment screenshots', 'Guests paid by QR code and uploaded a screenshot as proof.', 'Replaced by PayMongo checkout, checked by a signed webhook.'] },
+            { card: ['Footer wordmark', 'A large photo wordmark at the bottom of the customer site.', 'Removed to keep the footer quiet.'] }] },
+  xpera: { kind: 'Before the code', count: '2 diagrams · 1 lesson', title: 'Before the code',
+    text: 'xpera was planned on paper first: which store gets which plan and database, and who can do what. Then the first real wall I hit.',
+    items: [{ img: 'tinta/assets/archive/xpera-tenants.jpg', name: 'Tenants', size: 'Plans A–C' },
+            { img: 'tinta/assets/archive/xpera-use-cases.jpg', name: 'Use cases', size: '4 roles' },
+            { card: ['Lesson', '"There is already an object named Plans." SQL Server ignores letter case in names, so a new database clashed with an old one.', 'Delete the old databases first, and let EF own every table.'], stamp: 'LESSON' }] }
 };
-// the label printed on the pocket: a red rule, the number and kind, the name, how many proofs
+// the label printed on the pocket: a red rule, the number and what is inside, the name, the count
 const labelTex = p => liveTex(520, 150, (g, w, h) => {
   g.clearRect(0, 0, w, h);
   g.fillStyle = '#E0533F'; g.fillRect(0, 10, 5, h - 20);
-  g.font = '500 22px "IBM Plex Mono", monospace'; g.fillText(`${p.no} · ${p.kind.split(' · ')[0]}`, 22, 34);
+  g.font = '500 22px "IBM Plex Mono", monospace'; g.fillText(`${p.no} · ${ARCHIVE[p.id].kind}`, 22, 34);
   g.fillStyle = '#ECE9E2'; let fs = 66; do { g.font = `600 ${fs}px "IBM Plex Sans Condensed", Arial Narrow, sans-serif`; fs -= 2; } while (g.measureText(p.name.toUpperCase()).width > w - 30 && fs > 30);
   g.fillText(p.name.toUpperCase(), 20, 96);
-  g.fillStyle = 'rgba(236,233,226,.6)'; g.font = '500 20px "IBM Plex Mono", monospace'; g.fillText(`${PROOFS[p.id].length} PROOFS`, 22, 132);
+  g.fillStyle = 'rgba(236,233,226,.6)'; g.font = '500 20px "IBM Plex Mono", monospace'; g.fillText(ARCHIVE[p.id].count.toUpperCase(), 22, 132);
 });
-// a proof: the screen on top, a white caption strip underneath
-const proofTex = (p, [shot, name, size]) => {
-  const tall = p.id === 'kuwago';
+// wraps text to a width, line by line
+const wrapLines = (g, text, maxW) => { const out = []; let line = ''; text.split(' ').forEach(w => { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t; }); out.push(line); return out; };
+// a proof: a picture (a still or a diagram) or a written card, with a white caption strip underneath
+const proofTex = (p, item) => {
   const hold = { img: null };
   const t = liveTex(420, 330, (g, w, h) => {
     const ih = h - 46;
-    if (tall) { const r = g.createRadialGradient(w / 2, ih * .3, 10, w / 2, ih * .3, w * .7); r.addColorStop(0, '#2f3d33'); r.addColorStop(1, '#121418'); g.fillStyle = r; } else g.fillStyle = '#e8e6e1';
-    g.fillRect(0, 0, w, ih);
-    const im = hold.img;
-    if (im) {
-      if (tall) { const k = (ih - 16) / im.height, iw = im.width * k; g.drawImage(im, (w - iw) / 2, 8, iw, ih - 16); }
-      else { const k = w / im.width; g.save(); g.beginPath(); g.rect(0, 0, w, ih); g.clip(); g.drawImage(im, 0, 0, w, im.height * k); g.restore(); }
+    if (item.card) {
+      const [title, was, now] = item.card;
+      g.fillStyle = '#F3EFE6'; g.fillRect(0, 0, w, ih);
+      g.strokeStyle = 'rgba(40,50,70,.08)'; g.lineWidth = 1; for (let y = 52; y < ih - 6; y += 22) { g.beginPath(); g.moveTo(16, y + .5); g.lineTo(w - 16, y + .5); g.stroke(); }
+      g.fillStyle = '#161B26'; g.font = '600 30px "IBM Plex Sans Condensed", Arial Narrow, sans-serif'; g.fillText(title.toUpperCase(), 18, 40);
+      g.fillStyle = '#1f232a'; g.font = '500 16px "IBM Plex Sans", Arial, sans-serif'; let y = 72;
+      wrapLines(g, was, w - 36).forEach(l => { g.fillText(l, 18, y); y += 21; });
+      y += 8; g.fillStyle = '#C4432D'; g.font = '500 15px "IBM Plex Sans", Arial, sans-serif';
+      wrapLines(g, '→ ' + now, w - 36).forEach(l => { g.fillText(l, 18, y); y += 20; });
+      // a rubber stamp across the corner
+      g.save(); g.translate(w - 78, 34); g.rotate(-.18); g.strokeStyle = 'rgba(196,67,45,.85)'; g.lineWidth = 3; g.strokeRect(-46, -17, 92, 34);
+      g.fillStyle = 'rgba(196,67,45,.9)'; g.font = '700 18px "IBM Plex Mono", monospace'; g.textAlign = 'center'; g.fillText(item.stamp || 'CUT', 0, 7); g.restore(); g.textAlign = 'left';
+    } else {
+      if (item.tall) { const r = g.createRadialGradient(w / 2, ih * .3, 10, w / 2, ih * .3, w * .7); r.addColorStop(0, '#2f3d33'); r.addColorStop(1, '#121418'); g.fillStyle = r; } else g.fillStyle = '#ffffff';
+      g.fillRect(0, 0, w, ih);
+      const im = hold.img;
+      if (im) {
+        if (item.tall) { const k = (ih - 16) / im.height, iw = im.width * k; g.drawImage(im, (w - iw) / 2, 8, iw, ih - 16); }
+        else { const k = Math.min((w - 16) / im.width, (ih - 12) / im.height); g.drawImage(im, (w - im.width * k) / 2, (ih - im.height * k) / 2, im.width * k, im.height * k); }
+      }
     }
     g.fillStyle = '#ffffff'; g.fillRect(0, ih, w, h - ih);
     g.fillStyle = '#C4432D'; g.beginPath(); g.arc(20, ih + 23, 6, 0, 7); g.fill();
     g.fillStyle = '#161B26'; g.font = '600 17px "IBM Plex Mono", monospace'; g.fillText(p.name.toUpperCase(), 34, ih + 29);
-    g.fillStyle = '#5C6270'; g.font = '500 15px "IBM Plex Mono", monospace'; g.textAlign = 'right'; g.fillText(`${name.toUpperCase()}   ${size}`, w - 14, ih + 29); g.textAlign = 'left';
+    g.fillStyle = '#5C6270'; g.font = '500 15px "IBM Plex Mono", monospace'; g.textAlign = 'right';
+    g.fillText(item.card ? ARCHIVE[p.id].kind.toUpperCase() : `${item.name.toUpperCase()}   ${item.size}`, w - 14, ih + 29); g.textAlign = 'left';
   });
-  const im = new Image(); manager.itemStart('proof-' + shot);
-  im.onload = () => { hold.img = im; t.userData.redraw(); manager.itemEnd('proof-' + shot); };
-  im.onerror = () => manager.itemEnd('proof-' + shot);
-  im.src = `assets/shots/${shot}.jpg`;
+  if (item.img) {
+    const im = new Image(); manager.itemStart('proof-' + item.img);
+    im.onload = () => { hold.img = im; t.userData.redraw(); manager.itemEnd('proof-' + item.img); };
+    im.onerror = () => manager.itemEnd('proof-' + item.img);
+    im.src = item.img;
+  }
   return t;
 };
-const EW = .22, ED = .15;                    // an envelope, lying flat
+const EW = .22, ED = .15;
+const READ_AT = { x: -.08, z: .13 };      // where an opened envelope is read: the front of the drawer                    // an envelope, lying flat
 const HOMES = [[-.12, .1, .05], [-.12, -.105, -.04], [.14, -.02, .07]];   // where each one lies: x, z, turn
 const envBack = mat('#262b33', { roughness: .85 }), envFront = mat('#2f353f', { roughness: .8 }), envFlap = mat('#22262d', { roughness: .9, side: THREE.DoubleSide });
 const btnM = mat('#E4E1D9', { roughness: .4 }), threadM = mat('#C4432D', { roughness: .7 });
@@ -577,7 +609,7 @@ const folders = PROJ.map((p, i) => {
   const f = new THREE.Group(); at(f, hx, .006, hz, drawer); f.rotation.y = hr;
   at(box(EW, .003, ED, envBack, .002), 0, .0015, 0, f);                                   // the back
   // the proofs, tucked inside; they slide out when it is opened
-  const proofs = PROOFS[p.id].map((pr, k) => {
+  const proofs = ARCHIVE[p.id].items.map((pr, k) => {
     const m = flat(new THREE.Mesh(new THREE.PlaneGeometry(.19, .143), mat('#c9c9c9', { map: proofTex(p, pr), roughness: .9 })));
     m.position.set(0, .0032 + k * .0003, -.002); f.add(m); return m;
   });
@@ -678,7 +710,11 @@ const settleFolders = (instant) => folders.forEach(f => {
   const open = drawerOpen && f === chosen, d = instant ? 0 : 1;
   if (f === dragging) return;
   const y = .006 + stack.indexOf(folders.indexOf(f)) * .0045 + (open ? .02 : drawerOpen && f === hoverFolder ? .008 : 0);
-  tween(f.position, { y, duration: .45 * d, ease: 'power3.out', overwrite: true, onUpdate: shadowsDirty });
+  // an opened envelope comes to the front of the drawer to be read, then goes back to where it lay
+  const u = f.userData, pos = { y };
+  if (open) { if (!u.prev) u.prev = { x: f.position.x, z: f.position.z, r: f.rotation.y }; Object.assign(pos, READ_AT); tween(f.rotation, { y: 0, duration: .5 * d, ease: 'power3.out' }); }
+  else if (u.prev) { Object.assign(pos, { x: u.prev.x, z: u.prev.z }); tween(f.rotation, { y: u.prev.r, duration: .5 * d, ease: 'power3.out' }); u.prev = null; }
+  tween(f.position, { ...pos, duration: .55 * d, ease: 'power3.out', overwrite: true, onUpdate: shadowsDirty });
   // the string comes undone, then the flap opens back
   f.userData.string.visible = !open;
   tween(f.userData.hinge.rotation, { x: open ? -Math.PI / 2 : Math.PI / 2, duration: .7 * d, delay: open ? .1 * d : 0, ease: 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
@@ -746,7 +782,7 @@ const toggleLamp = () => { lampOn = !lampOn; tween(LK, { lamp: lampOn ? 1 : 0, d
 /* ---------- what can be looked at ---------- */
 const layersHref = id => `index.html?project=${id}`;
 const SPOTS = [
-  { id: 'drawer', obj: drawerFront, at: [0, 0, .012], label: 'Drawer', small: 'Project folders', c: '#D8C49A', kind: 'drawer', side: 'left' },
+  { id: 'drawer', obj: drawerFront, at: [0, 0, .012], label: 'Drawer', small: 'The archive', c: '#D8C49A', kind: 'drawer', side: 'left' },
   { id: 'board', obj: board, at: [.84, .2, .03], label: 'Task board', small: 'Every part of the main page', c: '#E8B04A', kind: 'board' },
   { id: 'kuwago', obj: owl, at: [0, .07, 0], label: 'kuwaGO', small: 'The study owl', c: '#5BB06A', title: 'The study owl',
     text: "kuwaGO's mascot on its pot. Finish a focus session and the sprout grows; give up and it wilts. It's pixel art, because the whole app is.",
@@ -816,14 +852,16 @@ const drawerCard = () => {
   if (chosen) {
     const p = chosen.userData.p, k = folders.indexOf(chosen);
     card.style.setProperty('--c', p.c);
-    card.innerHTML = `${topLine(s, 'Drawer · ' + p.name)}<h2 class="rc-title">${p.name}</h2><p class="rc-text">${p.line}</p>
-      <dl class="rc-dl"><div><dt>Kind</dt><dd>${p.kind}</dd></div></dl>${navRow('All folders')}${links(p.id)}`;
+    const a = ARCHIVE[p.id];
+    card.innerHTML = `${topLine(s, 'Archive · ' + p.name)}<h2 class="rc-title">${a.title}</h2><p class="rc-text">${a.text}</p>
+      <dl class="rc-dl"><div><dt>From</dt><dd>${p.name} · ${p.kind}</dd></div><div><dt>Inside</dt><dd>${a.count}</dd></div></dl>${navRow('All envelopes')}
+      <a class="rc-go" href="projects.html?p=${p.id}">The finished case study <span aria-hidden="true">→</span></a>`;
     wireNav(s, () => choose(folders[(k + 2) % 3]), () => choose(folders[(k + 1) % 3]), () => choose(null));
     return;
   }
   card.style.setProperty('--c', s.c);
-  card.innerHTML = `${topLine(s, 'Drawer')}<h2 class="rc-title">Project files</h2><p class="rc-text">One envelope of proofs for each build. Drag them around the drawer, or pick one to open it; click a proof to bring it to the front.</p>
-    <div class="rc-files">${order.map(i => PROJ[i]).map(p => `<button type="button" data-f="${PROJ.indexOf(p)}" style="--fc:${p.c}"><i aria-hidden="true"></i><span><b>${p.name}</b><small class="mono">${p.kind}</small></span><em aria-hidden="true">→</em></button>`).join('')}</div>${navRow()}`;
+  card.innerHTML = `${topLine(s, 'Drawer')}<h2 class="rc-title">The archive</h2><p class="rc-text">What happened before the case studies: how the kuwaGO promo got better, what I cut from Cinematheque, and xpera before the code. Drag the envelopes around, or open one.</p>
+    <div class="rc-files">${order.map(i => PROJ[i]).map(p => `<button type="button" data-f="${PROJ.indexOf(p)}" style="--fc:${p.c}"><i aria-hidden="true"></i><span><b>${p.name}</b><small class="mono">${ARCHIVE[p.id].kind} · ${ARCHIVE[p.id].count}</small></span><em aria-hidden="true">→</em></button>`).join('')}</div>${navRow()}`;
   card.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => choose(folders[+b.dataset.f])));
   wireNav(s);
 };
@@ -837,7 +875,7 @@ const choose = f => {
   chosen = f; settleFolders(); drawerCard();
   if (!f) { drawerView(); return; }
   // lean in so the proofs can be read
-  const c = drawer.localToWorld(V3(f.position.x, .02, f.position.z - .04)).add(V3(0, 0, DR.open - (drawer.position.z - DR.z)));
+  const c = drawer.localToWorld(V3(READ_AT.x, .02, READ_AT.z - .04)).add(V3(0, 0, DR.open - (drawer.position.z - DR.z)));
   const sx = wide() ? .1 : 0;
   camTo(V3(c.x + sx, c.y + .6, c.z + .34 + (wide() ? 0 : .14)), V3(c.x + sx, c.y - (wide() ? 0 : .06), c.z + .01), 1);
 };
@@ -1034,7 +1072,9 @@ const endDrag = e => {
   if (moved) {
     // it stays where it was dropped, landing with a slight new turn
     tween(f.rotation, { y: f.rotation.y + (Math.random() - .5) * .12, duration: .35, ease: 'power2.out' });
-    settleFolders(); if (f === chosen) choose(f); return true;
+    // an open envelope that is dragged away closes and stays where it was dropped
+    if (f === chosen) { f.userData.prev = null; choose(null); } else settleFolders();
+    return true;
   }
   // on an open envelope, a click on a proof brings that proof to the front
   if (f === chosen && e) {
