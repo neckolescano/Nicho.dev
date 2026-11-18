@@ -499,3 +499,51 @@ body.home { background: #07080A; }
 /* scroll performance: the pinned process stage and the sticky plates get their own layers */
 .proc-pin { will-change: transform; }
 .ps-frame { contain: paint; transform: translateZ(0); }
+
+/* ================= 02 how it works: one screen taken apart, layer by layer, as you scroll ================= */
+.how { padding-bottom: 0; }
+.how-pin { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; padding: clamp(70px, 9vh, 96px) 0 22px; box-sizing: border-box; }
+.how-ref { margin-left: 0; color: var(--muted) !important; }
+.how-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 7fr) minmax(300px, 5fr); gap: clamp(24px, 4vw, 70px); align-items: center; }
+.how-stage { position: relative; height: 100%; min-height: 360px; display: grid; place-items: center; }
+.how-scene { transform: translateX(7%); position: relative; perspective: 1700px; perspective-origin: 50% 40%; display: grid; place-items: center; --cw: min(40vw, 560px); }
+.how-stack { cursor: default; }
+.how-stack .layer { transition: none; }
+.how-stack .tag { display: none; }
+.how-shadow { position: absolute; left: 50%; top: 58%; width: 80%; height: 30%; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter: blur(14px); pointer-events: none; }
+.how-axis { position: absolute; left: 0; bottom: 4%; display: grid; gap: 6px; color: var(--muted); font-size: 10.5px; letter-spacing: .12em; }
+.how-copy { position: relative; align-self: center; }
+.how-panels { list-style: none; position: relative; min-height: 360px; }
+.how-panels li { position: absolute; inset: 0 0 auto; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity .22s ease, transform .3s ease; }
+.how-panels li.on { opacity: 1; transform: none; pointer-events: auto; transition: opacity .5s .18s var(--ease), transform .7s .18s var(--ease); }
+.how-panels li.on ~ li { transform: translateY(18px); }
+.how-kick { color: var(--muted); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+.how-panels h3 { display: flex; align-items: baseline; gap: 16px; margin: 14px 0 18px; font: 600 clamp(2.6rem, 4.6vw, 4.2rem)/.95 var(--cond); text-transform: uppercase; letter-spacing: -.01em; }
+.how-panels h3 .mono { font-size: 1rem; color: var(--mark); letter-spacing: .06em; }
+.how-lede { font: 500 1.15rem/1.4 var(--sans); color: var(--ink); margin-bottom: 14px; }
+.how-panels li > p:not(.how-kick):not(.how-lede):not(.how-meta) { color: var(--muted); font-size: 1.02rem; line-height: 1.7; max-width: 46ch; }
+.how-meta { margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--hair); color: var(--mark) !important; font-size: 10.5px; letter-spacing: .1em; max-width: 46ch; }
+.how-rail { flex: none; margin-top: 18px; }
+.how-tabs { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); }
+.how-tabs button { width: 100%; padding: 10px 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; text-align: left; cursor: pointer; transition: color .3s; }
+.how-tabs button b { font-weight: 500; margin-right: 8px; }
+.how-tabs button:hover { color: var(--ink); }
+.how-tabs button[aria-current="step"] { color: var(--ink); }
+.how-tabs button[aria-current="step"] b { color: var(--mark); }
+.how-bar { position: relative; height: 1px; background: var(--hair); }
+.how-bar i { position: absolute; left: 0; top: -.5px; height: 2px; width: 0; background: var(--ink); }
+.how-foot { display: flex; justify-content: space-between; padding-top: 14px; color: var(--muted); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (max-width: 1000px) {
+  .how-grid { grid-template-columns: 1fr; gap: 10px; align-items: start; }
+  .how-stage { min-height: 0; height: 38vh; }
+  .how-scene { --cw: min(78vw, 420px); }
+  .how-axis { display: none; }
+  .how-panels { min-height: 300px; }
+  .how-panels h3 { font-size: 2.2rem; margin: 8px 0 10px; }
+  .how-tabs button { font-size: 9.5px; letter-spacing: .06em; }
+  .how-tabs button b { display: block; }
+}
+/* the landing shows the layers; the breakdown lives in How it works */
+.layer-hint, .hud, .hud-close, .vpanel { display: none !important; }
+.intro .stack { cursor: default; }

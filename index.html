@@ -28,13 +28,13 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css?v=11">
-<link rel="stylesheet" href="css/nav.css?v=13">
-<link rel="stylesheet" href="css/home.css?v=14">
+<link rel="stylesheet" href="css/nav.css?v=14">
+<link rel="stylesheet" href="css/home.css?v=18">
 </head>
 <body class="home">
 
 <!-- ============ INTRO — a project pulled apart into its layers. Press it, drag a layer out, scroll to go in. ============ -->
-<div class="intro" id="intro" role="region" aria-label="Intro: pick a project and pull it apart into its design layers. Scroll to enter the site.">
+<div class="intro" id="intro" role="region" aria-label="Intro: pick a project to see its layers. Scroll to enter the site.">
   <div class="intro-grid" aria-hidden="true"></div>
   <div class="boot" aria-hidden="true"><i class="boot-line"></i><span class="boot-label mono">Drafting the layers</span></div>
 
@@ -51,7 +51,7 @@
 
   <div class="scene" id="scene">
     <div class="stack-shadow" aria-hidden="true"></div>
-    <div class="stack" id="stack" role="button" tabindex="0" aria-label="Project layers. Press to pull apart or put back together."></div>
+    <div class="stack" id="stack" role="button" tabindex="0" aria-label="The chosen project, shown as its four design layers."></div>
   </div>
 
   <nav class="picker" aria-label="Projects">
@@ -77,7 +77,7 @@
   </div>
   <button class="hud-close mono" type="button" aria-label="Close the breakdown">Close <span aria-hidden="true">✕</span></button>
   <aside class="vpanel" id="vpanel" aria-live="polite" aria-label="Layer details"></aside>
-  <p class="layer-hint mono" id="layerHint" aria-live="polite"><span class="h-touch">Tap the stack to pull it apart</span></p>
+  <p class="layer-hint mono" id="layerHint" aria-live="polite"></p>
   <div class="cursor-tag mono" aria-hidden="true"></div>
   <button class="intro-enter mono" type="button"><span class="mouse" aria-hidden="true"><i></i></span><span class="ie-desk">Scroll to enter</span><span class="ie-touch">Swipe up to enter</span></button>
 </div>
@@ -203,41 +203,35 @@
 </section>
 
 <!-- ============ 02 · PROCESS — one screen, from brief to shipped ============ -->
-<section class="sec process" id="process" data-sheet="Process" data-no="02">
-  <div class="proc-pin">
-    <header class="sec-head"><span class="mono"><b>02</b> Process</span><i class="rule"></i><span class="mono proc-count"><b id="procNo">01</b> / 05</span></header>
-    <div class="proc-grid">
-      <ol class="proc-steps">
-        <li class="on"><span class="mono">01</span><div><h3>Brief</h3><p>What it's for and who uses it, in plain words, before any tool opens.</p></div></li>
-        <li><span class="mono">02</span><div><h3>Sketch</h3><p>Rough lines on paper first, so ideas stay cheap to change.</p></div></li>
-        <li><span class="mono">03</span><div><h3>Wireframe</h3><p>Boxes, hierarchy and flow in Figma. No colour yet.</p></div></li>
-        <li><span class="mono">04</span><div><h3>Design</h3><p>Type, colour and states, decided before the first line of code.</p></div></li>
-        <li><span class="mono">05</span><div><h3>Ship</h3><p>Built feature by feature, measured against the design, tested with people.</p></div></li>
+<section class="sec how" id="process" data-sheet="How it works" data-no="02" aria-labelledby="how-title">
+  <div class="how-pin">
+    <header class="sec-head"><span class="mono"><b>02</b> How it works</span><i class="rule"></i><span class="mono how-ref">Cinematheque · home page, taken apart</span></header>
+    <div class="how-grid">
+      <div class="how-stage" aria-hidden="true">
+        <div class="how-scene"><div class="how-shadow"></div><div class="stack how-stack" id="howStack"></div></div>
+        <div class="how-axis mono"><span>Z ↑ layers</span><span>X → screen</span></div>
+      </div>
+      <div class="how-copy">
+        <h2 class="sr-only" id="how-title">How it works: one screen, from brief to shipped</h2>
+        <ol class="how-panels">
+          <li class="on"><p class="mono how-kick">The problem first</p><h3><span class="mono">01</span> Brief</h3><p class="how-lede">What it's for, and who uses it.</p><p>Before any tool opens, I write the problem down in plain words. For Cinematheque: moviegoers pick their exact seats and pay online; staff need tonight's guest list and the monthly report for head office.</p><p class="mono how-meta">Client meeting · 3 users · 2 must-haves</p></li>
+          <li><p class="mono how-kick">Layer 01 · pencil on paper</p><h3><span class="mono">02</span> Sketch</h3><p class="how-lede">Rough lines, cheap to change.</p><p>I sketch every screen by hand first. Moving a box in pencil costs seconds, so I try many layouts before I commit to one.</p><p class="mono how-meta">Paper · many versions · one kept</p></li>
+          <li><p class="mono how-kick">Layer 02 · structure, no colour</p><h3><span class="mono">03</span> Wireframe</h3><p class="how-lede">Boxes, hierarchy and flow.</p><p>In Figma, the sketch becomes a wireframe: where everything sits, what matters most, and how one screen leads to the next. It stays grey, so the layout is judged on its own.</p><p class="mono how-meta">Figma · 13 boxes · hierarchy first</p></li>
+          <li><p class="mono how-kick">Layer 03 · type, colour, states</p><h3><span class="mono">04</span> Design</h3><p class="how-lede">Decided before the first line of code.</p><p>Then the type, the colours and every state: empty, loading, error, done. The finished design is the spec I build against.</p><p class="mono how-meta">Ink · Ember · Paper · Brass</p></li>
+          <li><p class="mono how-kick">Layer 04 · measured against the design</p><h3><span class="mono">05</span> Build &amp; ship</h3><p class="how-lede">Built, tested, shipped.</p><p>Built feature by feature with AI-assisted development, checked against every layer underneath it, and tested with the people who use it.</p><p class="mono how-meta">Laravel 12 · 129 tests passing · client approved</p></li>
+        </ol>
+      </div>
+    </div>
+    <div class="how-rail">
+      <ol class="how-tabs mono">
+        <li><button type="button" data-step="0"><b>01</b> Brief</button></li>
+        <li><button type="button" data-step="1"><b>02</b> Sketch</button></li>
+        <li><button type="button" data-step="2"><b>03</b> Wireframe</button></li>
+        <li><button type="button" data-step="3"><b>04</b> Design</button></li>
+        <li><button type="button" data-step="4"><b>05</b> Build &amp; ship</button></li>
       </ol>
-      <figure class="proc-stage" data-step="1" aria-label="The Cinematheque home page at each stage of the process">
-        <div class="ps-frame">
-          <div class="ps-brief">
-            <p class="mono">Brief · Cinematheque Centre Davao</p>
-            <p class="ps-note">“Moviegoers should be able to pick their exact seats and pay online. Staff need tonight's guest list and the monthly report for head office.”</p>
-            <p class="mono ps-sign">Client meeting · 3 users · 2 must-haves</p>
-          </div>
-          <img class="ps-sketch" src="assets/sketch/cinematheque-home.jpg" alt="" loading="lazy">
-          <svg class="ps-wire" viewBox="0 0 1200 750" preserveAspectRatio="none" aria-hidden="true">
-            <rect x="130" y="10" width="180" height="34"/><rect x="760" y="12" width="300" height="30"/>
-            <rect x="150" y="80" width="900" height="380"/><rect x="205" y="190" width="250" height="60"/><rect x="205" y="310" width="110" height="38"/><rect x="785" y="120" width="190" height="290"/>
-            <rect x="130" y="590" width="240" height="56"/><rect x="715" y="605" width="350" height="44"/><rect x="130" y="675" width="640" height="34"/>
-            <path d="M150 80 L1050 460 M1050 80 L150 460"/>
-          </svg>
-          <img class="ps-ink" src="assets/shots/cinematheque-home.jpg" alt="" loading="lazy">
-          <div class="ps-marks" aria-hidden="true">
-            <span class="mono" style="left:17%; top:36%">Title · 64 / 600</span>
-            <span class="mono" style="left:17%; top:47%">Book seats · 44 px</span>
-            <span class="mono" style="left:63%; top:12%">Poster 3 : 4</span>
-            <span class="ps-stamp mono">Shipped · 129 tests passing</span>
-          </div>
-        </div>
-        <figcaption class="mono"><span id="procCap">Brief</span><span>Cinematheque · home page</span></figcaption>
-      </figure>
+      <div class="how-bar"><i></i></div>
+      <p class="how-foot mono"><span>Scroll to take it apart <span aria-hidden="true">↓</span></span><span class="how-pct">0%</span></p>
     </div>
   </div>
 </section>
@@ -319,8 +313,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="js/nav.js?v=14"></script>
+<script src="js/nav.js?v=15"></script>
 <script src="js/site.js?v=11"></script>
-<script src="js/home.js?v=14"></script>
+<script src="js/home.js?v=16"></script>
 </body>
 </html>

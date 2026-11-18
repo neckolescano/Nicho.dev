@@ -202,6 +202,7 @@
     }
     if (samePage) { e.preventDefault(); setPanel(false); lenis ? lenis.scrollTo(0, { duration: 1.4 }) : scrollTo(0, 0); return; }
     if (!motion) return;
+    if (/\/tinta(\/|$)/.test(url.pathname) && !inTinta) { e.preventDefault(); setPanel(false); toTinta(a.href); return; }   // into Tinta: a quiet fade while the room loads
     e.preventDefault();
     let x = e.clientX, y = e.clientY;
     if (!e.detail) { const r = a.getBoundingClientRect(); x = r.left + r.width / 2; y = r.top + r.height / 2; }   // keyboard: start from the link itself
@@ -211,6 +212,30 @@
     run(1, x, y, 720, label, () => (location.href = a.href));
   });
 
+  /* ---------- into Tinta Studio: no pixels. The room's files load in the background while the screen fades, so the 3D room opens without a stall ---------- */
+  const TINTA_FILES = ['tinta/index.html', 'tinta/js/room.js', 'tinta/js/os.js', 'tinta/css/room.css', 'tinta/css/os.css',
+    'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js',
+    'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/geometries/RoundedBoxGeometry.js',
+    'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/lights/RectAreaLightUniformsLib.js',
+    'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/environments/RoomEnvironment.js'];
+  let warming = null;
+  const warmTinta = () => warming || (warming = Promise.all(TINTA_FILES.map(f => fetch(f, { mode: f.startsWith('http') ? 'cors' : 'same-origin' }).then(r => r.ok && r.blob()).catch(() => null))));
+  if (!inTinta && document.querySelector('a[href^="tinta"]')) {
+    document.addEventListener('pointerover', e => { if (e.target.closest && e.target.closest('a[href^="tinta"]')) warmTinta(); }, { passive: true });
+    (window.requestIdleCallback || (f => setTimeout(f, 2500)))(() => warmTinta(), { timeout: 4000 });
+  }
+  const toTinta = href => {
+    lenis && lenis.stop();
+    const v = document.createElement('div'); v.className = 'tinta-tx';
+    v.innerHTML = '<div class="tt-in"><span class="mono tt-k">T-000</span><b>Tinta Studio</b><i class="tt-bar"><i></i></i><span class="mono tt-s">Opening the room</span></div>';
+    document.body.appendChild(v);
+    requestAnimationFrame(() => v.classList.add('on'));
+    const bar = v.querySelector('.tt-bar i'); let done = 0;
+    TINTA_FILES.forEach(f => fetch(f, { mode: f.startsWith('http') ? 'cors' : 'same-origin' }).catch(() => null).finally(() => { done++; bar.style.transform = `scaleX(${(done / TINTA_FILES.length).toFixed(3)})`; }));
+    const minWait = new Promise(r => setTimeout(r, 900)), maxWait = new Promise(r => setTimeout(r, 3500));
+    Promise.race([Promise.all([warmTinta(), minWait]), maxWait]).then(() => { bar.style.transform = 'scaleX(1)'; setTimeout(() => (location.href = href), 250); });
+  };
+
   // back/forward from the cache: take away any leftover ink
-  addEventListener('pageshow', e => { if (e.persisted) { document.querySelectorAll('.tx, .tx-cap').forEach(n => n.remove()); root.classList.remove('tx-hold'); lenis && lenis.start(); } });
+  addEventListener('pageshow', e => { if (e.persisted) { document.querySelectorAll('.tx, .tx-cap, .tinta-tx').forEach(n => n.remove()); root.classList.remove('tx-hold'); lenis && lenis.start(); } });
 })();

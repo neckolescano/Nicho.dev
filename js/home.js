@@ -207,7 +207,7 @@
 
   /* ---------- press: the stack moves to the centre, everything else steps away, and it breaks down ---------- */
   let broken = false, focusTl = null;
-  const HINTS = { idle: 'Tap the stack to break it down', broken: 'Drag a layer out · tap empty space to close', viewing: 'Drag it back, or tap outside to place it' };
+  const HINTS = { idle: '', broken: 'Drag a layer out · tap empty space to close', viewing: 'Drag it back, or tap outside to place it' };
   const setHint = () => { hintEl.textContent = float && inspecting != null ? HINTS.viewing : broken ? HINTS.broken : HINTS.idle; };
   const setBroken = (on, fast, cb) => {
     if (on === broken) { cb && cb(); return; }
@@ -332,7 +332,7 @@
     if (el.closest('.float-sheet')) return 'Drag back to place it';
     if (float) return 'Click to place it back';
     if (broken) return el.closest('.layer') ? 'Drag out · click to inspect' : 'Click to close';
-    return el.closest('.stack') ? 'Click to break it down' : '';
+    return '';
   };
   intro.addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse') return;
@@ -356,14 +356,13 @@
     if (e.target.closest('.picker, .intro-top, .intro-enter, .float-sheet, .vpanel, .hud-close')) return;
     if (float) { putBack(); return; }
     const onLayer = e.target.closest('.layer');
-    if (!broken) { if (e.target.closest('.stack')) setBroken(true); return; }
+    if (!broken) return;   // the breakdown now lives in How it works
     if (onLayer) inspect(+onLayer.dataset.i); else setBroken(false);
   });
 
   /* ---------- entering and leaving (scroll only) ---------- */
   const lock = on => { root.classList.toggle('intro-on', on); const L = window.ndLenis; if (L) on ? L.stop() : L.start(); };
-  // the exit: the stack glides to the middle of the screen, bursts apart, and the screen breaks into pixels
-  const PIX = '#050608';
+  // the exit: the layers fold flat into one sheet, the finished screen comes forward, and you pass through it into the page
   const LEAD = ['.lead-kick', '.lead-name', '.lead-line', '.cover-actions', '.cover-meta'];
   const build = () => {
     if (tl) tl.kill();
@@ -372,18 +371,12 @@
     tl = gsap.timeline({ paused: true })
       .to(S, { follow: 0, duration: .4, ease: 'power2.out' }, 0)
       .to(CHROME, { opacity: 0, y: -14, duration: .35, stagger: .03, ease: 'power2.in' }, 0)
-      .to(scene, { x: dx, y: dy, duration: .6, ease: 'power3.inOut' }, 0)
-      .to(S, { gap: 34, sc: 1.06, duration: .6, ease: 'power3.inOut' }, 0)
-      .to('.stack-shadow', { opacity: 0, duration: .35 }, .3)
-      // the burst: the sheets fly apart in depth and to the sides, then fade
-      .to(S, { gap: 240, fan: 2.4, sc: 1.28, duration: .5, ease: 'power3.in' }, .62)
-      .to(drops, { z: i => (i - 1.5) * 220, duration: .5, ease: 'power3.in' }, .62)
-      .to(layers, { opacity: 0, duration: .3, stagger: .04, ease: 'power1.in' }, .82);
-  };
-  const stackCentre = () => { const r = stack.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
-  const pixels = (dir, done) => {
-    const [x, y] = stackCentre();
-    if (window.ndPixels) window.ndPixels(dir, x, y, dir > 0 ? 620 : 860, null, done, PIX); else done && done();
+      .to(scene, { x: dx, y: dy, duration: .75, ease: 'power3.inOut' }, 0)
+      .to(S, { rx: 0, rz: 0, gap: 0, sc: 1.02, duration: .75, ease: 'power3.inOut' }, 0)
+      .to('.stack-shadow', { opacity: 0, duration: .3 }, 0)
+      .to(layers.slice(0, 3), { opacity: 0, duration: .3, ease: 'power1.out' }, .5)
+      .to(S, { sc: 2.6, duration: .75, ease: 'power2.in' }, .8)
+      .to(intro, { opacity: 0, duration: .5, ease: 'power1.in' }, 1.05);
   };
   const enter = () => {
     if (!open || !hasGsap) return;
@@ -392,25 +385,23 @@
     busy = true; stopAuto(); ctag.classList.remove('on');
     if (float) putBack(true);
     const go = () => {
-      build(); tl.play();
-      gsap.delayedCall(.78, () => pixels(1, cover => {
-        gsap.set(intro, { autoAlpha: 0 }); running = false; lock(false); scrollTo(0, 0);
-        pixels(-1, () => { busy = false; open = false; document.getElementById('lead-name').focus({ preventScroll: true }); });
-        cover && cover.remove();
-        gsap.from(LEAD, { y: 26, opacity: 0, duration: .8, stagger: .06, ease: 'power3.out', delay: .3 });
-      }));
+      scrollTo(0, 0); window.ndLenis && ndLenis.scrollTo(0, { immediate: true });
+      build();
+      tl.eventCallback('onReverseComplete', null);
+      tl.eventCallback('onComplete', () => { gsap.set(intro, { autoAlpha: 0 }); running = false; lock(false); busy = false; open = false; document.getElementById('lead-name').focus({ preventScroll: true }); });
+      tl.call(() => gsap.fromTo(LEAD, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: .8, stagger: .06, ease: 'power3.out' }), null, 1.1);
+      tl.play(0);
     };
     if (broken) setBroken(false, true, go); else go();
   };
   const replay = () => {
     if (open || busy) return;
     busy = true; open = true; lock(true); running = true; requestAnimationFrame(loop);
-    pixels(1, cover => {
-      gsap.set(intro, { autoAlpha: 1 });
-      if (tl) tl.progress(0).pause();
-      pixels(-1, () => { busy = false; setHint(); });
-      cover && cover.remove();
-    });
+    if (!tl) build();
+    gsap.set(intro, { visibility: 'visible' });
+    tl.eventCallback('onComplete', null);
+    tl.eventCallback('onReverseComplete', () => { busy = false; setHint(); startAuto(); });
+    tl.reverse();
   };
 
   if (motion && hasGsap) {
@@ -427,7 +418,7 @@
       gsap.set(['.intro-grid', '.stack-shadow'], { opacity: 0 });
       Object.assign(S, { rx: 72, rz: -64, sc: .86, gap: 60 });
       busy = true;
-      opening = gsap.timeline({ delay: arriving ? .7 : .2, onComplete: () => { busy = false; if (wantId) setTimeout(() => setBroken(true), 250); else startAuto(); } })
+      opening = gsap.timeline({ delay: arriving ? .7 : .2, onComplete: () => { busy = false; if (!wantId) startAuto(); } })
         .to('.intro-grid', { opacity: 1, duration: 1.4, ease: 'power1.out' }, 0)
         .to('.boot-line', { scaleX: quick ? 0 : 1, duration: quick ? .01 : .9, ease: 'expo.inOut' }, 0)
         .to('.boot-label', { opacity: 1, duration: .4 }, .3)
@@ -460,7 +451,7 @@
       if (e.key === 'Escape') { if (float) putBack(); else if (broken) setBroken(false); return; }
       if (busy && !(opening && opening.progress() < 1)) return;
       const onStack = e.target === stack, onButton = e.target.closest && e.target.closest('button, a');
-      if ((e.key === 'Enter' || e.key === ' ') && onStack) { e.preventDefault(); setBroken(!broken); return; }
+
       if (['ArrowDown', 'PageDown'].includes(e.key) || (e.key === ' ' && !onButton)) { e.preventDefault(); enter(); return; }
       if (float && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) { switchLayer((inspecting + (e.key === 'ArrowRight' ? 1 : 3)) % 4); return; }
       if (e.key === 'ArrowRight') show((cur + 1) % PROJECTS.length, true);
@@ -518,25 +509,38 @@
   big.addEventListener('pointerleave', () => big.style.setProperty('--r2', '0px'));
 
   /* =====================================================================
-     02  process: one screen from brief to shipped
+     02  how it works: one screen (Cinematheque's home page) taken apart layer by layer as you scroll
      ===================================================================== */
-  const stageP = document.querySelector('.proc-stage'), steps = $('.proc-steps li'), procNo = document.getElementById('procNo'), procCap = document.getElementById('procCap');
-  const NAMES = ['Brief', 'Sketch', 'Wireframe', 'Design', 'Ship'];
-  let stepNow = 0;
-  const setStep = n => {
-    if (n === stepNow) return; stepNow = n;
-    stageP.dataset.step = n; steps.forEach((li, i) => li.classList.toggle('on', i === n - 1));
-    procNo.textContent = '0' + n; procCap.textContent = NAMES[n - 1];
+  const howP = PROJECTS.find(p => p.name === 'Cinematheque') || PROJECTS[0];
+  const howSec = document.getElementById('process'), howStack = document.getElementById('howStack');
+  howSec.style.setProperty('--acc', howP.acc); howSec.style.setProperty('--acc-rgb', howP.rgb);
+  howStack.innerHTML = KIND.map((k, i) => `<div class="layer ${k}"><div class="lc">${content(howP, i)}</div></div>`).join('');
+  const hLayers = [...howStack.children], hPanels = $('.how-panels li'), hTabs = $('.how-tabs button'), hBar = howSec.querySelector('.how-bar i'), hPct = howSec.querySelector('.how-pct');
+  // the pose: flat and closed for the brief, then apart, one layer lifted at a time, then back together
+  const H = { rx: 8, rz: 0, gap: 0, sc: .92, lift: [0, 0, 0, 0], dim: [0, 0, 0, 0] };
+  const renderHow = () => {
+    howStack.style.transform = `rotateX(${H.rx.toFixed(2)}deg) rotateZ(${H.rz.toFixed(2)}deg) scale(${H.sc.toFixed(4)})`;
+    hLayers.forEach((l, i) => {
+      const k = i - 1.5, up = H.lift[i];
+      l.style.transform = `translate3d(${(-up * 24).toFixed(1)}%, ${(-up * 10).toFixed(1)}%, ${(k * H.gap + up * 110).toFixed(1)}px)`;
+      l.style.opacity = (1 - H.dim[i] * .78).toFixed(3);
+    });
   };
-  steps.forEach(li => { li.tabIndex = 0; li.setAttribute('role', 'button'); });
-  setStep(1);
+  let howNow = -1;
+  const setHow = n => {
+    if (n === howNow) return; howNow = n;
+    hPanels.forEach((li, i) => li.classList.toggle('on', i === n));
+    hTabs.forEach((b, i) => i === n ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
+  };
+  const howProgress = p => { hBar.style.width = (p * 100).toFixed(1) + '%'; hPct.textContent = Math.round(p * 100) + '%'; setHow(Math.min(4, Math.floor(p * 5))); };
+  renderHow(); setHow(0);
 
   /* =====================================================================
      scroll motion
      ===================================================================== */
   if (!motion || !hasGsap) {
-    setStep(5);
-    steps.forEach((li, i) => { const go = () => setStep(i + 1); li.addEventListener('click', go); li.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } }); });
+    Object.assign(H, { rx: 56, rz: -36, gap: 40, sc: 1 }); renderHow();
+    hTabs.forEach((b, i) => b.addEventListener('click', () => { setHow(i); hBar.style.width = ((i + 1) * 20) + '%'; hPct.textContent = ((i + 1) * 20) + '%'; }));
     return;
   }
   gsap.registerPlugin(ScrollTrigger);
@@ -555,14 +559,23 @@
       gsap.timeline({ scrollTrigger: { trigger: wraps[i + 1], start: 'top bottom', end: 'top 10%', scrub: .4 } }).to(plate, { scale: .94, ease: 'none', force3D: true }, 0).to(dim, { opacity: .55, ease: 'none' }, 0); }
   });
 
+  // the timeline: 5 equal steps across the pinned scroll
+  const hTl = gsap.timeline({ defaults: { ease: 'power2.inOut' }, onUpdate: renderHow });
+  hTl.to(H, { rx: 56, rz: -36, gap: 46, sc: 1, duration: .9 }, .1)                                    // 01 → 02: the closed sheet opens into layers
+     .to(H.lift, { 0: 1, duration: .5 }, 1.1).to(H.dim, { 1: 1, 2: 1, 3: 1, duration: .5 }, 1.1)          // 02 sketch
+     .to(H.lift, { 0: 0, 1: 1, duration: .5 }, 2.1).to(H.dim, { 0: 1, 1: 0, duration: .5 }, 2.1)          // 03 wireframe
+     .to(H.lift, { 1: 0, 2: 1, duration: .5 }, 3.1).to(H.dim, { 1: 1, 2: 0, duration: .5 }, 3.1)          // 04 design
+     .to(H.lift, { 2: 0, 3: 1, duration: .5 }, 4.0).to(H.dim, { 2: 1, 3: 0, duration: .5 }, 4.0)          // 05 build
+     .to(H.lift, { 3: 0, duration: .45 }, 4.55).to(H.dim, { 0: 0, 1: 0, 2: 0, duration: .45 }, 4.55)      // and it all goes back together
+     .to(H, { gap: 10, duration: .45 }, 4.55);
   const pin = ScrollTrigger.create({
-    trigger: '.proc-pin', start: 'top top', end: () => '+=' + Math.round(innerHeight * 2.6), pin: '.proc-pin', anticipatePin: 1, invalidateOnRefresh: true,
-    onUpdate: s => setStep(Math.min(5, 1 + Math.floor(s.progress * 5)))
+    trigger: '.how-pin', start: 'top top', end: () => '+=' + Math.round(innerHeight * 3.4), pin: '.how-pin', anticipatePin: 1, scrub: .6, invalidateOnRefresh: true,
+    animation: hTl, onUpdate: s => howProgress(s.progress)
   });
-  steps.forEach((li, i) => {
-    const go = () => { const y = pin.start + (pin.end - pin.start) * ((i + .5) / 5); window.ndLenis ? ndLenis.scrollTo(y, { duration: 1.2 }) : scrollTo(0, y); };
-    li.addEventListener('click', go); li.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
-  });
+  hTabs.forEach((b, i) => b.addEventListener('click', () => {
+    const y = pin.start + (pin.end - pin.start) * ((i + .5) / 5);
+    window.ndLenis ? ndLenis.scrollTo(y, { duration: 1.2 }) : scrollTo(0, y);
+  }));
 
   $('.seal').forEach((s, i) => gsap.from(s, { opacity: 0, scale: 1.8, rotate: -12, duration: .5, delay: .25 + i * .12, ease: 'back.out(2)', scrollTrigger: { trigger: '.cert-row', start: 'top 80%', once: true } }));
   gsap.fromTo(big, { '--fill': '0%' }, { '--fill': '115%', duration: 1.6, ease: 'power2.inOut', scrollTrigger: { trigger: big, start: 'top 75%', once: true } });
