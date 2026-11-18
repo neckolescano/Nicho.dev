@@ -780,13 +780,14 @@ const phoneUpNow = () => {
   const to = { x: .48, y: DESK_Y + .2, z: .3 };
   tween(phone.position, { ...to, duration: .9, ease: 'power3.out', overwrite: true, onUpdate: shadowsDirty });
   // the camera leans in, square to the screen (on phones, a little lower so the card stays clear of it)
-  const w = V3(to.x, to.y, to.z), dist = wide() ? .34 : .5;
-  camTo(V3(w.x + (wide() ? .06 : 0), w.y + .71 * dist, w.z + .7 * dist), V3(w.x + (wide() ? .06 : 0), w.y - (wide() ? 0 : .07), w.z), 1.1);
+  const w = V3(to.x, to.y, to.z), dist = wide() ? .3 : .36;
+  camTo(V3(w.x, w.y + .71 * dist, w.z + .7 * dist), V3(w.x, w.y, w.z), 1.1);
+  setTimeout(() => phoneUp && phoneUI.show(), 950);
   tween(phone.rotation, { x: .78, y: 0, duration: .9, ease: 'power3.out', overwrite: true });
   G && motion ? G.to(phoneScreenM.color, { r: 1, g: 1, b: 1, duration: .5, delay: .35 }) : phoneScreenM.color.setScalar(1);
 };
 const phoneDown = instant => {
-  const wasUp = phoneUp; phoneUp = false;
+  const wasUp = phoneUp; phoneUp = false; phoneUI.hide();
   if (wasUp && !instant && focus && focus.kind === 'phone') { focus = null; roomEl.classList.remove('focused'); hsEls.forEach(el => el.classList.remove('on')); camTo(HOME.pos, HOME.look, 1.2); }
   tween(phone.position, { x: PHONE_HOME.x, y: PHONE_HOME.y, z: PHONE_HOME.z, duration: instant ? 0 : .7, ease: 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
   tween(phone.rotation, { x: PHONE_HOME.rx, y: PHONE_HOME.ry, duration: instant ? 0 : .7, ease: 'power3.inOut', overwrite: true });
@@ -834,7 +835,7 @@ const SPOTS = [
     text: 'xpera CRM is for small stores that sell gaming PC parts, so its toy is a boxed graphics card. The fans spin up when you look closer.',
     dl: [['System', 'xpera CRM · desktop'], ['Built with', 'C# · WinForms · SQL Server'], ['Status', 'In progress · lab 1 done']], project: 'xpera',
     view: [.06, .07, .46], focus: () => G && G.to({ s: fanSpeed }, { s: 16, duration: .8, onUpdate() { fanSpeed = this.targets()[0].s; } }), blur: () => G && G.to({ s: fanSpeed }, { s: 1.5, duration: 1.2, onUpdate() { fanSpeed = this.targets()[0].s; } }) },
-  { id: 'phone', obj: phone, at: [0, .02, 0], label: 'Phone', small: 'Locked', c: '#F4A6B8', kind: 'phone' },
+  { id: 'phone', obj: phone, at: [0, .02, 0], label: 'Phone', small: 'Pick it up', c: '#F4A6B8', kind: 'phone' },
   { id: 'sketch', obj: sketch, at: [0, .03, 0], label: 'Sketchbook', small: 'Where it starts', c: '#E0533F', title: 'Where it starts', side: 'left',
     text: 'Every project begins as a drawing in here: screens, flows, the database on the back pages. Then it goes to Figma, then to code.',
     dl: [['Habit', 'Draw first, build second'], ['Next', 'Figma, then code']], href: 'index.html#process', cta: 'How I work', view: [.05, .32, .42] },
@@ -928,38 +929,53 @@ const unseal = async pass => {
 };
 let noteText = null;
 const esc = t => t.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
-const letterCard = () => {
-  card.style.setProperty('--c', '#F4A6B8');
-  card.innerHTML = `<div class="rc-top mono"><span>Phone</span><span>Unlocked</span></div>
-    <div class="rc-letter">${esc(noteText).split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('')}</div>
-    <div class="rc-nav rc-one"><button type="button" class="rc-back">Put it back</button></div>`;
-  card.querySelector('.rc-back').onclick = () => { phoneDown(); };
-  if (G && motion) {
-    G.from(card.querySelectorAll('.rc-letter p'), { opacity: 0, y: 10, duration: .7, stagger: .18, ease: 'power2.out' });
-    hearts();
-  }
-};
-// a few small hearts float up from the phone when it opens
-const hearts = () => {
-  for (let i = 0; i < 14; i++) {
-    const h = document.createElement('i'); h.className = 'r-heart'; h.textContent = '♥';
-    h.style.left = (40 + Math.random() * 20) + '%'; h.style.top = (50 + Math.random() * 12) + '%'; h.style.fontSize = (12 + Math.random() * 16) + 'px';
-    roomEl.appendChild(h);
-    G.fromTo(h, { y: 0, opacity: 0, rotation: (Math.random() - .5) * 30 }, { y: -160 - Math.random() * 160, x: (Math.random() - .5) * 160, opacity: 1, duration: 2.2 + Math.random(), delay: i * .06, ease: 'power1.out', onComplete: () => h.remove() });
-    G.to(h, { opacity: 0, duration: .8, delay: 1.6 + i * .06 });
-  }
-};
-const phoneCard = () => {
-  if (noteText) { letterCard(); return; }
-  card.style.setProperty('--c', '#F4A6B8');
-  card.innerHTML = `<div class="rc-top mono"><span>Phone</span><span>Locked</span></div><h2 class="rc-title">Enter passcode</h2><p class="rc-text">Something's waiting on this phone. Hint: our date.</p>
-    <div class="rc-pin" aria-live="polite"><i></i><i></i><i></i><i></i></div>
-    <div class="rc-keys">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button type="button" data-k="${n}">${n}</button>`).join('')}<span></span><button type="button" data-k="0">0</button><button type="button" data-k="del" aria-label="Delete">⌫</button></div>
-    <div class="rc-nav rc-one"><button type="button" class="rc-back">Put it back</button></div>`;
-  card.querySelector('.rc-back').onclick = () => { phoneDown(); };
-  const dots = [...card.querySelectorAll('.rc-pin i')], pin = card.querySelector('.rc-pin');
-  let code = '', busy = false;
+// the phone's screen, as a page: a lock screen with a passcode, a home screen with the same wallpaper, and a Notes app.
+// It sits exactly over the 3D phone's screen while the phone is held up.
+const WALL = 'tinta/assets/photos/lockscreen.jpg';
+const phoneUI = (() => {
+  const el = document.createElement('div'); el.className = 'phone-ui'; el.hidden = true;
+  el.innerHTML = `<div class="pu-stage">
+    <section class="pu-lock"><img class="pu-wall" src="${WALL}" alt=""><div class="pu-dim"></div>
+      <p class="pu-time"></p><p class="pu-date"></p>
+      <p class="pu-ask">Enter Passcode</p><p class="pu-hint">Hint: our date</p>
+      <div class="pu-dots"><i></i><i></i><i></i><i></i></div>
+      <div class="pu-keys">${[[1, ''], [2, 'ABC'], [3, 'DEF'], [4, 'GHI'], [5, 'JKL'], [6, 'MNO'], [7, 'PQRS'], [8, 'TUV'], [9, 'WXYZ']].map(([n, l]) => `<button type="button" data-k="${n}"><b>${n}</b><small>${l}</small></button>`).join('')}<span></span><button type="button" data-k="0"><b>0</b></button><span></span></div>
+      <div class="pu-foot"><button type="button" class="pu-text" data-act="away">Put it back</button><button type="button" class="pu-text" data-k="del">Delete</button></div></section>
+    <section class="pu-home" hidden><img class="pu-wall" src="${WALL}" alt=""><div class="pu-shade"></div>
+      <p class="pu-bar"><b class="pu-clock"></b><span>●●● 5G ▮</span></p>
+      <div class="pu-apps">
+        ${[['notes', 'Notes', 1], ['photos', 'Photos'], ['messages', 'Messages'], ['music', 'Music'], ['calendar', 'Calendar'], ['camera', 'Camera'], ['clock', 'Clock'], ['weather', 'Weather']].map(([id, t, badge]) => `<button type="button" class="pu-app" data-app="${id}"><i class="ic ic-${id}">${id === 'calendar' ? '<em>THU</em><b>19</b>' : ''}</i>${badge ? '<u>1</u>' : ''}<span>${t}</span></button>`).join('')}
+      </div>
+      <div class="pu-dock">${['phone', 'mail', 'browser', 'gallery'].map(id => `<button type="button" class="pu-app" data-app="${id}"><i class="ic ic-${id}"></i></button>`).join('')}</div>
+      <button type="button" class="pu-homebar" data-act="away" aria-label="Put the phone back"></button></section>
+    <section class="pu-notes" hidden>
+      <p class="pu-bar dark"><b class="pu-clock"></b><span>●●● 5G ▮</span></p>
+      <header class="pu-nhead"><button type="button" data-act="home">‹ Notes</button><button type="button" data-act="home">Done</button></header>
+      <p class="pu-ndate">19 November 2026</p>
+      <article class="pu-letter"></article>
+      <button type="button" class="pu-homebar dark" data-act="home" aria-label="Back to the home screen"></button></section>
+  </div>`;
+  roomEl.appendChild(el);
+  const stage = el.querySelector('.pu-stage'), lock = el.querySelector('.pu-lock'), home = el.querySelector('.pu-home'), notes = el.querySelector('.pu-notes');
+  const dots = [...el.querySelectorAll('.pu-dots i')], dotsBox = el.querySelector('.pu-dots');
+  let code = '', busy = false, on = false;
+  const screen = name => { [lock, home, notes].forEach(x => (x.hidden = x !== name)); };
+  const tick = () => {
+    let t = '', d = '';
+    try { t = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Manila' }); d = new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Asia/Manila' }); } catch {}
+    el.querySelector('.pu-time').textContent = t; el.querySelector('.pu-date').textContent = d; el.querySelectorAll('.pu-clock').forEach(c => (c.textContent = t));
+  };
   const paint = () => dots.forEach((d, i) => d.classList.toggle('on', i < code.length));
+  const openNotes = () => {
+    el.querySelector('.pu-letter').innerHTML = esc(noteText).split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('');
+    screen(notes);
+    if (G && motion) { G.fromTo(notes, { scale: .2, opacity: 0, transformOrigin: '18% 22%' }, { scale: 1, opacity: 1, duration: .45, ease: 'power3.out' }); G.from(notes.querySelectorAll('.pu-letter p'), { opacity: 0, y: 8, duration: .6, stagger: .15, delay: .25 }); }
+    el.querySelector('.pu-app[data-app="notes"] u') && el.querySelector('.pu-app[data-app="notes"] u').remove();
+  };
+  const goHome = () => {
+    screen(home);
+    if (G && motion) G.fromTo(home.querySelectorAll('.pu-app'), { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .45, stagger: .03, ease: 'back.out(1.8)' });
+  };
   const press = async k => {
     if (busy) return;
     if (k === 'del') { code = code.slice(0, -1); paint(); return; }
@@ -970,15 +986,52 @@ const phoneCard = () => {
     try {
       noteText = await unseal(code);
       phoneOpen = true; if (lockImg.complete) drawLock(lockImg);
-      pin.classList.add('ok'); setTimeout(letterCard, 450);
+      dotsBox.classList.add('ok');
+      setTimeout(() => { goHome(); hearts(); busy = false; }, 380);
     } catch {
-      pin.classList.add('no'); setTimeout(() => { pin.classList.remove('no'); code = ''; paint(); busy = false; }, 600);
+      dotsBox.classList.add('no'); setTimeout(() => { dotsBox.classList.remove('no'); code = ''; paint(); busy = false; }, 600);
     }
   };
-  card.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => press(b.dataset.k)));
-  const onKey = e => { if (!card.querySelector('.rc-pin')) { removeEventListener('keydown', onKey); return; } if (/^[0-9]$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('del'); };
-  addEventListener('keydown', onKey);
+  el.addEventListener('click', e => {
+    e.stopPropagation();
+    const k = e.target.closest('[data-k]'); if (k) { press(k.dataset.k); return; }
+    const a = e.target.closest('[data-act]');
+    if (a && a.dataset.act === 'away') { unfocus(); return; }
+    if (a && a.dataset.act === 'home') { goHome(); return; }
+    const app = e.target.closest('[data-app]');
+    if (app) { if (app.dataset.app === 'notes') openNotes(); else if (G && motion) G.fromTo(app, { x: -4 }, { x: 0, duration: .4, ease: 'elastic.out(1, .3)' }); }
+  });
+  el.addEventListener('pointerdown', e => e.stopPropagation());
+  addEventListener('keydown', e => { if (!on || lock.hidden) return; if (/^[0-9]$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('del'); });
+  // lay the page exactly over the phone's screen as it is drawn
+  const corners = [V3(-.034, 0, -.072), V3(.034, 0, -.072), V3(.034, 0, .072), V3(-.034, 0, .072)], v = new THREE.Vector3();
+  const place = () => {
+    let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; const w = canvas.clientWidth, h = canvas.clientHeight;
+    corners.forEach(c => { v.copy(c); phoneScreen.localToWorld(v.set(c.x, c.z, 0)).project(camera); const x = (v.x + 1) / 2 * w, y = (1 - v.y) / 2 * h; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); });
+    el.style.left = x0 + 'px'; el.style.top = y0 + 'px'; el.style.width = (x1 - x0) + 'px'; el.style.height = (y1 - y0) + 'px';
+    stage.style.transform = `scale(${((x1 - x0) / 360).toFixed(4)}, ${((y1 - y0) / 762).toFixed(4)})`;
+  };
+  return {
+    get on() { return on; },
+    place,
+    show() { on = true; tick(); code = ''; paint(); dotsBox.classList.remove('ok', 'no'); screen(phoneOpen ? home : lock); place(); el.hidden = false; roomEl.classList.add('phone-held'); if (G && motion) G.fromTo(el, { opacity: 0 }, { opacity: 1, duration: .35 }); },
+    hide() { on = false; el.hidden = true; roomEl.classList.remove('phone-held'); }
+  };
+})();
+// a few small hearts float up from the phone when it opens
+const hearts = () => {
+  if (!G || !motion) return;
+  const r = roomEl.querySelector('.phone-ui').getBoundingClientRect(), rr = roomEl.getBoundingClientRect();
+  for (let i = 0; i < 16; i++) {
+    const h = document.createElement('i'); h.className = 'r-heart'; h.textContent = '♥';
+    h.style.left = (r.left - rr.left + r.width * (.15 + Math.random() * .7)) + 'px'; h.style.top = (r.top - rr.top + r.height * (.4 + Math.random() * .4)) + 'px'; h.style.fontSize = (12 + Math.random() * 16) + 'px';
+    roomEl.appendChild(h);
+    G.fromTo(h, { y: 0, opacity: 0, rotation: (Math.random() - .5) * 30 }, { y: -180 - Math.random() * 160, x: (Math.random() - .5) * 200, opacity: 1, duration: 2.2 + Math.random(), delay: i * .06, ease: 'power1.out', onComplete: () => h.remove() });
+    G.to(h, { opacity: 0, duration: .8, delay: 1.6 + i * .06 });
+  }
 };
+// no card beside the phone: everything happens on its screen
+const phoneCard = () => { card.innerHTML = ''; };
 const choose = f => {
   chosen = f; settleFolders(); drawerCard();
   if (!f) { drawerView(); return; }
@@ -1245,6 +1298,7 @@ const frame = () => {
   renderer.render(scene, camera);
   if (firstFrame) { const f = firstFrame; firstFrame = null; f(); }
   if (!embed) placeHots();
+  if (phoneUI.on) phoneUI.place();
   if (!introRunning && qs.n < 90 && document.visibilityState === 'visible') { qs.n++; qs.sum += dt; if (qs.n === 90) tune(qs.sum / 90); }
 };
 
