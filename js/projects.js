@@ -6,7 +6,7 @@
   const P = [
     { id: 'kuwago', no: 'A-101.1', t: 'kuwaGO', kind: 'Mobile app', year: 'Sep – Oct 2026', team: 'Solo', role: 'Concept, design, pixel art, Firebase, testing', status: 'v1.0.5 · 18 testers',
       device: 'phone', tag: 'A cozy pixel-art study garden. Finish a focus session and your plant grows; give up and it wilts.', tall: true, poster: 'assets/video/kuwago-poster.jpg',
-      link: ['https://neckolescano.github.io/kuwaGO/', 'Visit the kuwaGO site'],
+      link: ['https://neckolescano.github.io/kuwaGO/', 'Explore kuwaGO'],
       stats: [[30, '', 'days from idea to tester build'], [18, '', 'real testers'], [72, '', 'automated tests'], [13, '', 'plants to unlock']],
       problem: 'Your phone keeps stealing your focus. Studying alone is easy to quit, and rereading notes feels like work but teaches little.',
       idea: 'What if studying grew a garden instead? Every focus session grows a pixel plant, giving up makes it wilt, and AI turns your own notes into quizzes and flashcards.',
