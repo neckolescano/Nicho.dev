@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "historyId": "58ff506b-585a-4dd7-8038-d5ae60cb7f8f",
+  "currentRevision": "8b8d1dd7-963c-4514-90e6-10e4d6871761",
+  "pendingChanges": false,
+  "files": {
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\58ff506b-585a-4dd7-8038-d5ae60cb7f8f\\blobs\\53\\53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "d579d50a75f18348b89c4810c7af1a98cda15e7342494a82f2807e2813d00ddc",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\58ff506b-585a-4dd7-8038-d5ae60cb7f8f\\blobs\\d5\\d579d50a75f18348b89c4810c7af1a98cda15e7342494a82f2807e2813d00ddc"
+    },
+    "meta.json": {
+      "hash": "c95936d2691b7cf5a19bfb88eb25598701ab3c08508986d6fdfa18d1a82670ea",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\58ff506b-585a-4dd7-8038-d5ae60cb7f8f\\blobs\\c9\\c95936d2691b7cf5a19bfb88eb25598701ab3c08508986d6fdfa18d1a82670ea"
+    },
+    "package.json": {
+      "hash": "b20d606bc4e662862a94123d7c155df0618c0d14343f37c096325c17658272cb",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\58ff506b-585a-4dd7-8038-d5ae60cb7f8f\\blobs\\b2\\b20d606bc4e662862a94123d7c155df0618c0d14343f37c096325c17658272cb"
+    }
+  },
+  "revisions": {
+    "8b8d1dd7-963c-4514-90e6-10e4d6871761": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1794821287272,
+      "endedAt": 1794821287274,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\58ff506b-585a-4dd7-8038-d5ae60cb7f8f\\blobs\\4d\\4d35ebf652b2d8b67dfd4b2800340619f9b2cec4752344659f4c24502c3e61b8",
+          "after": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\58ff506b-585a-4dd7-8038-d5ae60cb7f8f\\blobs\\d5\\d579d50a75f18348b89c4810c7af1a98cda15e7342494a82f2807e2813d00ddc"
+        }
+      }
+    }
+  },
+  "checks": {
+    "latest": {
+      "revision": null,
+      "id": "fab998c4-48f0-463b-9eef-5cb6c594231b"
+    },
+    "revisions": {},
+    "unversioned": [
+      {
+        "id": "fab998c4-48f0-463b-9eef-5cb6c594231b",
+        "scope": "project",
+        "report": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\.hyperframes\\artifacts\\checks\\fab998c4-48f0-463b-9eef-5cb6c594231b.json",
+        "metadata": {
+          "ok": true,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 3000,
+            "contrast": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto"
+          }
+        },
+        "createdAt": 1794821192824,
+        "contentHash": "41bc42698a83e2e613d259986840bba6d61298b926c03b35d443250347cd9436",
+        "revision": null,
+        "inputFingerprint": "da98c4b0bdc06fce4bd8cb9432fc7ef6492d988d54aaf94bf4de6d0a1bd60a67",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "f37ff77e-6c22-4dd4-b78a-4159467ef547",
+      "completedAt": 1794821353932,
+      "output": "C:\\Users\\NICHOL~1\\AppData\\Local\\Temp\\claude\\c5669e20ffc9070c\\ffd6f408-39d7-48c4-9c55-36caa51af55d\\scratchpad\\cc\\ccd.mp4",
+      "status": "completed",
+      "revision": "8b8d1dd7-963c-4514-90e6-10e4d6871761"
+    },
+    "retainedRevisions": [
+      "8b8d1dd7-963c-4514-90e6-10e4d6871761"
+    ]
+  },
+  "pendingArtifactCleanup": []
+}

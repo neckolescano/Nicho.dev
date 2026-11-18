@@ -1,0 +1,306 @@
+<!doctype html>
+<!-- xpera CRM pitch video (24.5s, 1920x1080).
+     Sections: hook (the question) -> logo -> the app in three beats -> one database per store -> outro.
+     The app screens here are redrawn for the video from the real design; they are not screen recordings. -->
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=block" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      /* xpera brand: Signal Red, Carbon, Bone */
+      :root { --red: #F43F5E; --carbon: #121212; --bone: #F4F1EA; --line: #dcd7cb; --grey: #6b675f; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--carbon); color: #fff; font-family: "Inter", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      .sora { font-family: "Sora", sans-serif; }
+      .mono { font: 500 22px "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; }
+
+      /* moving background grid, the same in every scene */
+      #bg { background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 96px 96px; }
+      #glow { position: absolute; width: 1100px; height: 1100px; border-radius: 50%; left: 1100px; top: -300px; background: radial-gradient(circle, rgba(244,63,94,.22), rgba(244,63,94,0) 62%); }
+
+      /* ---- hook ---- */
+      #hook { display: flex; flex-direction: column; justify-content: center; padding-left: 150px; }
+      .hl { font: 700 148px/1.08 "Sora", sans-serif; letter-spacing: -.035em; overflow: hidden; padding-bottom: 10px; }
+      .hl span { display: inline-block; margin-right: .22em; }
+      .hl .r { color: var(--red); position: relative; }
+      .hl .r i { position: absolute; left: 0; right: 0; bottom: 2px; height: 10px; background: var(--red); transform-origin: left; }
+
+      /* ---- logo ---- */
+      #logo, #outro { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; }
+      .mark { width: 230px; height: 230px; overflow: visible; }
+      .word { font: 600 150px/1 "Sora", sans-serif; letter-spacing: -.04em; }
+      .word span { display: inline-block; }
+      .tag { font: 400 44px "Sora", sans-serif; color: #cfcac0; }
+      .tag b { color: var(--red); font-weight: 600; }
+
+      /* ---- app scene ---- */
+      #cap { position: absolute; left: 130px; top: 300px; width: 560px; }
+      #cap .mono { color: var(--red); position: absolute; left: 0; top: 0; }
+      .capline { position: absolute; left: 0; top: 70px; width: 600px; font: 700 96px/1.02 "Sora", sans-serif; letter-spacing: -.035em; }
+      .capline small { display: block; font: 400 32px/1.35 "Inter", sans-serif; letter-spacing: 0; color: #bdb8ad; margin-top: 26px; }
+      #stage { position: absolute; left: 760px; top: 190px; width: 1060px; height: 700px; perspective: 2200px; }
+      #win { width: 100%; height: 100%; background: var(--bone); color: var(--carbon); border-radius: 22px; overflow: hidden; display: grid; grid-template-columns: 236px 1fr; box-shadow: 0 60px 120px rgba(0,0,0,.55); transform-origin: 50% 50%; }
+      #side { background: var(--carbon); color: #fff; padding: 34px 24px; display: flex; flex-direction: column; gap: 12px; }
+      #side .brand { display: flex; align-items: center; gap: 12px; font: 600 34px "Sora", sans-serif; margin-bottom: 30px; }
+      #side .brand svg { width: 34px; height: 34px; overflow: visible; }
+      .nav { height: 48px; border-radius: 12px; display: flex; align-items: center; padding: 0 16px 0 24px; font: 500 19px "Inter", sans-serif; color: #a9a59c; position: relative; }
+      .nav.on { background: #242424; color: #fff; }
+      .nav.on::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px; border-radius: 4px; background: var(--red); }
+      #navhi { position: absolute; left: 24px; width: 188px; height: 48px; border-radius: 12px; background: #242424; top: 0; }
+      #navhi::before { content: ""; position: absolute; left: 0; top: 12px; bottom: 12px; width: 4px; border-radius: 4px; background: var(--red); }
+      #navs { position: relative; display: flex; flex-direction: column; gap: 12px; }
+      #navs .nav { z-index: 1; }
+      #main { position: relative; }
+      .scr { position: absolute; inset: 0; padding: 40px 44px; }
+      .scr h3 { font: 600 38px "Sora", sans-serif; letter-spacing: -.02em; margin-bottom: 26px; }
+      .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 26px; }
+      .tile { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 18px 22px; }
+      .tile span { font: 500 17px "Inter", sans-serif; color: var(--grey); }
+      .tile b { display: block; font: 700 46px "Sora", sans-serif; letter-spacing: -.02em; }
+      .card { background: #fff; border: 1px solid var(--line); border-radius: 16px; }
+      .row { display: grid; grid-template-columns: 56px 1.5fr 1fr 1fr 130px; align-items: center; height: 74px; padding: 0 22px; border-bottom: 1px solid #eee9de; font: 500 20px "Inter", sans-serif; }
+      .row:last-child { border: 0; }
+      .av { width: 42px; height: 42px; border-radius: 50%; background: var(--carbon); color: #fff; display: grid; place-items: center; font: 600 16px "Inter", sans-serif; }
+      .row em { font-style: normal; color: var(--grey); }
+      .pill { justify-self: end; border-radius: 99px; padding: 6px 16px; font: 600 15px "Inter", sans-serif; background: #f1ede4; }
+      .pill.red { background: var(--red); color: #fff; }
+
+      .sale { display: grid; grid-template-columns: 1.25fr 1fr; gap: 22px; }
+      .cust { padding: 30px 22px; display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+      .cust .av { width: 58px; height: 58px; font-size: 20px; }
+      .cust b { font: 600 24px "Sora", sans-serif; display: block; } .cust span { color: var(--grey); font-size: 17px; }
+      .item { display: flex; justify-content: space-between; align-items: center; height: 84px; padding: 0 22px; border-bottom: 1px solid #eee9de; font: 500 20px "Inter", sans-serif; }
+      .item b { font-weight: 600; }
+      .pay { padding: 30px; display: flex; flex-direction: column; gap: 16px; min-height: 420px; }
+      .pay span { color: var(--grey); font-size: 18px; }
+      .pay .total { font: 700 54px "Sora", sans-serif; letter-spacing: -.03em; }
+      .btn { margin-top: auto; height: 68px; border-radius: 16px; background: var(--red); color: #fff; display: grid; place-items: center; font: 600 22px "Inter", sans-serif; }
+      .toast { position: absolute; right: 44px; top: 40px; background: var(--carbon); color: #fff; border-radius: 14px; padding: 16px 22px; font: 500 19px "Inter", sans-serif; }
+      .toast b { color: var(--red); }
+
+      .bal { padding: 34px; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; }
+      .bal span { color: var(--grey); font-size: 20px; }
+      .bal .amt { font: 700 92px/1 "Sora", sans-serif; letter-spacing: -.03em; color: var(--red); }
+      .meter { height: 16px; border-radius: 99px; background: #eee9de; overflow: hidden; margin: 0 34px 30px; }
+      .meter i { display: block; height: 100%; width: 100%; background: var(--red); transform-origin: left; }
+      .hist .item em { font-style: normal; color: var(--grey); }
+      .roll { position: relative; height: 1.1em; overflow: hidden; }
+      .roll span, .pay .roll span, .bal .roll span { position: absolute; left: 0; top: 0; white-space: nowrap; font: inherit; color: inherit; }
+      .tagbox { position: relative; width: 170px; height: 36px; }
+      .tagbox .pill { position: absolute; right: 0; top: 0; white-space: nowrap; }
+      #cursor { position: absolute; left: 0; top: 0; width: 34px; height: 34px; z-index: 9; }
+
+      /* ---- tenants ---- */
+      #ten h2 { position: absolute; left: 150px; top: 120px; font: 700 96px/1.04 "Sora", sans-serif; letter-spacing: -.035em; }
+      #ten h2 b { color: var(--red); }
+      #ten svg { position: absolute; inset: 0; width: 1920px; height: 1080px; }
+      #ten svg path { fill: none; stroke: var(--red); stroke-width: 3; stroke-dasharray: 1; stroke-dashoffset: 1; }
+      .master { position: absolute; left: 1360px; top: 150px; width: 380px; padding: 26px 30px; border-radius: 20px; background: var(--red); }
+      .master b { font: 600 34px "Sora", sans-serif; display: block; } .master span { font-size: 21px; opacity: .9; }
+      .store { position: absolute; top: 620px; width: 500px; padding: 30px 32px; border-radius: 20px; background: var(--bone); color: var(--carbon); }
+      .store .mono { color: var(--red); font-size: 19px; }
+      .store b { font: 600 44px "Sora", sans-serif; letter-spacing: -.02em; display: block; margin: 10px 0 6px; }
+      .store span { font-size: 22px; color: var(--grey); }
+      .store u { position: absolute; right: 26px; top: 26px; text-decoration: none; border: 2px solid var(--carbon); border-radius: 99px; padding: 5px 14px; font: 600 16px "Inter", sans-serif; }
+
+      /* ---- outro ---- */
+      #outro .credit { font: 500 26px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: #a9a59c; margin-top: 26px; }
+      #outro .stack { display: flex; gap: 12px; }
+      #outro .stack span { border: 1.5px solid #4a4741; border-radius: 99px; padding: 10px 22px; font: 500 22px "Inter", sans-serif; color: #e8e4da; }
+      #bar { position: absolute; left: 0; bottom: 0; height: 8px; width: 1920px; background: var(--red); transform-origin: left; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.5" data-width="1920" data-height="1080">
+
+      <div id="bg" class="clip" data-start="0" data-duration="24.5" data-track-index="0"><div id="glow"></div></div>
+
+      <!-- 0 - 3.4  the question -->
+      <div id="hook" class="clip" data-start="0" data-duration="3.5" data-track-index="1">
+        <div class="hl"><span>What</span><span>if</span><span>your</span><span>store</span></div>
+        <div class="hl"><span>could</span><span class="r">remember<i></i></span></div>
+        <div class="hl"><span>every</span><span>customer?</span></div>
+      </div>
+
+      <!-- 3.3 - 5.9  the logo -->
+      <div id="logo" class="clip" data-start="3.3" data-duration="2.7" data-track-index="2">
+        <svg class="mark" viewBox="-100 -100 200 200">
+          <path class="bl" d="M0 0 L-62 -62" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
+          <path class="bl" d="M0 0 L-62 62" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
+          <path class="bl" d="M0 0 L62 62" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
+          <path class="bl rd" d="M0 0 L88 -88" stroke="#F43F5E" stroke-width="15" stroke-linecap="round"/>
+        </svg>
+        <div class="word"><span>x</span><span>p</span><span>e</span><span>r</span><span>a</span></div>
+        <div class="tag">XP + era. <b>Level up every customer.</b></div>
+      </div>
+
+      <!-- 5.8 - 18.3  the app -->
+      <div id="app" class="clip" data-start="5.8" data-duration="12.6" data-track-index="3">
+        <div id="cap">
+          <div class="mono kn" id="k1">01 / Customers</div><div class="mono kn" id="k2">02 / Sales</div><div class="mono kn" id="k3">03 / Payments</div>
+          <div class="capline" id="c1">Know who they are.<small>Every customer of the store in one list, with their history.</small></div>
+          <div class="capline" id="c2">Know what they buy.<small>A simple checkout that starts with the customer, not the cart.</small></div>
+          <div class="capline" id="c3">Know what they owe.<small>Credit sales, payments and balances, always up to date.</small></div>
+        </div>
+        <div id="stage"><div id="win">
+          <div id="side">
+            <div class="brand"><svg viewBox="-100 -100 200 200"><path d="M0 0 L-62 -62M0 0 L-62 62M0 0 L62 62" stroke="#fff" stroke-width="30" stroke-linecap="round"/><path d="M0 0 L88 -88" stroke="#F43F5E" stroke-width="18" stroke-linecap="round"/></svg>xpera</div>
+            <div id="navs"><div id="navhi"></div><div class="nav">Customers</div><div class="nav">Sales</div><div class="nav">Payments</div><div class="nav">Inquiries</div><div class="nav">Feedback</div></div>
+          </div>
+          <div id="main">
+            <div class="scr" id="sA">
+              <h3>Customers</h3>
+              <div class="tiles"><div class="tile"><span>Customers</span><b id="nCust">0</b></div><div class="tile"><span>Sales</span><b id="nSale">0</b></div><div class="tile"><span>Payments</span><b id="nPay">0</b></div></div>
+              <div class="card">
+                <div class="row"><div class="av">JD</div><b>Juan Dela Cruz</b><em>2 days ago</em><span>₱84,500</span><span class="pill">Regular</span></div>
+                <div class="row"><div class="av">MS</div><b>Maria Santos</b><em>Last week</em><span>₱41,200</span><span class="pill red">Has balance</span></div>
+                <div class="row"><div class="av">RA</div><b>Rico Abad</b><em>Yesterday</em><span>₱27,900</span><span class="pill">Regular</span></div>
+                <div class="row"><div class="av">LT</div><b>Liza Tan</b><em>3 weeks ago</em><span>₱12,650</span><span class="pill">New</span></div>
+                <div class="row"><div class="av">KV</div><b>Ken Villar</b><em>Today</em><span>₱9,300</span><span class="pill">New</span></div>
+              </div>
+            </div>
+
+            <div class="scr" id="sB">
+              <h3>New sale</h3>
+              <div class="sale">
+                <div>
+                  <div class="card cust"><div class="av">MS</div><div><b>Maria Santos</b><span>Returning customer · 6 visits</span></div></div>
+                  <div class="card">
+                    <div class="item it"><span>RTX 4060 graphics card</span><b>₱18,500</b></div>
+                    <div class="item it"><span>16GB DDR5 memory</span><b>₱3,200</b></div>
+                    <div class="item it" style="border:0"><span>650W power supply</span><b>₱2,900</b></div>
+                  </div>
+                </div>
+                <div class="card pay"><span>Total</span><div class="total roll"><span id="t0">₱0</span><span id="t1">₱18,500</span><span id="t2">₱21,700</span><span id="t3">₱24,600</span></div><span>Cash · OR-000480</span><div class="btn" id="save">Save sale</div></div>
+              </div>
+              <div class="toast" id="toast">Sale saved · <b>OR-000480</b></div>
+            </div>
+
+            <div class="scr" id="sC">
+              <h3>Payments</h3>
+              <div class="card">
+                <div class="bal"><div><span>Maria Santos · balance</span><div class="amt roll"><span id="b0">₱6,400</span><span id="b1">₱3,000</span><span id="b2" style="color:#121212">₱0</span></div></div><span class="tagbox"><span class="pill red" id="tagA">Has balance</span><span class="pill" id="tagB">Settled</span></span></div>
+                <div class="meter"><i id="meter"></i></div>
+              </div>
+              <div class="card hist" style="margin-top:20px">
+                <div class="item ph"><span>Payment received</span><em>Today</em><b>₱3,400</b></div>
+                <div class="item ph" style="border:0"><span>Payment received</span><em>Today</em><b>₱3,000</b></div>
+              </div>
+            </div>
+          </div>
+          <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15.500 L12.500 22 L15 20.800 L11.600 14.400 L18 14.400 Z" fill="#121212" stroke="#fff" stroke-width="1.5"/></svg>
+        </div></div>
+      </div>
+
+      <!-- 18.2 - 21.6  one database per store -->
+      <div id="ten" class="clip" data-start="18.2" data-duration="3.5" data-track-index="4">
+        <h2>Every store gets<br>its <b>own database.</b></h2>
+        <svg viewBox="0 0 1920 1080"><path pathLength="1" d="M1550 290 C 1550 460, 400 430, 400 620"/><path pathLength="1" d="M1550 290 C 1550 480, 960 470, 960 620"/><path pathLength="1" d="M1550 290 C 1550 480, 1520 520, 1520 620"/></svg>
+        <div class="master"><b>Master</b><span>Plans · subscriptions · insights</span></div>
+        <div class="store" style="left:150px"><div class="mono">PIXEL01</div><b>PixelZone</b><span>Local + cloud backup</span><u>Plan A</u></div>
+        <div class="store" style="left:710px"><div class="mono">ARCADE01</div><b>Arcade Supply</b><span>Local + cloud backup</span><u>Plan B</u></div>
+        <div class="store" style="left:1270px"><div class="mono">HUB01</div><b>Gaming Hub</b><span>Local + cloud backup</span><u>Plan C</u></div>
+      </div>
+
+      <!-- 21.5 - 24.5  outro -->
+      <div id="outro" class="clip" data-start="21.5" data-duration="3" data-track-index="5">
+        <svg class="mark" viewBox="-100 -100 200 200" style="width:150px;height:150px"><path d="M0 0 L-62 -62M0 0 L-62 62M0 0 L62 62" stroke="#fff" stroke-width="26" stroke-linecap="round"/><path d="M0 0 L88 -88" stroke="#F43F5E" stroke-width="15" stroke-linecap="round"/></svg>
+        <div class="word" style="font-size:120px">xpera CRM</div>
+        <div class="stack"><span>C#</span><span>.NET</span><span>SQL Server</span><span>EF Core</span><span>ASP.NET API</span></div>
+        <div class="credit">Designed and built by Nicho Lescano</div>
+      </div>
+
+      <div id="bar" class="clip" data-start="0" data-duration="24.5" data-track-index="6" style="top:auto"></div>
+    </div>
+
+    <script>
+      // numbers roll like an odometer: the old value slides up and out, the new one slides in (no callbacks, so any frame can be drawn on its own)
+      const roll = (tl, from, to, at) => {
+        tl.to(from, { yPercent: -110, opacity: 0, duration: .35, ease: 'power2.in' }, at);
+        tl.fromTo(to, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .4, ease: 'power3.out' }, at + .12);
+      };
+      const count = (tl, id, to, at, dur) => tl.to('#' + id, { textContent: to, duration: dur, ease: 'power2.out', snap: { textContent: 1 } }, at);
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+      /* background drifts through the whole film */
+      tl.fromTo('#bg', { backgroundPosition: '0px 0px' }, { backgroundPosition: '-192px -96px', duration: 24.5, ease: 'none' }, 0);
+      tl.fromTo('#glow', { x: 0, y: 0 }, { x: -700, y: 420, duration: 24.5, ease: 'sine.inOut' }, 0);
+      tl.fromTo('#bar', { scaleX: 0 }, { scaleX: 1, duration: 24.5, ease: 'none' }, 0);
+
+      /* hook */
+      tl.from('#hook .hl span', { yPercent: 115, duration: .7, stagger: .09 }, .15);
+      tl.from('#hook .r i', { scaleX: 0, duration: .5, ease: 'power2.inOut' }, 1.25);
+      tl.to('#hook .r', { scale: 1.06, duration: .25, yoyo: true, repeat: 1, ease: 'power1.inOut' }, 1.3);
+      tl.to('#hook .hl', { yPercent: -130, opacity: 0, duration: .5, stagger: .06, ease: 'power3.in' }, 2.85);
+
+      /* logo */
+      tl.from('#logo .bl', { scale: 0, rotation: -120, transformOrigin: '0px 0px', svgOrigin: '0 0', duration: .7, stagger: .08, ease: 'back.out(1.6)' }, 3.4);
+      tl.from('#logo .word span', { yPercent: 60, opacity: 0, duration: .5, stagger: .05 }, 3.85);
+      tl.from('#logo .tag', { y: 30, opacity: 0, duration: .4 }, 3.95);
+      tl.to('#logo', { scale: .9, opacity: 0, duration: .3, ease: 'power2.in' }, 5.65);
+
+      /* app: window swings in, three beats */
+      gsap.set(['#c2', '#c3', '#sB', '#sC', '#toast', '#k2', '#k3', '#t1', '#t2', '#t3', '#b1', '#b2', '#tagB'], { opacity: 0 });
+      tl.from('#k1', { x: -40, opacity: 0, duration: .5 }, 5.9);
+      tl.from('#c1', { y: 60, opacity: 0, duration: .6 }, 6);
+      tl.fromTo('#win', { rotationY: -38, rotationX: 14, y: 260, opacity: 0 }, { rotationY: -11, rotationX: 4, y: 0, opacity: 1, duration: 1.1 }, 5.9);
+      tl.to('#win', { rotationY: -5, rotationX: 2, duration: 11, ease: 'sine.inOut' }, 7);
+      tl.from('#sA .tile', { y: 30, opacity: 0, duration: .45, stagger: .08 }, 6.5);
+      count(tl, 'nCust', 40, 6.6, .9); count(tl, 'nSale', 210, 6.7, .9); count(tl, 'nPay', 53, 6.8, .9);
+      tl.from('#sA .row', { x: 60, opacity: 0, duration: .45, stagger: .09 }, 6.9);
+      tl.fromTo('#cursor', { x: 900, y: 700, opacity: 0 }, { x: 560, y: 345, opacity: 1, duration: .9, ease: 'power2.inOut' }, 8.3);
+      tl.to('#sA .row:nth-child(2)', { backgroundColor: '#f6f2e9', duration: .2 }, 9.1);
+      tl.to('#cursor', { scale: .82, duration: .1, yoyo: true, repeat: 1 }, 9.35);
+
+      // beat 2: sales
+      tl.to('#navhi', { y: 60, duration: .45, ease: 'power3.inOut' }, 9.6);
+      tl.to('#sA', { x: -80, opacity: 0, duration: .4, ease: 'power2.in' }, 9.6);
+      tl.fromTo('#sB', { x: 90, opacity: 0 }, { x: 0, opacity: 1, duration: .5 }, 9.95);
+      tl.to('#c1', { y: -50, opacity: 0, duration: .35, ease: 'power2.in' }, 9.6);
+      tl.fromTo('#c2', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: .55 }, 9.95);
+      tl.to('#k1', { opacity: 0, duration: .25 }, 9.7); tl.to('#k2', { opacity: 1, duration: .3 }, 9.95);
+      tl.from('#sB .it', { x: 50, opacity: 0, duration: .4, stagger: .45 }, 10.4);
+      roll(tl, '#t0', '#t1', 10.45); roll(tl, '#t1', '#t2', 10.9); roll(tl, '#t2', '#t3', 11.35);
+      tl.to('#cursor', { x: 890, y: 560, duration: .8, ease: 'power2.inOut' }, 11.6);
+      tl.to('#cursor', { scale: .82, duration: .1, yoyo: true, repeat: 1 }, 12.45);
+      tl.to('#save', { scale: .96, duration: .1, yoyo: true, repeat: 1 }, 12.45);
+      tl.fromTo('#toast', { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: 'back.out(1.7)' }, 12.65);
+
+      // beat 3: payments
+      tl.to('#navhi', { y: 120, duration: .45, ease: 'power3.inOut' }, 13.8);
+      tl.to('#sB', { x: -80, opacity: 0, duration: .4, ease: 'power2.in' }, 13.8);
+      tl.fromTo('#sC', { x: 90, opacity: 0 }, { x: 0, opacity: 1, duration: .5 }, 14.15);
+      tl.to('#c2', { y: -50, opacity: 0, duration: .35, ease: 'power2.in' }, 13.8);
+      tl.fromTo('#c3', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: .55 }, 14.15);
+      tl.to('#k2', { opacity: 0, duration: .25 }, 13.9); tl.to('#k3', { opacity: 1, duration: .3 }, 14.15);
+      tl.to('#cursor', { x: 700, y: 620, opacity: 0, duration: .6 }, 13.9);
+      tl.from('#sC .ph', { y: 30, opacity: 0, duration: .4, stagger: .7 }, 14.9);
+      roll(tl, '#b0', '#b1', 14.95); roll(tl, '#b1', '#b2', 15.65);
+      tl.to('#meter', { scaleX: .47, duration: .6, ease: 'power2.out' }, 14.95);
+      tl.to('#meter', { scaleX: 0, duration: .6, ease: 'power2.out' }, 15.65);
+      tl.to('#tagA', { opacity: 0, duration: .2 }, 16.2);
+      tl.fromTo('#tagB', { scale: 1.5, opacity: 0 }, { scale: 1, opacity: 1, duration: .4, ease: 'back.out(2)' }, 16.25);
+      tl.to('#app', { opacity: 0, scale: .96, duration: .45, ease: 'power2.in' }, 17.85);
+
+      /* tenants */
+      tl.from('#ten h2', { y: 70, opacity: 0, duration: .6 }, 18.3);
+      tl.from('.master', { scale: .6, opacity: 0, duration: .5, ease: 'back.out(1.7)' }, 18.6);
+      tl.to('#ten svg path', { strokeDashoffset: 0, duration: .7, stagger: .12, ease: 'power2.inOut' }, 18.9);
+      tl.from('.store', { y: 120, opacity: 0, duration: .6, stagger: .12 }, 19.1);
+      tl.to('#ten', { opacity: 0, y: -40, duration: .4, ease: 'power2.in' }, 21.2);
+
+      /* outro */
+      tl.from('#outro .mark', { scale: 0, rotation: -90, duration: .7, ease: 'back.out(1.6)' }, 21.6);
+      tl.from('#outro .word', { y: 50, opacity: 0, duration: .55 }, 21.85);
+      tl.from('#outro .stack span', { y: 30, opacity: 0, duration: .4, stagger: .06 }, 22.2);
+      tl.from('#outro .credit', { opacity: 0, duration: .4 }, 22.3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines['main'] = tl;
+    </script>
+  </body>
+</html>

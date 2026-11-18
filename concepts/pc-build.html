@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Concept A — The PC Build</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --paper: #F4F1EA; --paper-2: #FBF9F4; --ink: #121212; --blue: #2447D6; --soft: rgba(36,71,214,.12); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body { background: var(--paper); color: var(--ink); font: 400 15px/1.5 "Inter", sans-serif;
+    background-image: linear-gradient(var(--soft) 1px, transparent 1px), linear-gradient(90deg, var(--soft) 1px, transparent 1px); background-size: 96px 96px; }
+  .mono { font: 500 11px/1.5 "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+  .serif { font-family: "Instrument Serif", serif; font-weight: 400; }
+  header, footer { position: fixed; left: 28px; right: 28px; display: flex; justify-content: space-between; align-items: baseline; z-index: 5; }
+  header { top: 20px; } footer { bottom: 20px; color: var(--blue); }
+  header .serif { font-size: 24px; }
+  header a { color: var(--blue); text-decoration: none; }
+  .hint { position: fixed; left: 0; right: 0; top: 64px; text-align: center; color: var(--blue); z-index: 5; }
+
+  .stage { position: fixed; inset: 0; overflow: hidden; }
+  .scene { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: scale(var(--s, 1)); }
+  .scene > svg { position: absolute; left: -500px; top: -340px; width: 1000px; height: 680px; overflow: visible; pointer-events: none; }
+  .case { fill: none; stroke: var(--ink); stroke-width: 1.5; }
+  .slot { fill: none; stroke: var(--blue); stroke-width: 1; stroke-dasharray: 4 4; opacity: .55; }
+  .cable { stroke: var(--blue); stroke-width: 1; stroke-dasharray: 2 5; opacity: .5; }
+  .led { fill: var(--paper); stroke: var(--ink); stroke-width: 1.5; transition: fill .6s; }
+  .ready .led { fill: var(--blue); }
+
+  .part { position: absolute; left: 0; top: 0; background: none; border: 0; cursor: pointer; color: var(--blue); will-change: transform; }
+  .part svg { display: block; overflow: visible; }
+  .part svg * { fill: var(--paper); stroke: currentColor; stroke-width: 1.4; vector-effect: non-scaling-stroke; transition: fill .5s, stroke .5s; }
+  .part.in { color: var(--ink); }
+  .part.in svg * { fill: var(--paper-2); }
+  .tag { position: absolute; left: 50%; top: 100%; transform: translate(-50%, 6px); white-space: nowrap; text-align: center; color: var(--ink); pointer-events: none; opacity: 0; transition: opacity .25s, transform .25s; }
+  .tag b { display: block; font: 400 26px/1 "Instrument Serif", serif; letter-spacing: 0; text-transform: none; }
+  .tag span { color: var(--blue); }
+  .part:hover .tag, .part:focus-visible .tag { opacity: 1; transform: translate(-50%, 12px); }
+  .part.in .tag { display: none; }
+  .part:focus-visible { outline: 1px dashed var(--blue); outline-offset: 6px; }
+
+  .wipe { position: fixed; inset: 0; z-index: 20; background: var(--ink); color: var(--paper); display: grid; place-content: center; text-align: center; gap: 14px;
+    clip-path: circle(0 at var(--cx, 50%) var(--cy, 50%)); transition: clip-path .9s cubic-bezier(.76,0,.24,1); }
+  .wipe.on { clip-path: circle(150% at var(--cx, 50%) var(--cy, 50%)); }
+  .wipe h1 { font: 400 clamp(4rem, 14vw, 11rem)/.9 "Instrument Serif", serif; letter-spacing: -.03em; }
+  .wipe p { color: #b9b5aa; max-width: 40ch; margin: 0 auto; }
+  .wipe .mono { color: #8ea2ff; }
+  .wipe button { justify-self: center; margin-top: 14px; background: none; color: var(--paper); border: 1px solid var(--paper); border-radius: 999px; padding: 12px 22px; font: 500 14px "Inter", sans-serif; cursor: pointer; }
+  .wipe button:hover { background: var(--paper); color: var(--ink); }
+</style>
+</head>
+<body>
+<header><span class="serif">Nicho.dev</span><a class="mono" href="desk.html">See concept B: Drafting Desk →</a></header>
+<p class="hint mono" id="hint">Move your mouse. Pick a part to install it.</p>
+
+<div class="stage"><div class="scene" id="scene">
+  <svg viewBox="0 0 1000 680">
+    <g id="cables"></g>
+    <rect class="case" x="350" y="130" width="300" height="420" rx="10"/>
+    <rect class="case" x="366" y="146" width="268" height="388" rx="4"/>
+    <line class="case" x1="380" y1="550" x2="380" y2="562"/><line class="case" x1="620" y1="550" x2="620" y2="562"/>
+    <circle class="led" cx="388" cy="166" r="5"/>
+    <g id="slots"></g>
+  </svg>
+</div></div>
+
+<footer class="mono"><span id="count">0 / 5 installed</span><span>Concept A — The PC Build</span></footer>
+
+<div class="wipe" id="wipe" aria-hidden="true">
+  <p class="mono" id="wipePart"></p>
+  <h1 id="wipeTitle"></h1>
+  <p>In the real site, this is where the page opens. The part stays installed when you come back.</p>
+  <button id="back">← Back to the build</button>
+</div>
+
+<script>
+const PARTS = [
+  { id: 'mb',  name: 'Motherboard',   page: 'Skills',         spec: '6 toolsets on board', w: 210, h: 250, home: [-330, -30], slot: [-18, 28],  depth: 26,
+    svg: '<rect x="1" y="1" width="208" height="248" rx="4"/><rect x="24" y="24" width="64" height="64"/><rect x="40" y="40" width="32" height="32"/><rect x="118" y="20" width="14" height="96"/><rect x="140" y="20" width="14" height="96"/><rect x="24" y="130" width="160" height="12"/><rect x="24" y="162" width="160" height="12"/><circle cx="170" cy="216" r="14"/><rect x="24" y="200" width="60" height="30"/>' },
+  { id: 'gpu', name: 'Graphics card', page: 'Projects',       spec: '3 builds rendered',   w: 220, h: 78,  home: [330, -150], slot: [-18, 96],  depth: 52,
+    svg: '<rect x="1" y="1" width="218" height="76" rx="6"/><circle cx="58" cy="39" r="26"/><circle cx="58" cy="39" r="6"/><circle cx="160" cy="39" r="26"/><circle cx="160" cy="39" r="6"/>' },
+  { id: 'ram', name: 'Memory',        page: 'Certifications', spec: '3 sticks, certified', w: 56,  h: 120, home: [320, 110],  slot: [36, -70],  depth: 40,
+    svg: '<rect x="1" y="1" width="14" height="118"/><rect x="21" y="1" width="14" height="118"/><rect x="41" y="1" width="14" height="118"/><line x1="1" y1="20" x2="15" y2="20"/><line x1="21" y1="20" x2="35" y2="20"/><line x1="41" y1="20" x2="55" y2="20"/>' },
+  { id: 'ssd', name: 'Storage',       page: 'About',          spec: '22 years of data',    w: 96,  h: 60,  home: [-300, 220], slot: [-70, 150], depth: 60,
+    svg: '<rect x="1" y="1" width="94" height="58" rx="5"/><rect x="14" y="14" width="40" height="8"/><circle cx="78" cy="42" r="5"/>' },
+  { id: 'pwr', name: 'Power button',  page: 'Contact',        spec: 'Press to say hello',  w: 60,  h: 60,  home: [-250, -250], slot: [86, -168], depth: 34,
+    svg: '<circle cx="30" cy="30" r="28"/><path d="M30 14 v16"/><path d="M19 22 a15 15 0 1 0 22 0" style="fill:none"/>' }
+];
+
+const scene = document.getElementById('scene'), cables = document.getElementById('cables'), slots = document.getElementById('slots');
+const NS = 'http://www.w3.org/2000/svg', CX = 500, CY = 340;
+let mouse = { x: 0, y: 0 }, scale = 1, opened = null;
+
+PARTS.forEach((p, i) => {
+  const b = document.createElement('button');
+  b.className = 'part'; b.setAttribute('aria-label', `${p.name}: opens ${p.page}`);
+  b.style.width = p.w + 'px'; b.style.height = p.h + 'px';
+  b.innerHTML = `<svg width="${p.w}" height="${p.h}" viewBox="0 0 ${p.w} ${p.h}">${p.svg}</svg><span class="tag mono"><b>${p.page}</b>${p.name}<br><span>${p.spec}</span></span>`;
+  scene.append(b);
+  const r = document.createElementNS(NS, 'rect');
+  r.setAttribute('class', 'slot'); r.setAttribute('x', CX + p.slot[0] - p.w / 2); r.setAttribute('y', CY + p.slot[1] - p.h / 2);
+  r.setAttribute('width', p.w); r.setAttribute('height', p.h); r.setAttribute('rx', 4); slots.append(r);
+  const l = document.createElementNS(NS, 'line'); l.setAttribute('class', 'cable'); cables.append(l);
+  Object.assign(p, { el: b, slotEl: r, cable: l, x: p.home[0] * 1.6, y: p.home[1] * 1.6, sc: 1, hover: false, installed: false, phase: i * 1.7 });
+  b.addEventListener('pointerenter', () => p.hover = true);
+  b.addEventListener('pointerleave', () => p.hover = false);
+  b.addEventListener('click', () => open(p));
+});
+
+function fit() { scale = Math.min(innerWidth / 1040, innerHeight / 760, 1.25); scene.style.setProperty('--s', scale); }
+addEventListener('resize', fit); fit();
+addEventListener('pointermove', e => { mouse.x = e.clientX / innerWidth - .5; mouse.y = e.clientY / innerHeight - .5; });
+
+function frame(t) {
+  PARTS.forEach(p => {
+    let tx, ty;
+    if (p.installed) { tx = p.slot[0]; ty = p.slot[1]; }
+    else {
+      const pull = p.hover ? 0.12 : 0;
+      tx = p.home[0] * (1 - pull) - mouse.x * p.depth * 2 + Math.sin(t / 1400 + p.phase) * 5;
+      ty = p.home[1] * (1 - pull) - mouse.y * p.depth * 2 + Math.cos(t / 1700 + p.phase) * 7;
+    }
+    const k = p.installed ? 0.12 : 0.07;
+    p.x += (tx - p.x) * k; p.y += (ty - p.y) * k;
+    p.sc += ((p.hover && !p.installed ? 1.08 : 1) - p.sc) * 0.15;
+    const rot = p.installed ? 0 : (p.x - tx) * 0.05;
+    p.el.style.transform = `translate(${p.x - p.w / 2}px, ${p.y - p.h / 2}px) rotate(${rot.toFixed(2)}deg) scale(${p.sc.toFixed(3)})`;
+    p.cable.setAttribute('x1', CX + p.x); p.cable.setAttribute('y1', CY + p.y);
+    p.cable.setAttribute('x2', CX + p.slot[0]); p.cable.setAttribute('y2', CY + p.slot[1]);
+    p.cable.style.opacity = p.installed ? 0 : (p.hover ? 1 : .35);
+    p.slotEl.style.opacity = p.installed ? 0 : (p.hover ? 1 : .45);
+  });
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+const wipe = document.getElementById('wipe');
+function open(p) {
+  p.installed = true; p.hover = false; p.el.classList.add('in'); opened = p;
+  const n = PARTS.filter(q => q.installed).length;
+  document.getElementById('count').textContent = `${n} / 5 installed`;
+  setTimeout(() => {
+    const r = p.el.getBoundingClientRect();
+    wipe.style.setProperty('--cx', (r.left + r.width / 2) + 'px'); wipe.style.setProperty('--cy', (r.top + r.height / 2) + 'px');
+    document.getElementById('wipePart').textContent = `${p.name} installed`;
+    document.getElementById('wipeTitle').textContent = p.page;
+    wipe.classList.add('on'); wipe.setAttribute('aria-hidden', 'false');
+  }, 650);
+}
+document.getElementById('back').addEventListener('click', () => {
+  wipe.classList.remove('on'); wipe.setAttribute('aria-hidden', 'true');
+  if (PARTS.every(q => q.installed)) { scene.classList.add('ready'); document.getElementById('hint').textContent = 'All parts installed. System ready.'; }
+  if (opened) opened.el.focus();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "historyId": "676d4abe-3448-41f7-8a91-c9a5e8cd0f86",
+  "currentRevision": "e8182f3f-0586-436e-863f-2cc0c441a10b",
+  "pendingChanges": false,
+  "files": {
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\53\\53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "a24e15e34808d7a6d2cce019377b4a6ffe3bd73955540122c0f4ce43c16abb53",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\a2\\a24e15e34808d7a6d2cce019377b4a6ffe3bd73955540122c0f4ce43c16abb53"
+    },
+    "meta.json": {
+      "hash": "21b1be87bb233c9ebaf6786a5bb97e139951d48f470d7f6614cd488ed0402724",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\21\\21b1be87bb233c9ebaf6786a5bb97e139951d48f470d7f6614cd488ed0402724"
+    },
+    "package.json": {
+      "hash": "d0837fc0c682abc41d7c4e63514fe4a062ff25c2aa9920529668adb1d91e739c",
+      "content": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\d0\\d0837fc0c682abc41d7c4e63514fe4a062ff25c2aa9920529668adb1d91e739c"
+    }
+  },
+  "revisions": {
+    "8449bfee-1dbb-4f50-9f24-afccfa4b45c4": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1794820638944,
+      "endedAt": 1794820638949,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\67\\67d741b229292b6ee897ef4240eaf4a66a6032e9cf01c81838dc5a5196e9c49a",
+          "after": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\f5\\f55a655e6732524cbc9a3c8fb8b92d30113dedbc465fdaa5af5141ba5ba88746"
+        }
+      }
+    },
+    "fed38463-e4fc-4bad-9406-5b1d8cc1ca90": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1794820757218,
+      "endedAt": 1794820757220,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\f5\\f55a655e6732524cbc9a3c8fb8b92d30113dedbc465fdaa5af5141ba5ba88746",
+          "after": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\c8\\c87d2bdc5be1ff36eda85e910c6cb27845468e9c3fac7869c7bcd1f76bb98879"
+        }
+      }
+    },
+    "e8182f3f-0586-436e-863f-2cc0c441a10b": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1794820827395,
+      "endedAt": 1794820827397,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\c8\\c87d2bdc5be1ff36eda85e910c6cb27845468e9c3fac7869c7bcd1f76bb98879",
+          "after": "C:\\Users\\Nicho Lescano\\.cache\\hyperframes\\history\\676d4abe-3448-41f7-8a91-c9a5e8cd0f86\\blobs\\a2\\a24e15e34808d7a6d2cce019377b4a6ffe3bd73955540122c0f4ce43c16abb53"
+        }
+      }
+    }
+  },
+  "checks": {
+    "latest": {
+      "revision": null,
+      "id": "5f80319b-2ee0-47bb-b984-44b61864969c"
+    },
+    "revisions": {},
+    "unversioned": [
+      {
+        "id": "5f80319b-2ee0-47bb-b984-44b61864969c",
+        "scope": "project",
+        "report": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\.hyperframes\\artifacts\\checks\\5f80319b-2ee0-47bb-b984-44b61864969c.json",
+        "metadata": {
+          "ok": true,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 3000,
+            "contrast": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto"
+          }
+        },
+        "createdAt": 1794820621043,
+        "contentHash": "6de5cdf044ba2c736002a695ecf4f66254e716834fce4fb05535e8a55ac9da8c",
+        "revision": null,
+        "inputFingerprint": "8061daa49030f8d0d47b3e9ff1f18aab3953e6f5c1bd62c520f2834a428e3765",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "e3f3117d-8d29-4cdf-97c9-d9e9e0abfe8a",
+      "completedAt": 1794820886526,
+      "output": "C:\\Users\\NICHOL~1\\AppData\\Local\\Temp\\claude\\c5669e20ffc9070c\\ffd6f408-39d7-48c4-9c55-36caa51af55d\\scratchpad\\xp\\xpera.mp4",
+      "status": "completed",
+      "revision": "e8182f3f-0586-436e-863f-2cc0c441a10b"
+    },
+    "retainedRevisions": [
+      "e8182f3f-0586-436e-863f-2cc0c441a10b",
+      "fed38463-e4fc-4bad-9406-5b1d8cc1ca90"
+    ]
+  },
+  "pendingArtifactCleanup": []
+}

@@ -1,0 +1,309 @@
+<!doctype html>
+<!-- Cinematheque Centre Davao pitch video (24.5s, 1920x1080).
+     Uses the system's own theme: Oswald uppercase titles, Poppins text, gold on black and warm paper, and the ticket shape.
+     Sections: hook -> title -> seat, pay, e-ticket -> staff report -> outro.
+     The screens are redrawn for the video from the real design; they are not screen recordings. -->
+<html lang="en" data-resolution="landscape">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Poppins:wght@400;500;600&display=block" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root { --ink: #121212; --night: #0e0e0e; --gold: #ebbc00; --gold-600: #cc8500; --gold-300: #ffcc00; --paper: #faf9f7; --stub: #fff7e1; --border: #e8e4dc; --muted: #57534e; --faint: #8a857d;
+        --seat-bd: #cdc7bc; --seat-taken: #ebe8e2; --success: #1f6f50; --success-bg: #e6f2ec; --perf: #e9c766; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #000; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: var(--night); color: #f5f3ee; font-family: "Poppins", sans-serif; }
+      .clip { position: absolute; inset: 0; }
+      .osw { font-family: "Oswald", sans-serif; font-weight: 600; text-transform: uppercase; }
+      .eyebrow { font: 600 24px "Poppins", sans-serif; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+
+      /* projector light sweeping the dark hall */
+      #beam { position: absolute; left: -200px; top: -500px; width: 1500px; height: 2100px; transform-origin: 0 50%; background: linear-gradient(90deg, rgba(235,188,0,.16), rgba(235,188,0,0) 70%); clip-path: polygon(0 48%, 100% 0, 100% 100%, 0 52%); }
+      #dots { background-image: radial-gradient(rgba(255,255,255,.07) 1.5px, transparent 1.5px); background-size: 44px 44px; }
+
+      /* ---- hook ---- */
+      #hook { display: flex; flex-direction: column; justify-content: center; padding-left: 150px; }
+      .hl { font: 700 190px/1.02 "Oswald", sans-serif; text-transform: uppercase; letter-spacing: -.005em; overflow: hidden; }
+      .hl span { display: inline-block; margin-right: .2em; }
+      .hl.g { color: var(--gold); }
+
+      /* ---- title ---- */
+      #title, #outro { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; text-align: center; }
+      .name { font: 700 150px/1 "Oswald", sans-serif; text-transform: uppercase; letter-spacing: .02em; }
+      .name b { color: var(--gold); font-weight: 700; }
+      .rule { width: 900px; height: 8px; background: linear-gradient(90deg, var(--gold-600), var(--gold-300)); }
+      .sub { font: 400 40px "Poppins", sans-serif; color: #b3aea6; }
+
+      /* ---- app scene ---- */
+      #cap { position: absolute; left: 130px; top: 300px; width: 580px; }
+      #cap .eyebrow { position: absolute; left: 0; top: 0; }
+      .capline { position: absolute; left: 0; top: 62px; width: 600px; font: 700 112px/1 "Oswald", sans-serif; text-transform: uppercase; }
+      .capline b { color: var(--gold); font-weight: 700; }
+      .capline small { display: block; font: 400 31px/1.4 "Poppins", sans-serif; text-transform: none; color: #b3aea6; margin-top: 26px; }
+      #stage { position: absolute; left: 770px; top: 170px; width: 1050px; height: 740px; perspective: 2200px; }
+      #win { position: relative; width: 100%; height: 100%; background: var(--paper); color: var(--ink); border-radius: 20px; overflow: hidden; box-shadow: 0 60px 120px rgba(0,0,0,.6); }
+      #top { height: 78px; display: flex; align-items: center; justify-content: space-between; padding: 0 34px; background: #fff; border-bottom: 1px solid var(--border); }
+      #top .brand { font: 600 23px "Oswald", sans-serif; letter-spacing: .14em; text-transform: uppercase; display: flex; align-items: center; gap: 14px; }
+      #top .brand i { width: 30px; height: 30px; border-radius: 50%; background: var(--ink); border: 5px solid var(--gold); }
+      #top nav { display: flex; gap: 26px; font: 500 17px "Oswald", sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+      #top nav b { color: var(--ink); font-weight: 500; border-bottom: 3px solid var(--gold); padding-bottom: 4px; }
+      .scr { position: absolute; left: 0; right: 0; top: 78px; bottom: 0; padding: 30px 40px; }
+      .scr h3 { font: 600 34px "Oswald", sans-serif; text-transform: uppercase; letter-spacing: .02em; }
+      .scr .meta { color: var(--muted); font-size: 18px; margin: 2px 0 20px; }
+
+      .map { background: #fff; border-radius: 16px; padding: 22px 24px 18px; box-shadow: 0 6px 20px -10px rgba(20,18,25,.28); }
+      .srow { display: grid; grid-template-columns: 36px repeat(6, 56px) 30px repeat(6, 56px) 36px; gap: 7px; justify-content: center; margin-bottom: 7px; align-items: center; }
+      .srow u { text-decoration: none; text-align: center; font: 600 15px "Poppins", sans-serif; color: var(--faint); }
+      .st { height: 37px; border: 2px solid var(--seat-bd); border-radius: 9px 9px 5px 5px; background: #fff; display: grid; place-items: center; font: 600 14px "Poppins", sans-serif; color: var(--muted); }
+      .st.tk { background: var(--seat-taken); border-color: transparent; color: var(--faint); text-decoration: line-through; }
+      .screenbar { margin: 14px auto 0; width: 62%; text-align: center; border-top: 5px solid var(--ink); padding-top: 6px; font: 500 15px "Oswald", sans-serif; letter-spacing: .3em; color: var(--muted); }
+      .picked { position: absolute; right: 40px; top: 30px; background: var(--ink); color: #fff; border-radius: 99px; padding: 10px 22px; font: 500 18px "Poppins", sans-serif; }
+      .picked b { color: var(--gold); }
+
+      .review { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; }
+      .card { background: #fff; border: 1px solid var(--border); border-radius: 16px; }
+      .line { display: flex; justify-content: space-between; align-items: center; height: 92px; padding: 0 26px; border-bottom: 1px solid var(--border); font-size: 21px; }
+      .line small { display: block; color: var(--muted); font-size: 16px; }
+      .line b { font: 600 28px "Oswald", sans-serif; }
+      .line .off { background: #fff3cc; color: #8a5a00; border-radius: 99px; padding: 3px 12px; font: 600 14px "Poppins", sans-serif; margin-left: 10px; }
+      .sum { padding: 28px; display: flex; flex-direction: column; gap: 12px; min-height: 420px; }
+      .sum > span { color: var(--muted); font-size: 18px; }
+      .roll { position: relative; height: 1.1em; overflow: hidden; }
+      .roll span { position: absolute; left: 0; top: 0; white-space: nowrap; }
+      .sum .roll { font: 600 96px/1.1 "Oswald", sans-serif; }
+      .gbtn { margin-top: auto; height: 72px; border-radius: 14px; background: linear-gradient(90deg, var(--gold-600), var(--gold-300)); color: #141219; display: grid; place-items: center; font: 600 22px "Poppins", sans-serif; }
+      .ok { position: absolute; right: 40px; top: 30px; background: var(--success-bg); color: var(--success); border-radius: 99px; padding: 10px 22px; font: 600 18px "Poppins", sans-serif; }
+
+      .ticket { display: grid; grid-template-columns: 250px 1fr; background: #fff; border-radius: 18px; overflow: hidden; box-shadow: 0 18px 40px -16px rgba(20,18,25,.35); margin-top: 6px; position: relative; }
+      .stubd { background: var(--stub); padding: 34px 20px; text-align: center; border-right: 4px dashed var(--perf); }
+      .stubd small { font: 600 17px "Poppins", sans-serif; letter-spacing: .14em; color: var(--muted); display: block; }
+      .stubd b { font: 600 120px/1 "Oswald", sans-serif; display: block; margin: 6px 0; }
+      .tbody { padding: 34px 38px; }
+      .tbody .eyebrow { font-size: 16px; color: #8a5a00; }
+      .tbody h4 { font: 600 64px/1.05 "Oswald", sans-serif; text-transform: uppercase; margin: 8px 0 18px; }
+      .facts { display: grid; grid-template-columns: repeat(3, auto); gap: 6px 44px; justify-content: start; }
+      .facts small { font: 600 14px "Poppins", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); display: block; }
+      .facts b { font: 600 30px "Oswald", sans-serif; }
+      .conf { display: inline-block; margin-top: 22px; background: var(--success-bg); color: var(--success); border-radius: 99px; padding: 8px 20px; font: 600 17px "Poppins", sans-serif; }
+      .stamp { position: absolute; right: 44px; bottom: 34px; border: 5px solid var(--success); color: var(--success); border-radius: 12px; padding: 6px 22px; font: 700 44px "Oswald", sans-serif; letter-spacing: .08em; transform: rotate(-9deg); }
+      .mail { margin-top: 22px; display: flex; align-items: center; gap: 16px; padding: 20px 26px; font-size: 20px; }
+      .mail i { width: 46px; height: 46px; border-radius: 12px; background: var(--ink); display: grid; place-items: center; color: var(--gold); font: 600 22px "Oswald", sans-serif; font-style: normal; }
+      #cursor { position: absolute; left: 0; top: 0; width: 36px; height: 36px; z-index: 9; }
+
+      /* ---- staff report ---- */
+      #staff h2 { position: absolute; left: 150px; top: 110px; font: 700 124px/1 "Oswald", sans-serif; text-transform: uppercase; }
+      #staff h2 b { color: var(--gold); font-weight: 700; }
+      .rep { position: absolute; left: 150px; top: 410px; width: 1180px; background: var(--paper); color: var(--ink); border-radius: 18px; overflow: hidden; }
+      .rr { display: grid; grid-template-columns: 2.2fr 1.3fr .7fr .7fr .8fr .9fr 1.2fr; height: 78px; align-items: center; padding: 0 30px; border-bottom: 1px solid var(--border); font-size: 22px; }
+      .rr.h { background: var(--ink); color: #fff; font: 500 18px "Oswald", sans-serif; letter-spacing: .1em; text-transform: uppercase; height: 64px; }
+      .rr b { font: 600 26px "Oswald", sans-serif; }
+      .rr.t { background: #fff3cc; border: 0; font-weight: 600; }
+      .side { position: absolute; left: 1400px; top: 410px; width: 370px; display: grid; gap: 22px; }
+      .stat { border: 2px solid #3d3b37; border-radius: 18px; padding: 24px 28px; }
+      .stat b { font: 700 84px/1 "Oswald", sans-serif; color: var(--gold); display: block; }
+      .stat span { font-size: 22px; color: #b3aea6; }
+
+      /* ---- outro ---- */
+      #outro .stack { display: flex; gap: 12px; margin-top: 10px; }
+      #outro .stack span { border: 2px solid #3d3b37; border-radius: 99px; padding: 10px 24px; font: 500 23px "Poppins", sans-serif; }
+      #outro .credit { font: 500 26px "Poppins", sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #b3aea6; margin-top: 18px; }
+      #bar { position: absolute; left: 0; bottom: 0; top: auto; height: 8px; width: 1920px; background: linear-gradient(90deg, var(--gold-600), var(--gold-300)); transform-origin: left; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="24.5" data-width="1920" data-height="1080">
+
+      <div id="dots" class="clip" data-start="0" data-duration="24.5" data-track-index="0"><div id="beam"></div></div>
+
+      <!-- 0 - 3.4 -->
+      <div id="hook" class="clip" data-start="0" data-duration="3.5" data-track-index="1">
+        <div class="hl"><span>Pick</span><span>your</span><span>seat.</span></div>
+        <div class="hl"><span>Pay</span><span>online.</span></div>
+        <div class="hl g"><span>Walk</span><span>right</span><span>in.</span></div>
+      </div>
+
+      <!-- 3.3 - 5.9 -->
+      <div id="title" class="clip" data-start="3.3" data-duration="2.7" data-track-index="2">
+        <div class="eyebrow">Ticketing and reservation system</div>
+        <div class="name">Cinematheque<br><b>Centre Davao</b></div>
+        <div class="rule"></div>
+        <div class="sub">A real cinema. A real client. Built by students.</div>
+      </div>
+
+      <!-- 5.8 - 18.3 -->
+      <div id="app" class="clip" data-start="5.8" data-duration="12.6" data-track-index="3">
+        <div id="cap">
+          <div class="eyebrow" id="k1">01 · Reserve</div><div class="eyebrow" id="k2">02 · Pay</div><div class="eyebrow" id="k3">03 · Enter</div>
+          <div class="capline" id="c1">Pick your <b>exact seat.</b><small>120 seats on the real floor plan. Taken seats are locked the moment someone books.</small></div>
+          <div class="capline" id="c2">Pay <b>online.</b><small>GCash or Maya through PayMongo, with the PWD and Senior discount worked out per ticket.</small></div>
+          <div class="capline" id="c3">Get your<br><b style="white-space:nowrap">e&#8209;ticket.</b><small>Sent by email as soon as the payment is verified. Staff admit you at the door.</small></div>
+        </div>
+        <div id="stage"><div id="win">
+          <div id="top"><div class="brand"><i></i>Cinematheque Centre Davao</div><nav><b>Now showing</b><span>Schedule</span><span>About</span></nav></div>
+
+          <div class="scr" id="sA">
+            <h3>Choose your seats</h3><div class="meta">Himala · Friday, October 24 · 3:00 PM</div>
+            <div class="picked" id="picked"><b>2 seats</b> · F6, F7</div>
+            <div class="map"><div id="grid"></div><div class="screenbar">SCREEN</div></div>
+          </div>
+
+          <div class="scr" id="sB">
+            <h3>Review booking</h3><div class="meta">Himala · Friday, October 24 · 3:00 PM</div>
+            <div class="ok" id="ok">Payment verified</div>
+            <div class="review">
+              <div class="card">
+                <div class="line ln"><div>Seat F6 <small>Regular ticket</small></div><b>₱50</b></div>
+                <div class="line ln"><div>Seat F7 <span class="off">Senior · 20% off</span><small>Discount ticket</small></div><b>₱40</b></div>
+                <div class="line ln" style="border:0"><div>Paying with <small>GCash, through PayMongo</small></div><b>GCash</b></div>
+              </div>
+              <div class="card sum"><span>Total to pay</span><div class="roll"><span id="t0">₱0</span><span id="t1">₱50</span><span id="t2">₱90</span></div><span>2 tickets</span><div class="gbtn" id="pay">Confirm and pay</div></div>
+            </div>
+          </div>
+
+          <div class="scr" id="sC">
+            <h3>Your e-ticket</h3><div class="meta">Sent to your email</div>
+            <div class="ticket" id="ticket">
+              <div class="stubd"><small>OCT</small><b>24</b><small>FRIDAY</small></div>
+              <div class="tbody"><div class="eyebrow">Now showing</div><h4>Himala</h4>
+                <div class="facts"><div><small>Time</small><b>3:00 PM</b></div><div><small>Seats</small><b>F6 · F7</b></div><div><small>Paid</small><b>₱90</b></div></div>
+                <span class="conf">Confirmed</span>
+              </div>
+              <div class="stamp" id="stamp">Admitted</div>
+            </div>
+            <div class="card mail" id="mail"><i>@</i><div><b>E-ticket sent</b> · Check-in opens 20 minutes before the film.</div></div>
+          </div>
+
+          <svg id="cursor" viewBox="0 0 24 24"><path d="M4 2 L4 20 L9 15.5 L12.5 22 L15 20.8 L11.6 14.4 L18 14.4 Z" fill="#121212" stroke="#fff" stroke-width="1.5"/></svg>
+        </div></div>
+      </div>
+
+      <!-- 18.2 - 21.6 -->
+      <div id="staff" class="clip" data-start="18.2" data-duration="3.5" data-track-index="4">
+        <h2>And the staff get<br>their <b>report.</b></h2>
+        <div class="rep">
+          <div class="rr h"><span>Program</span><span>Date</span><span>M</span><span>F</span><span>PWD</span><span>Senior</span><span>Sales</span></div>
+          <div class="rr d"><span>Free screening</span><span>Oct 22</span><b>41</b><b>52</b><b>3</b><b>9</b><b>Free</b></div>
+          <div class="rr d"><span>Paid screening</span><span>Oct 24</span><b>38</b><b>47</b><b>2</b><b>11</b><b>₱4,120</b></div>
+          <div class="rr d t"><span>Program total</span><span></span><b>79</b><b>99</b><b>5</b><b>20</b><b>₱4,120</b></div>
+        </div>
+        <div class="side"><div class="stat"><b>129</b><span>automated tests passing</span></div><div class="stat"><b>.xlsx</b><span>export in the client's own layout</span></div></div>
+      </div>
+
+      <!-- 21.5 - 24.5 -->
+      <div id="outro" class="clip" data-start="21.5" data-duration="3" data-track-index="5">
+        <div class="eyebrow">Ticketing and reservation system</div>
+        <div class="name" style="font-size:118px">Cinematheque <b>Centre Davao</b></div>
+        <div class="rule" style="width:700px"></div>
+        <div class="stack"><span>Laravel 12</span><span>PHP</span><span>MySQL</span><span>PayMongo</span></div>
+        <div class="credit">Group project of three · Nicho Lescano</div>
+      </div>
+
+      <div id="bar" class="clip" data-start="0" data-duration="24.5" data-track-index="6"></div>
+    </div>
+
+    <script>
+      // the hall's real plan: rows J (back) to A (front), 12 seats each, an aisle in the middle
+      const grid = document.getElementById('grid');
+      [...'JIHGFEDCBA'].forEach((row, r) => {
+        let h = `<div class="srow"><u>${row}</u>`;
+        for (let c = 1; c <= 12; c++) {
+          if (c === 7) h += '<span></span>';
+          const pick = row === 'F' && (c === 6 || c === 7);
+          const taken = !pick && (r * 5 + c * 3) % 7 < 2;
+          h += `<div class="st${taken ? ' tk' : ''}"${pick ? ` id="p${c}"` : ''}>${c}</div>`;
+        }
+        grid.insertAdjacentHTML('beforeend', h + `<u>${row}</u></div>`);
+      });
+
+      const roll = (tl, from, to, at) => {
+        tl.to(from, { yPercent: -110, opacity: 0, duration: .35, ease: 'power2.in' }, at);
+        tl.fromTo(to, { yPercent: 110, opacity: 0 }, { yPercent: 0, opacity: 1, duration: .4, ease: 'power3.out' }, at + .12);
+      };
+      const click = (tl, at) => tl.to('#cursor', { scale: .8, duration: .1, yoyo: true, repeat: 1 }, at);
+      const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+
+      tl.fromTo('#beam', { rotation: -16 }, { rotation: 14, duration: 24.5, ease: 'sine.inOut' }, 0);
+      tl.fromTo('#dots', { backgroundPosition: '0px 0px' }, { backgroundPosition: '-176px -88px', duration: 24.5, ease: 'none' }, 0);
+      tl.fromTo('#bar', { scaleX: 0 }, { scaleX: 1, duration: 24.5, ease: 'none' }, 0);
+
+      /* hook: three lines, one beat each */
+      tl.from('#hook .hl:nth-child(1) span', { yPercent: 115, duration: .55, stagger: .07 }, .1);
+      tl.from('#hook .hl:nth-child(2) span', { yPercent: 115, duration: .55, stagger: .07 }, .8);
+      tl.from('#hook .hl:nth-child(3) span', { yPercent: 115, duration: .55, stagger: .07 }, 1.5);
+      tl.to('#hook .hl.g', { scale: 1.05, transformOrigin: '0 50%', duration: .3, yoyo: true, repeat: 1, ease: 'power1.inOut' }, 2.1);
+      tl.to('#hook .hl', { xPercent: -8, opacity: 0, duration: .45, stagger: .06, ease: 'power3.in' }, 2.9);
+
+      /* title */
+      tl.from('#title .eyebrow', { y: 30, opacity: 0, duration: .45 }, 3.4);
+      tl.from('#title .name', { y: 80, opacity: 0, duration: .65 }, 3.5);
+      tl.from('#title .rule', { scaleX: 0, duration: .7, ease: 'power3.inOut' }, 3.75);
+      tl.from('#title .sub', { opacity: 0, y: 20, duration: .45 }, 4.0);
+      tl.to('#title', { scale: .92, opacity: 0, duration: .3, ease: 'power2.in' }, 5.65);
+
+      /* app */
+      gsap.set(['#c2', '#c3', '#k2', '#k3', '#sB', '#sC', '#t1', '#t2', '#ok', '#picked', '#stamp'], { opacity: 0 });
+      tl.from('#k1', { x: -40, opacity: 0, duration: .5 }, 5.9);
+      tl.from('#c1', { y: 60, opacity: 0, duration: .6 }, 6);
+      tl.fromTo('#win', { rotationY: -38, rotationX: 14, y: 260, opacity: 0 }, { rotationY: -10, rotationX: 4, y: 0, opacity: 1, duration: 1.1 }, 5.9);
+      tl.to('#win', { rotationY: -4, rotationX: 2, duration: 11, ease: 'sine.inOut' }, 7);
+      tl.from('#grid .st', { scale: 0, opacity: 0, duration: .35, ease: 'back.out(2)', stagger: { amount: .9, grid: [10, 12], from: 'center' } }, 6.5);
+      tl.fromTo('#cursor', { x: 900, y: 690, opacity: 0 }, { x: 498, y: 438, opacity: 1, duration: .8, ease: 'power2.inOut' }, 7.7);
+      click(tl, 8.5);
+      tl.to('#p6', { backgroundColor: '#ebbc00', borderColor: '#cc8500', color: '#141219', scale: 1.18, duration: .2 }, 8.55);
+      tl.to('#p6', { scale: 1, duration: .25 }, 8.75);
+      tl.to('#cursor', { x: 590, y: 438, duration: .35, ease: 'power2.inOut' }, 8.85);
+      click(tl, 9.2);
+      tl.to('#p7', { backgroundColor: '#ebbc00', borderColor: '#cc8500', color: '#141219', scale: 1.18, duration: .2 }, 9.25);
+      tl.to('#p7', { scale: 1, duration: .25 }, 9.45);
+      tl.fromTo('#picked', { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: .4, ease: 'back.out(1.7)' }, 9.4);
+
+      // beat 2: pay
+      tl.to('#sA', { x: -80, opacity: 0, duration: .4, ease: 'power2.in' }, 10.2);
+      tl.fromTo('#sB', { x: 90, opacity: 0 }, { x: 0, opacity: 1, duration: .5 }, 10.55);
+      tl.to('#c1', { y: -50, opacity: 0, duration: .35, ease: 'power2.in' }, 10.2);
+      tl.to('#k1', { opacity: 0, duration: .25 }, 10.3); tl.to('#k2', { opacity: 1, duration: .3 }, 10.55);
+      tl.fromTo('#c2', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: .55 }, 10.55);
+      tl.to('#cursor', { x: 800, y: 660, duration: .7, ease: 'power2.inOut' }, 10.3);
+      tl.from('#sB .ln', { x: 50, opacity: 0, duration: .4, stagger: .4 }, 10.95);
+      roll(tl, '#t0', '#t1', 11.0); roll(tl, '#t1', '#t2', 11.4);
+      tl.to('#cursor', { x: 820, y: 590, duration: .5, ease: 'power2.inOut' }, 12.2);
+      click(tl, 12.75);
+      tl.to('#pay', { scale: .96, duration: .1, yoyo: true, repeat: 1 }, 12.75);
+      tl.fromTo('#ok', { y: -30, opacity: 0 }, { y: 0, opacity: 1, duration: .45, ease: 'back.out(1.7)' }, 13.0);
+
+      // beat 3: e-ticket
+      tl.to('#sB', { x: -80, opacity: 0, duration: .4, ease: 'power2.in' }, 14.1);
+      tl.to('#cursor', { opacity: 0, duration: .3 }, 14.1);
+      tl.fromTo('#sC', { opacity: 0 }, { opacity: 1, duration: .3 }, 14.45);
+      tl.to('#c2', { y: -50, opacity: 0, duration: .35, ease: 'power2.in' }, 14.1);
+      tl.to('#k2', { opacity: 0, duration: .25 }, 14.2); tl.to('#k3', { opacity: 1, duration: .3 }, 14.45);
+      tl.fromTo('#c3', { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: .55 }, 14.45);
+      tl.from('#ticket', { y: 240, rotation: 7, opacity: 0, duration: .8, ease: 'back.out(1.3)' }, 14.5);
+      tl.from('#ticket .facts > div', { y: 20, opacity: 0, duration: .35, stagger: .1 }, 15.1);
+      tl.from('#ticket .conf', { scale: 0, duration: .35, ease: 'back.out(2)' }, 15.5);
+      tl.from('#mail', { y: 40, opacity: 0, duration: .45 }, 15.8);
+      tl.fromTo('#stamp', { scale: 2.4, opacity: 0, rotation: 6 }, { scale: 1, opacity: 1, rotation: -9, duration: .35, ease: 'power4.in' }, 16.7);
+      tl.to('#ticket', { y: 6, duration: .08, yoyo: true, repeat: 1 }, 17.05);
+      tl.to('#app', { opacity: 0, scale: .96, duration: .4, ease: 'power2.in' }, 17.9);
+
+      /* staff report */
+      tl.from('#staff h2', { y: 70, opacity: 0, duration: .6 }, 18.3);
+      tl.from('.rep', { y: 80, opacity: 0, duration: .55 }, 18.6);
+      tl.from('.rr.d', { x: -50, opacity: 0, duration: .4, stagger: .16 }, 18.9);
+      tl.from('.stat', { x: 80, opacity: 0, duration: .5, stagger: .15 }, 19.2);
+      tl.to('#staff', { opacity: 0, y: -40, duration: .35, ease: 'power2.in' }, 21.25);
+
+      /* outro */
+      tl.from('#outro .eyebrow', { y: 20, opacity: 0, duration: .4 }, 21.6);
+      tl.from('#outro .name', { y: 60, opacity: 0, duration: .55 }, 21.65);
+      tl.from('#outro .rule', { scaleX: 0, duration: .6, ease: 'power3.inOut' }, 21.85);
+      tl.from('#outro .stack span', { y: 30, opacity: 0, duration: .35, stagger: .06 }, 22.05);
+      tl.from('#outro .credit', { opacity: 0, duration: .4 }, 22.3);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines['main'] = tl;
+    </script>
+  </body>
+</html>

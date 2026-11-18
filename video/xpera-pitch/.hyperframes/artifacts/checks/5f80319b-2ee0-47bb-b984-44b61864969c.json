@@ -1,0 +1,1093 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 8,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "overlapping_gsap_tweens",
+        "severity": "warning",
+        "message": "GSAP tweens overlap on \"#t1\" for yPercent, opacity between 10.90s and 10.97s.",
+        "selector": "#t1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Shorten the earlier tween, move the later tween, or add `overwrite: \"auto\"`."
+      },
+      {
+        "code": "overlapping_gsap_tweens",
+        "severity": "warning",
+        "message": "GSAP tweens overlap on \"#t2\" for yPercent, opacity between 11.35s and 11.42s.",
+        "selector": "#t2",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Shorten the earlier tween, move the later tween, or add `overwrite: \"auto\"`."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"bg\"> is a timeline element that contains nested <div id=\"glow\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#bg",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"bg\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"hook\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#hook",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"hook\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"logo\"> is a timeline element that contains nested <svg>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#logo",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"logo\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"app\"> is a timeline element that contains nested <div id=\"cap\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#app",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"app\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"ten\"> is a timeline element that contains nested <h2>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#ten",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"ten\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"outro\"> is a timeline element that contains nested <svg>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#outro",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\xpera-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"outro\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 3,
+    "findings": [
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 11.634,
+        "selector": "#t2",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1486.78,
+          "top": 320.59,
+          "right": 1548.26,
+          "bottom": 333.78,
+          "width": 61.48,
+          "height": 13.19
+        },
+        "containerSelector": "#t3",
+        "text": "₱21,700",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1486.78,
+          "y": 320.59,
+          "width": 61.48,
+          "height": 13.19
+        },
+        "firstSeen": 11.634,
+        "lastSeen": 11.634,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          11.634
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 15.193,
+        "selector": "#b0",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1079.87,
+          "top": 324.03,
+          "right": 1138.45,
+          "bottom": 342.66,
+          "width": 58.58,
+          "height": 18.63
+        },
+        "containerSelector": "#b1",
+        "text": "₱6,400",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1079.87,
+          "y": 324.03,
+          "width": 58.58,
+          "height": 18.63
+        },
+        "firstSeen": 15.193,
+        "lastSeen": 15.193,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          15.193
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 15.877,
+        "selector": "#b1",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1079.45,
+          "top": 323.96,
+          "right": 1138.83,
+          "bottom": 342.47,
+          "width": 59.38,
+          "height": 18.51
+        },
+        "containerSelector": "#b2",
+        "text": "₱3,000",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1079.45,
+          "y": 323.96,
+          "width": 59.38,
+          "height": 18.51
+        },
+        "firstSeen": 15.877,
+        "lastSeen": 15.877,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          15.877
+        ]
+      }
+    ],
+    "duration": 24.5,
+    "samples": [
+      1.361,
+      4.083,
+      6.806,
+      9.528,
+      12.25,
+      14.972,
+      17.694,
+      20.417,
+      23.139
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 3,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.67:1; WCAG AA requires 4.5:1.",
+        "text": "Save sale",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(244,63,94)",
+        "ratio": 3.67,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(30,30,30)",
+        "large": false,
+        "selector": "#save",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1486.081787109375,
+          "y": 489.62603759765625,
+          "width": 272.24609375,
+          "height": 69.93975830078125
+        },
+        "time": 12.25,
+        "times": [
+          12.25
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      1.361,
+      6.806,
+      12.25,
+      17.694,
+      23.139
+    ],
+    "checked": 73,
+    "passed": 72
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 5,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "first_frame_empty",
+        "severity": "warning",
+        "message": "Frame 0 shows only the background, and the first frame is the thumbnail on social players: have the title or key image already on screen at 0 s instead of entering from nothing; see references/review.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      },
+      {
+        "code": "film_silent",
+        "severity": "warning",
+        "message": "This 25 s film has no sound source (no <audio>, no <video> with sound): add a music bed and sounds on the visible actions unless the person asked for silence; see references/sound.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"XP + era. Level up every customer.\" (6 words) is on screen 1.43 s (±0.01 s), under its 1.72 s floor: hold it about 0.5 s + 0.3 s a word (2.30 s here) before it leaves or changes; see references/motion.md.",
+        "text": "XP + era. Level up every customer.",
+        "selector": "div.tag",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 585.02,
+          "y": 731.89,
+          "width": 749.95,
+          "height": 56
+        },
+        "time": 4.406,
+        "words": 6,
+        "seconds": 1.43,
+        "floorSeconds": 1.725
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 82 text elements stay under it for 0.5 s or more, the smallest \"Regular\" at 15 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "Regular",
+        "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1710.94,
+          "y": 430.15,
+          "width": 58.77,
+          "height": 20.09
+        },
+        "time": 7,
+        "times": [
+          6,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.625,
+          6.75,
+          6.75,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          10,
+          10.125,
+          10.125,
+          10.125,
+          10.125,
+          10.125,
+          10.125,
+          10.125,
+          10.5,
+          10.5,
+          10.75,
+          11,
+          11,
+          11.125,
+          11.375,
+          11.375,
+          11.625,
+          12.75,
+          12.75,
+          14.25,
+          14.25,
+          14.25,
+          14.25,
+          15,
+          15,
+          15,
+          15.25,
+          15.75,
+          15.75,
+          15.75,
+          15.875,
+          16.375,
+          18.75,
+          19.25,
+          19.25,
+          19.25,
+          19.375,
+          19.375,
+          19.375,
+          19.5,
+          19.5,
+          19.5,
+          22.375,
+          22.375,
+          22.5,
+          22.5,
+          22.625,
+          22.875
+        ],
+        "fontPx": 14.84,
+        "floorPx": 28,
+        "seconds": 3,
+        "elements": [
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(2)",
+            "text": "Regular",
+            "fontPx": 14.84,
+            "time": 7,
+            "seconds": 3
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(2)",
+            "text": "Has balance",
+            "fontPx": 14.84,
+            "time": 7.125,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(3) > span:nth-of-type(2)",
+            "text": "Regular",
+            "fontPx": 14.84,
+            "time": 7.25,
+            "seconds": 2.75
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(4) > span:nth-of-type(2)",
+            "text": "New",
+            "fontPx": 14.84,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(5) > span:nth-of-type(2)",
+            "text": "New",
+            "fontPx": 14.84,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "JD",
+            "fontPx": 15.83,
+            "time": 7,
+            "seconds": 3
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "MS",
+            "fontPx": 15.83,
+            "time": 7.125,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1)",
+            "text": "RA",
+            "fontPx": 15.83,
+            "time": 7.25,
+            "seconds": 2.75
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(4) > div:nth-of-type(1)",
+            "text": "LT",
+            "fontPx": 15.83,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(1)",
+            "text": "KV",
+            "fontPx": 15.83,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#ten > div:nth-of-type(2) > u:nth-of-type(1)",
+            "text": "Plan A",
+            "fontPx": 16,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "#ten > div:nth-of-type(3) > u:nth-of-type(1)",
+            "text": "Plan B",
+            "fontPx": 16,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "#ten > div:nth-of-type(4) > u:nth-of-type(1)",
+            "text": "Plan C",
+            "fontPx": 16,
+            "time": 19.5,
+            "seconds": 2.125
+          },
+          {
+            "selector": "div.tiles > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "Customers",
+            "fontPx": 16.81,
+            "time": 6.625,
+            "seconds": 3.375
+          },
+          {
+            "selector": "div.tiles > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "Sales",
+            "fontPx": 16.82,
+            "time": 6.75,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.tiles > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "Payments",
+            "fontPx": 16.82,
+            "time": 6.75,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.card.cust > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "Returning customer · 6 visits",
+            "fontPx": 16.86,
+            "time": 10.125,
+            "seconds": 4.125
+          },
+          {
+            "selector": "div.card.pay > span:nth-of-type(1)",
+            "text": "Total",
+            "fontPx": 17.85,
+            "time": 10.125,
+            "seconds": 4.125
+          },
+          {
+            "selector": "#t0",
+            "text": "₱0",
+            "fontPx": 17.85,
+            "time": 10.125,
+            "seconds": 0.625
+          },
+          {
+            "selector": "div.card.pay > span:nth-of-type(2)",
+            "text": "Cash · OR-000480",
+            "fontPx": 17.85,
+            "time": 10.125,
+            "seconds": 4.125
+          },
+          {
+            "selector": "#t1",
+            "text": "₱18,500",
+            "fontPx": 17.86,
+            "time": 10.75,
+            "seconds": 0.5
+          },
+          {
+            "selector": "#t2",
+            "text": "₱21,700",
+            "fontPx": 17.87,
+            "time": 11.125,
+            "seconds": 0.625
+          },
+          {
+            "selector": "#t3",
+            "text": "₱24,600",
+            "fontPx": 17.88,
+            "time": 11.625,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#navs > div:nth-of-type(2)",
+            "text": "Customers",
+            "fontPx": 18.12,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "#navs > div:nth-of-type(3)",
+            "text": "Sales",
+            "fontPx": 18.12,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "#navs > div:nth-of-type(4)",
+            "text": "Payments",
+            "fontPx": 18.12,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "#navs > div:nth-of-type(5)",
+            "text": "Inquiries",
+            "fontPx": 18.12,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "#navs > div:nth-of-type(6)",
+            "text": "Feedback",
+            "fontPx": 18.12,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "#tagB",
+            "text": "Settled",
+            "fontPx": 18.72,
+            "time": 16.375,
+            "seconds": 1.875
+          },
+          {
+            "selector": "#toast",
+            "text": "Sale saved ·",
+            "fontPx": 18.9,
+            "time": 12.75,
+            "seconds": 1.5
+          },
+          {
+            "selector": "#toast > b:nth-of-type(1)",
+            "text": "OR-000480",
+            "fontPx": 18.9,
+            "time": 12.75,
+            "seconds": 1.5
+          },
+          {
+            "selector": "#ten > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "PIXEL01",
+            "fontPx": 19,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "#ten > div:nth-of-type(3) > div:nth-of-type(1)",
+            "text": "ARCADE01",
+            "fontPx": 19,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "#ten > div:nth-of-type(4) > div:nth-of-type(1)",
+            "text": "HUB01",
+            "fontPx": 19,
+            "time": 19.5,
+            "seconds": 2.125
+          },
+          {
+            "selector": "div.master > span:nth-of-type(1)",
+            "text": "Plans · subscriptions · insights",
+            "fontPx": 19.74,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(1) > b:nth-of-type(1)",
+            "text": "Juan Dela Cruz",
+            "fontPx": 19.79,
+            "time": 7,
+            "seconds": 3
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(1) > em:nth-of-type(1)",
+            "text": "2 days ago",
+            "fontPx": 19.79,
+            "time": 7,
+            "seconds": 3
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "₱84,500",
+            "fontPx": 19.79,
+            "time": 7,
+            "seconds": 3
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(2) > b:nth-of-type(1)",
+            "text": "Maria Santos",
+            "fontPx": 19.79,
+            "time": 7.125,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(2) > em:nth-of-type(1)",
+            "text": "Last week",
+            "fontPx": 19.79,
+            "time": 7.125,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "₱41,200",
+            "fontPx": 19.79,
+            "time": 7.125,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(3) > b:nth-of-type(1)",
+            "text": "Rico Abad",
+            "fontPx": 19.79,
+            "time": 7.25,
+            "seconds": 2.75
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(3) > em:nth-of-type(1)",
+            "text": "Yesterday",
+            "fontPx": 19.79,
+            "time": 7.25,
+            "seconds": 2.75
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "₱27,900",
+            "fontPx": 19.79,
+            "time": 7.25,
+            "seconds": 2.75
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(4) > b:nth-of-type(1)",
+            "text": "Liza Tan",
+            "fontPx": 19.79,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(4) > em:nth-of-type(1)",
+            "text": "3 weeks ago",
+            "fontPx": 19.79,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(4) > span:nth-of-type(1)",
+            "text": "₱12,650",
+            "fontPx": 19.79,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(5) > b:nth-of-type(1)",
+            "text": "Ken Villar",
+            "fontPx": 19.79,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(5) > em:nth-of-type(1)",
+            "text": "Today",
+            "fontPx": 19.79,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#sA > div:nth-of-type(2) > div:nth-of-type(5) > span:nth-of-type(1)",
+            "text": "₱9,300",
+            "fontPx": 19.79,
+            "time": 7.375,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.bal > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "Maria Santos · balance",
+            "fontPx": 19.82,
+            "time": 14.25,
+            "seconds": 4
+          },
+          {
+            "selector": "div.card.hist > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "Payment received",
+            "fontPx": 19.82,
+            "time": 15,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.card.hist > div:nth-of-type(1) > em:nth-of-type(1)",
+            "text": "Today",
+            "fontPx": 19.82,
+            "time": 15,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.card.hist > div:nth-of-type(1) > b:nth-of-type(1)",
+            "text": "₱3,400",
+            "fontPx": 19.82,
+            "time": 15,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.card.hist > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "Payment received",
+            "fontPx": 19.82,
+            "time": 15.75,
+            "seconds": 2.5
+          },
+          {
+            "selector": "div.card.hist > div:nth-of-type(2) > em:nth-of-type(1)",
+            "text": "Today",
+            "fontPx": 19.82,
+            "time": 15.75,
+            "seconds": 2.5
+          },
+          {
+            "selector": "div.card.hist > div:nth-of-type(2) > b:nth-of-type(1)",
+            "text": "₱3,000",
+            "fontPx": 19.82,
+            "time": 15.75,
+            "seconds": 2.5
+          },
+          {
+            "selector": "#b2",
+            "text": "₱0",
+            "fontPx": 19.82,
+            "time": 15.875,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.card.cust > div:nth-of-type(1)",
+            "text": "MS",
+            "fontPx": 19.83,
+            "time": 10.125,
+            "seconds": 4.125
+          },
+          {
+            "selector": "div.sale > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "RTX 4060 graphics card",
+            "fontPx": 19.84,
+            "time": 10.5,
+            "seconds": 3.75
+          },
+          {
+            "selector": "div.sale > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > b:nth-of-type(1)",
+            "text": "₱18,500",
+            "fontPx": 19.84,
+            "time": 10.5,
+            "seconds": 3.75
+          },
+          {
+            "selector": "div.sale > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "16GB DDR5 memory",
+            "fontPx": 19.85,
+            "time": 11,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.sale > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(2) > b:nth-of-type(1)",
+            "text": "₱3,200",
+            "fontPx": 19.85,
+            "time": 11,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.sale > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "650W power supply",
+            "fontPx": 19.86,
+            "time": 11.375,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.sale > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(3) > b:nth-of-type(1)",
+            "text": "₱2,900",
+            "fontPx": 19.86,
+            "time": 11.375,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#b0",
+            "text": "₱6,400",
+            "fontPx": 19.92,
+            "time": 14.25,
+            "seconds": 1
+          },
+          {
+            "selector": "#tagA",
+            "text": "Has balance",
+            "fontPx": 19.92,
+            "time": 14.25,
+            "seconds": 2
+          },
+          {
+            "selector": "#b1",
+            "text": "₱3,000",
+            "fontPx": 19.94,
+            "time": 15.25,
+            "seconds": 0.75
+          },
+          {
+            "selector": "#save",
+            "text": "Save sale",
+            "fontPx": 21.06,
+            "time": 10.125,
+            "seconds": 4.125
+          },
+          {
+            "selector": "#k3",
+            "text": "03 / Payments",
+            "fontPx": 21.85,
+            "time": 14.25,
+            "seconds": 4
+          },
+          {
+            "selector": "#k1",
+            "text": "01 / Customers",
+            "fontPx": 22,
+            "time": 6,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#k2",
+            "text": "02 / Sales",
+            "fontPx": 22,
+            "time": 10,
+            "seconds": 4
+          },
+          {
+            "selector": "#ten > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "Local + cloud backup",
+            "fontPx": 22,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "#ten > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "Local + cloud backup",
+            "fontPx": 22,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "#ten > div:nth-of-type(4) > span:nth-of-type(1)",
+            "text": "Local + cloud backup",
+            "fontPx": 22,
+            "time": 19.5,
+            "seconds": 2.125
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(1)",
+            "text": "C#",
+            "fontPx": 22,
+            "time": 22.375,
+            "seconds": 2.125
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(2)",
+            "text": ".NET",
+            "fontPx": 22,
+            "time": 22.375,
+            "seconds": 2.125
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(3)",
+            "text": "SQL Server",
+            "fontPx": 22,
+            "time": 22.5,
+            "seconds": 2
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(4)",
+            "text": "EF Core",
+            "fontPx": 22,
+            "time": 22.5,
+            "seconds": 2
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(5)",
+            "text": "ASP.NET API",
+            "fontPx": 22,
+            "time": 22.625,
+            "seconds": 1.875
+          },
+          {
+            "selector": "div.card.cust > div:nth-of-type(2) > b:nth-of-type(1)",
+            "text": "Maria Santos",
+            "fontPx": 23.8,
+            "time": 10.125,
+            "seconds": 4.125
+          },
+          {
+            "selector": "div.credit",
+            "text": "Designed and built by Nicho Lescano",
+            "fontPx": 26,
+            "time": 22.875,
+            "seconds": 1.625
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"Designed and built by Nicho Lescano\" (6 words) is on screen 1.70 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "Designed and built by Nicho Lescano",
+        "selector": "div.credit",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 641.5,
+          "y": 733.5,
+          "width": 637,
+          "height": 35
+        },
+        "time": 22.805,
+        "words": 6,
+        "seconds": 1.699,
+        "floorSeconds": 2
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 196
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

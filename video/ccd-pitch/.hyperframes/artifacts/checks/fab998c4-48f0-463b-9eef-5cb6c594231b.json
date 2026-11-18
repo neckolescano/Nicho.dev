@@ -1,0 +1,3025 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 7,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "overlapping_gsap_tweens",
+        "severity": "warning",
+        "message": "GSAP tweens overlap on \"#t1\" for yPercent, opacity between 11.40s and 11.52s.",
+        "selector": "#t1",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Shorten the earlier tween, move the later tween, or add `overwrite: \"auto\"`."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"dots\"> is a timeline element that contains nested <div id=\"beam\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#dots",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"dots\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"hook\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#hook",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"hook\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"title\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#title",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"title\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"app\"> is a timeline element that contains nested <div id=\"cap\">. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#app",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"app\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"staff\"> is a timeline element that contains nested <h2>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#staff",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"staff\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      },
+      {
+        "code": "nested_structure_needs_subcomposition",
+        "severity": "warning",
+        "message": "<div id=\"outro\"> is a timeline element that contains nested <div>. The timeline shows one row per top-level element, and the root composition is built only from sub-compositions.",
+        "selector": "#outro",
+        "dataAttributes": {},
+        "sourceFile": "C:\\Users\\Nicho Lescano\\AppData\\Local\\Claude-Data\\claude_pzs8sxrjxfjjc\\scratch-workspaces\\864cdca9-85ef-45ae-8a3f-06e22a56d68c\\10e0d008-6d40-4070-affe-957772b019df\\scratch-2026-11-16-2b97e1\\video\\ccd-pitch\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Move <div id=\"outro\"> and its contents into a sub-composition file and mount it with data-composition-src."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 8,
+    "findings": [
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 1.361,
+        "selector": "div.hl.g > span:nth-of-type(1)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 150,
+          "top": 814.76,
+          "right": 571.42,
+          "bottom": 1096.76,
+          "width": 421.42,
+          "height": 282
+        },
+        "containerSelector": "#root",
+        "text": "Walk",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "bottom": 16.76
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 150,
+          "y": 814.76,
+          "width": 421.42,
+          "height": 282
+        },
+        "firstSeen": 1.361,
+        "lastSeen": 1.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          1.361
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 1.361,
+        "selector": "div.hl.g > span:nth-of-type(2)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 609.42,
+          "top": 814.76,
+          "right": 1086.91,
+          "bottom": 1096.76,
+          "width": 477.49,
+          "height": 282
+        },
+        "containerSelector": "#root",
+        "text": "right",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "bottom": 16.76
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 609.42,
+          "y": 814.76,
+          "width": 477.49,
+          "height": 282
+        },
+        "firstSeen": 1.361,
+        "lastSeen": 1.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          1.361
+        ]
+      },
+      {
+        "code": "canvas_overflow",
+        "severity": "info",
+        "time": 1.361,
+        "selector": "div.hl.g > span:nth-of-type(3)",
+        "message": "Text extends outside the composition canvas.",
+        "rect": {
+          "left": 1124.91,
+          "top": 814.76,
+          "right": 1332.2,
+          "bottom": 1096.76,
+          "width": 207.29,
+          "height": 282
+        },
+        "containerSelector": "#root",
+        "text": "in.",
+        "fixHint": "Move the text inward, reduce its size, or mark intentional off-canvas animation with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 0,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "width": 1920,
+          "height": 1080
+        },
+        "overflow": {
+          "bottom": 16.76
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1124.91,
+          "y": 814.76,
+          "width": 207.29,
+          "height": 282
+        },
+        "firstSeen": 1.361,
+        "lastSeen": 1.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          1.361
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 1.361,
+        "selector": "div.hl.g > span:nth-of-type(1)",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 150,
+          "top": 859.76,
+          "right": 571.42,
+          "bottom": 1053.55,
+          "width": 421.42,
+          "height": 193.8
+        },
+        "containerSelector": "div.hl.g",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 150,
+          "top": 636.89,
+          "right": 1920,
+          "bottom": 830.69,
+          "width": 1770,
+          "height": 193.8
+        },
+        "overflow": {
+          "bottom": 222.86
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 150,
+          "y": 859.76,
+          "width": 421.42,
+          "height": 193.8
+        },
+        "firstSeen": 1.361,
+        "lastSeen": 1.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          1.361
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 1.361,
+        "selector": "div.hl.g > span:nth-of-type(2)",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 609.42,
+          "top": 859.76,
+          "right": 1086.91,
+          "bottom": 1053.55,
+          "width": 477.48,
+          "height": 193.8
+        },
+        "containerSelector": "div.hl.g",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 150,
+          "top": 636.89,
+          "right": 1920,
+          "bottom": 830.69,
+          "width": 1770,
+          "height": 193.8
+        },
+        "overflow": {
+          "bottom": 222.86
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 609.42,
+          "y": 859.76,
+          "width": 477.48,
+          "height": 193.8
+        },
+        "firstSeen": 1.361,
+        "lastSeen": 1.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          1.361
+        ]
+      },
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 1.361,
+        "selector": "div.hl.g > span:nth-of-type(3)",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 1124.91,
+          "top": 859.76,
+          "right": 1332.2,
+          "bottom": 1053.55,
+          "width": 207.3,
+          "height": 193.8
+        },
+        "containerSelector": "div.hl.g",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 150,
+          "top": 636.89,
+          "right": 1920,
+          "bottom": 830.69,
+          "width": 1770,
+          "height": 193.8
+        },
+        "overflow": {
+          "bottom": 222.86
+        },
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1124.91,
+          "y": 859.76,
+          "width": 207.3,
+          "height": 193.8
+        },
+        "firstSeen": 1.361,
+        "lastSeen": 1.361,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          1.361
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 11.223,
+        "selector": "#t0",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1378.56,
+          "top": 443.59,
+          "right": 1491.87,
+          "bottom": 548.42,
+          "width": 113.31,
+          "height": 104.83
+        },
+        "containerSelector": "#t1",
+        "text": "₱0",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1378.56,
+          "y": 443.59,
+          "width": 113.31,
+          "height": 104.83
+        },
+        "firstSeen": 11.223,
+        "lastSeen": 11.223,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          11.223
+        ]
+      },
+      {
+        "code": "content_overlap",
+        "severity": "info",
+        "time": 11.634,
+        "selector": "#t1",
+        "message": "Two text blocks overlap and may render unreadable.",
+        "rect": {
+          "left": 1378.69,
+          "top": 443.69,
+          "right": 1540.79,
+          "bottom": 535.57,
+          "width": 162.1,
+          "height": 91.88
+        },
+        "containerSelector": "#t2",
+        "text": "₱50",
+        "fixHint": "Give each block its own zone, or put data-layout-allow-overlap on the text or on a container inside the scene. A marker on the scene root does not apply.",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1378.69,
+          "y": 443.69,
+          "width": 162.1,
+          "height": 91.88
+        },
+        "firstSeen": 11.634,
+        "lastSeen": 11.634,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          11.634
+        ]
+      }
+    ],
+    "duration": 24.5,
+    "samples": [
+      1.361,
+      4.083,
+      6.806,
+      9.528,
+      12.25,
+      14.972,
+      17.694,
+      20.417,
+      23.139
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 8,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 29,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "J",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 882.6577758789062,
+          "y": 412.18951416015625,
+          "width": 33.64599609375,
+          "height": 22.366851806640625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "J",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.69189453125,
+          "y": 403.4654541015625,
+          "width": 37.7960205078125,
+          "height": 23.9093017578125
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "I",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 881.5926513671875,
+          "y": 454.44964599609375,
+          "width": 33.68865966796875,
+          "height": 22.309722900390625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "I",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(2) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.716796875,
+          "y": 448.6018371582031,
+          "width": 37.8499755859375,
+          "height": 23.84417724609375
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "H",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(3) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 880.5247192382812,
+          "y": 496.8224792480469,
+          "width": 33.73138427734375,
+          "height": 22.252227783203125
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3:1; WCAG AA requires 4.5:1.",
+        "text": "6",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(235,232,226)",
+        "ratio": 3,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(108,104,98)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(6)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1232.821533203125,
+          "y": 497.9390869140625,
+          "width": 27.210205078125,
+          "height": 18.169677734375
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "H",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(3) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.7418212890625,
+          "y": 493.86688232421875,
+          "width": 37.9039306640625,
+          "height": 23.778564453125
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "G",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(4) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 879.4539794921875,
+          "y": 539.3084716796875,
+          "width": 33.774169921875,
+          "height": 22.2537841796875
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3:1; WCAG AA requires 4.5:1.",
+        "text": "7",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(235,232,226)",
+        "ratio": 3,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(108,104,98)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(7)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1312.8404541015625,
+          "y": 529.9091186523438,
+          "width": 63.0745849609375,
+          "height": 41.87298583984375
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "G",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(4) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.766845703125,
+          "y": 539.2610473632812,
+          "width": 37.958251953125,
+          "height": 23.78033447265625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "F",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(5) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 878.3803100585938,
+          "y": 581.79248046875,
+          "width": 33.817138671875,
+          "height": 22.42889404296875
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3:1; WCAG AA requires 4.5:1.",
+        "text": "5",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(235,232,226)",
+        "ratio": 3,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(108,104,98)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(5) > div:nth-of-type(5)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1153.0418701171875,
+          "y": 573.5150146484375,
+          "width": 61.7650146484375,
+          "height": 41.6156005859375
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "F",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(5) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.7919921875,
+          "y": 584.6529541015625,
+          "width": 38.0125732421875,
+          "height": 23.98040771484375
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "E",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(6) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 877.3038330078125,
+          "y": 624.387939453125,
+          "width": 33.86016845703125,
+          "height": 22.60693359375
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3:1; WCAG AA requires 4.5:1.",
+        "text": "6",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(235,232,226)",
+        "ratio": 3,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(108,104,98)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(6) > div:nth-of-type(6)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1216.076904296875,
+          "y": 619.1979370117188,
+          "width": 57.1593017578125,
+          "height": 38.62896728515625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3:1; WCAG AA requires 4.5:1.",
+        "text": "8",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(235,232,226)",
+        "ratio": 3,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(108,104,98)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(6) > div:nth-of-type(8)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1374.572265625,
+          "y": 618.4521484375,
+          "width": 63.80078125,
+          "height": 42.71734619140625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "E",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(6) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.817138671875,
+          "y": 630.1721801757812,
+          "width": 38.067138671875,
+          "height": 24.18365478515625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "D",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(7) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 876.2244262695312,
+          "y": 667.0973510742188,
+          "width": 33.9033203125,
+          "height": 22.78570556640625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "D",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(7) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.842529296875,
+          "y": 675.8214721679688,
+          "width": 38.1217041015625,
+          "height": 24.38800048828125
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "C",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(8) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 875.1421508789062,
+          "y": 709.9210815429688,
+          "width": 33.94659423828125,
+          "height": 22.96539306640625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3:1; WCAG AA requires 4.5:1.",
+        "text": "7",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(235,232,226)",
+        "ratio": 3,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(108,104,98)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(8) > div:nth-of-type(7)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1328.5528564453125,
+          "y": 718.7282104492188,
+          "width": 27.7735595703125,
+          "height": 18.9117431640625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "C",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(8) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.8677978515625,
+          "y": 721.6013793945312,
+          "width": 38.1766357421875,
+          "height": 24.5933837890625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "B",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(9) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 874.0570068359375,
+          "y": 752.859619140625,
+          "width": 33.98992919921875,
+          "height": 23.14599609375
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "B",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(9) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.893310546875,
+          "y": 767.5125122070312,
+          "width": 38.2314453125,
+          "height": 24.79986572265625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "A",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(10) > u:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 872.9688720703125,
+          "y": 795.9134521484375,
+          "width": 34.033447265625,
+          "height": 23.32745361328125
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "A",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(10) > u:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1701.918701171875,
+          "y": 813.5553588867188,
+          "width": 38.2867431640625,
+          "height": 25.0074462890625
+        },
+        "time": 6.806,
+        "times": [
+          6.806
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "Time",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(1) > small",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1099.6455078125,
+          "y": 530.2250366210938,
+          "width": 99.424560546875,
+          "height": 20.92340087890625
+        },
+        "time": 17.694,
+        "times": [
+          17.694
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "Seats",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > small",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1242.679443359375,
+          "y": 530.187744140625,
+          "width": 75.5355224609375,
+          "height": 21.003173828125
+        },
+        "time": 17.694,
+        "times": [
+          17.694
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 3.66:1; WCAG AA requires 4.5:1.",
+        "text": "Paid",
+        "fg": "rgb(138,133,125)",
+        "bg": "rgb(255,255,255)",
+        "ratio": 3.66,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(123,118,111)",
+        "large": false,
+        "selector": "div > div:nth-of-type(4) > div:nth-of-type(2) > div > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(3) > small",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 1362.19775390625,
+          "y": 530.1580810546875,
+          "width": 51.087646484375,
+          "height": 21.0667724609375
+        },
+        "time": 17.694,
+        "times": [
+          17.694
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      1.361,
+      6.806,
+      12.25,
+      17.694,
+      23.139
+    ],
+    "checked": 120,
+    "passed": 91
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 5,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "film_silent",
+        "severity": "warning",
+        "message": "This 25 s film has no sound source (no <audio>, no <video> with sound): add a music bed and sounds on the visible actions unless the person asked for silence; see references/sound.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"A real cinema. A real client. Built by students.\" (9 words) is on screen 1.80 s (±0.01 s), under its 2.40 s floor: hold it about 0.5 s + 0.3 s a word (3.20 s here) before it leaves or changes; see references/motion.md.",
+        "text": "A real cinema. A real client. Built by students.",
+        "selector": "div.sub",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 516.36,
+          "y": 723.82,
+          "width": 887.2799999999999,
+          "height": 56
+        },
+        "time": 4.102,
+        "words": 9,
+        "seconds": 1.805,
+        "floorSeconds": 2.4
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 209 text elements stay under it for 0.5 s or more, the smallest \"1\" at 8 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "1",
+        "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 945.83,
+          "y": 459.21,
+          "width": 2.96,
+          "height": 11.08
+        },
+        "time": 7.375,
+        "times": [
+          3.5,
+          6,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.125,
+          6.625,
+          6.625,
+          6.625,
+          6.625,
+          6.75,
+          6.75,
+          6.75,
+          6.75,
+          6.75,
+          6.75,
+          6.75,
+          6.75,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          6.875,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.125,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.25,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.375,
+          7.5,
+          7.5,
+          7.5,
+          7.5,
+          9.5,
+          9.5,
+          10.625,
+          10.75,
+          10.75,
+          10.75,
+          10.75,
+          11.125,
+          11.125,
+          11.5,
+          11.5,
+          11.5,
+          11.875,
+          11.875,
+          13.125,
+          14.5,
+          14.5,
+          14.75,
+          14.75,
+          14.75,
+          15.25,
+          15.375,
+          15.375,
+          15.625,
+          16,
+          16,
+          18.75,
+          18.75,
+          18.75,
+          18.75,
+          18.75,
+          18.75,
+          18.75,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19,
+          19.25,
+          19.25,
+          19.25,
+          19.25,
+          19.25,
+          19.25,
+          19.25,
+          19.375,
+          19.375,
+          19.375,
+          19.375,
+          19.375,
+          19.375,
+          19.375,
+          19.5,
+          21.75,
+          22.25,
+          22.25,
+          22.25,
+          22.375,
+          22.375
+        ],
+        "fontPx": 7.96,
+        "floorPx": 28,
+        "seconds": 3.25,
+        "elements": [
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 7.96,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 7.96,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 7.96,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 7.96,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 8.79,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 8.79,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 8.79,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 8.79,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 8.79,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 9.55,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 9.68,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 10.43,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 10.43,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 10.43,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 10.43,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 12.47,
+            "time": 7.125,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#p6",
+            "text": "6",
+            "fontPx": 12.85,
+            "time": 6.625,
+            "seconds": 4
+          },
+          {
+            "selector": "#p7",
+            "text": "7",
+            "fontPx": 12.85,
+            "time": 6.625,
+            "seconds": 4
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 12.85,
+            "time": 6.625,
+            "seconds": 4
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 12.85,
+            "time": 6.625,
+            "seconds": 4
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 12.87,
+            "time": 7.5,
+            "seconds": 3.125
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 12.87,
+            "time": 7.5,
+            "seconds": 3.125
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 12.87,
+            "time": 7.5,
+            "seconds": 3.125
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 12.87,
+            "time": 7.5,
+            "seconds": 3.125
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 13.01,
+            "time": 7,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 13.36,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(4)",
+            "text": "4",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(9)",
+            "text": "9",
+            "fontPx": 13.43,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(6)",
+            "text": "6",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(7)",
+            "text": "7",
+            "fontPx": 13.53,
+            "time": 6.75,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 13.86,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 13.86,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 13.86,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 13.86,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 13.88,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 13.88,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 13.88,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 13.88,
+            "time": 6.875,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(5)",
+            "text": "5",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(8)",
+            "text": "8",
+            "fontPx": 13.88,
+            "time": 7.25,
+            "seconds": 3.375
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > div:nth-of-type(12)",
+            "text": "12",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(2)",
+            "text": "2",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > div:nth-of-type(11)",
+            "text": "11",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > div:nth-of-type(10)",
+            "text": "10",
+            "fontPx": 13.88,
+            "time": 7.375,
+            "seconds": 3.25
+          },
+          {
+            "selector": "div.facts > div:nth-of-type(1) > small:nth-of-type(1)",
+            "text": "Time",
+            "fontPx": 13.91,
+            "time": 15.25,
+            "seconds": 3
+          },
+          {
+            "selector": "div.facts > div:nth-of-type(2) > small:nth-of-type(1)",
+            "text": "Seats",
+            "fontPx": 13.91,
+            "time": 15.375,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.facts > div:nth-of-type(3) > small:nth-of-type(1)",
+            "text": "Paid",
+            "fontPx": 13.91,
+            "time": 15.375,
+            "seconds": 2.875
+          },
+          {
+            "selector": "span.off",
+            "text": "Senior · 20% off",
+            "fontPx": 13.92,
+            "time": 11.5,
+            "seconds": 3
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > u:nth-of-type(1)",
+            "text": "J",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(1) > u:nth-of-type(2)",
+            "text": "J",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > u:nth-of-type(1)",
+            "text": "I",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(2) > u:nth-of-type(2)",
+            "text": "I",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > u:nth-of-type(1)",
+            "text": "H",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(3) > u:nth-of-type(2)",
+            "text": "H",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > u:nth-of-type(1)",
+            "text": "G",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(4) > u:nth-of-type(2)",
+            "text": "G",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > u:nth-of-type(1)",
+            "text": "F",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(5) > u:nth-of-type(2)",
+            "text": "F",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > u:nth-of-type(1)",
+            "text": "E",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(6) > u:nth-of-type(2)",
+            "text": "E",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > u:nth-of-type(1)",
+            "text": "D",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(7) > u:nth-of-type(2)",
+            "text": "D",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > u:nth-of-type(1)",
+            "text": "C",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(8) > u:nth-of-type(2)",
+            "text": "C",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > u:nth-of-type(1)",
+            "text": "B",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(9) > u:nth-of-type(2)",
+            "text": "B",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > u:nth-of-type(1)",
+            "text": "A",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#grid > div:nth-of-type(10) > u:nth-of-type(2)",
+            "text": "A",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "div.screenbar",
+            "text": "SCREEN",
+            "fontPx": 14.34,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "span.conf",
+            "text": "Confirmed",
+            "fontPx": 15.73,
+            "time": 15.625,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.review > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > small:nth-of-type(1)",
+            "text": "Regular ticket",
+            "fontPx": 15.9,
+            "time": 11.125,
+            "seconds": 3.375
+          },
+          {
+            "selector": "div.tbody > div:nth-of-type(1)",
+            "text": "Now showing",
+            "fontPx": 15.9,
+            "time": 14.75,
+            "seconds": 3.5
+          },
+          {
+            "selector": "div.review > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) > small:nth-of-type(1)",
+            "text": "Discount ticket",
+            "fontPx": 15.91,
+            "time": 11.5,
+            "seconds": 3
+          },
+          {
+            "selector": "div.review > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > small:nth-of-type(1)",
+            "text": "GCash, through PayMongo",
+            "fontPx": 15.92,
+            "time": 11.875,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#top > nav:nth-of-type(1) > b:nth-of-type(1)",
+            "text": "Now showing",
+            "fontPx": 16.25,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "#top > nav:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "Schedule",
+            "fontPx": 16.25,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "#top > nav:nth-of-type(1) > span:nth-of-type(2)",
+            "text": "About",
+            "fontPx": 16.25,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "div.stubd > small:nth-of-type(1)",
+            "text": "OCT",
+            "fontPx": 16.89,
+            "time": 14.75,
+            "seconds": 3.5
+          },
+          {
+            "selector": "div.stubd > small:nth-of-type(2)",
+            "text": "FRIDAY",
+            "fontPx": 16.89,
+            "time": 14.75,
+            "seconds": 3.5
+          },
+          {
+            "selector": "#sA > div:nth-of-type(1)",
+            "text": "Himala · Friday, October 24 · 3:00 PM",
+            "fontPx": 17.2,
+            "time": 6.125,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#picked",
+            "text": "· F6, F7",
+            "fontPx": 17.86,
+            "time": 9.5,
+            "seconds": 1.125
+          },
+          {
+            "selector": "#picked > b:nth-of-type(1)",
+            "text": "2 seats",
+            "fontPx": 17.86,
+            "time": 9.5,
+            "seconds": 1.125
+          },
+          {
+            "selector": "#sC > div:nth-of-type(1)",
+            "text": "Sent to your email",
+            "fontPx": 17.88,
+            "time": 14.5,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#sB > div:nth-of-type(1)",
+            "text": "Himala · Friday, October 24 · 3:00 PM",
+            "fontPx": 17.89,
+            "time": 10.75,
+            "seconds": 3.75
+          },
+          {
+            "selector": "div.card.sum > span:nth-of-type(1)",
+            "text": "Total to pay",
+            "fontPx": 17.89,
+            "time": 10.75,
+            "seconds": 3.75
+          },
+          {
+            "selector": "div.card.sum > span:nth-of-type(2)",
+            "text": "2 tickets",
+            "fontPx": 17.89,
+            "time": 10.75,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#ok",
+            "text": "Payment verified",
+            "fontPx": 17.93,
+            "time": 13.125,
+            "seconds": 1.375
+          },
+          {
+            "selector": "div.rr.h > span:nth-of-type(1)",
+            "text": "Program",
+            "fontPx": 18,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.rr.h > span:nth-of-type(2)",
+            "text": "Date",
+            "fontPx": 18,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.rr.h > span:nth-of-type(3)",
+            "text": "M",
+            "fontPx": 18,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.rr.h > span:nth-of-type(4)",
+            "text": "F",
+            "fontPx": 18,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.rr.h > span:nth-of-type(5)",
+            "text": "PWD",
+            "fontPx": 18,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.rr.h > span:nth-of-type(6)",
+            "text": "Senior",
+            "fontPx": 18,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "div.rr.h > span:nth-of-type(7)",
+            "text": "Sales",
+            "fontPx": 18,
+            "time": 18.75,
+            "seconds": 2.875
+          },
+          {
+            "selector": "#mail > div:nth-of-type(1)",
+            "text": "· Check-in opens 20 minutes before the film.",
+            "fontPx": 19.87,
+            "time": 16,
+            "seconds": 2.25
+          },
+          {
+            "selector": "#mail > div:nth-of-type(1) > b:nth-of-type(1)",
+            "text": "E-ticket sent",
+            "fontPx": 19.87,
+            "time": 16,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.review > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "Seat F6",
+            "fontPx": 20.87,
+            "time": 11.125,
+            "seconds": 3.375
+          },
+          {
+            "selector": "div.review > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "Seat F7",
+            "fontPx": 20.88,
+            "time": 11.5,
+            "seconds": 3
+          },
+          {
+            "selector": "div.review > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1)",
+            "text": "Paying with",
+            "fontPx": 20.89,
+            "time": 11.875,
+            "seconds": 2.625
+          },
+          {
+            "selector": "#pay",
+            "text": "Confirm and pay",
+            "fontPx": 21.03,
+            "time": 10.75,
+            "seconds": 3.75
+          },
+          {
+            "selector": "div.brand",
+            "text": "Cinematheque Centre Davao",
+            "fontPx": 21.98,
+            "time": 6.125,
+            "seconds": 12.125
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "Free screening",
+            "fontPx": 22,
+            "time": 19,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(2) > span:nth-of-type(2)",
+            "text": "Oct 22",
+            "fontPx": 22,
+            "time": 19,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "Paid screening",
+            "fontPx": 22,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(3) > span:nth-of-type(2)",
+            "text": "Oct 24",
+            "fontPx": 22,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(4) > span:nth-of-type(1)",
+            "text": "Program total",
+            "fontPx": 22,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.side > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "automated tests passing",
+            "fontPx": 22,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.side > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "export in the client's own layout",
+            "fontPx": 22,
+            "time": 19.5,
+            "seconds": 2.125
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(1)",
+            "text": "Laravel 12",
+            "fontPx": 23,
+            "time": 22.25,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(2)",
+            "text": "PHP",
+            "fontPx": 23,
+            "time": 22.25,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(3)",
+            "text": "MySQL",
+            "fontPx": 23,
+            "time": 22.25,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.stack > span:nth-of-type(4)",
+            "text": "PayMongo",
+            "fontPx": 23,
+            "time": 22.375,
+            "seconds": 2.125
+          },
+          {
+            "selector": "#title > div:nth-of-type(1)",
+            "text": "Ticketing and reservation system",
+            "fontPx": 23.28,
+            "time": 3.5,
+            "seconds": 2.5
+          },
+          {
+            "selector": "#k3",
+            "text": "03 · Enter",
+            "fontPx": 23.88,
+            "time": 14.5,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#k1",
+            "text": "01 · Reserve",
+            "fontPx": 24,
+            "time": 6,
+            "seconds": 4.375
+          },
+          {
+            "selector": "#k2",
+            "text": "02 · Pay",
+            "fontPx": 24,
+            "time": 10.625,
+            "seconds": 3.75
+          },
+          {
+            "selector": "#outro > div:nth-of-type(1)",
+            "text": "Ticketing and reservation system",
+            "fontPx": 24,
+            "time": 21.75,
+            "seconds": 2.75
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(2) > b:nth-of-type(1)",
+            "text": "41",
+            "fontPx": 26,
+            "time": 19,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(2) > b:nth-of-type(2)",
+            "text": "52",
+            "fontPx": 26,
+            "time": 19,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(2) > b:nth-of-type(3)",
+            "text": "3",
+            "fontPx": 26,
+            "time": 19,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(2) > b:nth-of-type(4)",
+            "text": "9",
+            "fontPx": 26,
+            "time": 19,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(2) > b:nth-of-type(5)",
+            "text": "Free",
+            "fontPx": 26,
+            "time": 19,
+            "seconds": 2.625
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(3) > b:nth-of-type(1)",
+            "text": "38",
+            "fontPx": 26,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(3) > b:nth-of-type(2)",
+            "text": "47",
+            "fontPx": 26,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(3) > b:nth-of-type(3)",
+            "text": "2",
+            "fontPx": 26,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(3) > b:nth-of-type(4)",
+            "text": "11",
+            "fontPx": 26,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(3) > b:nth-of-type(5)",
+            "text": "₱4,120",
+            "fontPx": 26,
+            "time": 19.25,
+            "seconds": 2.375
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(4) > b:nth-of-type(1)",
+            "text": "79",
+            "fontPx": 26,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(4) > b:nth-of-type(2)",
+            "text": "99",
+            "fontPx": 26,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(4) > b:nth-of-type(3)",
+            "text": "5",
+            "fontPx": 26,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(4) > b:nth-of-type(4)",
+            "text": "20",
+            "fontPx": 26,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.rep > div:nth-of-type(4) > b:nth-of-type(5)",
+            "text": "₱4,120",
+            "fontPx": 26,
+            "time": 19.375,
+            "seconds": 2.25
+          },
+          {
+            "selector": "div.credit",
+            "text": "Group project of three · Nicho Lescano",
+            "fontPx": 26,
+            "time": 22.375,
+            "seconds": 2.125
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"Sent by email as soon as the payment is verified. Staff a...\" (16 words) is on screen 3.66 s (±0.01 s), under its 3.97 s floor: hold it about 0.5 s + 0.3 s a word (5.30 s here) before it leaves or changes; see references/motion.md.",
+        "text": "Sent by email as soon as the payment is verified. Staff admit you at the door.",
+        "selector": "#c3 > small:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 130,
+          "y": 627.79,
+          "width": 594.22,
+          "height": 87.38999999999999
+        },
+        "time": 14.57,
+        "words": 16,
+        "seconds": 3.664,
+        "floorSeconds": 3.975
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"· Check-in opens 20 minutes before the film. E-ticket sent\" (11 words) is on screen 2.33 s (±0.01 s), under its 2.85 s floor: hold it about 0.5 s + 0.3 s a word (3.80 s here) before it leaves or changes; see references/motion.md.",
+        "text": "· Check-in opens 20 minutes before the film. E-ticket sent",
+        "selector": "#mail > div:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 903.42,
+          "y": 747.68,
+          "width": 571.7900000000001,
+          "height": 32.66000000000008
+        },
+        "time": 15.906,
+        "words": 11,
+        "seconds": 2.328,
+        "floorSeconds": 2.85
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 196
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}

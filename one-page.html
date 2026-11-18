@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicho.dev — Portfolio of Nicho Lescano</title>
+<meta name="description" content="Portfolio of Nicho Lescano, an IT student in Davao City who designs and builds web, mobile and desktop systems.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23F4F1EA'/%3E%3Cpath d='M16 4v24M4 16h24' stroke='%232447D6' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body>
+
+<!-- LOADER: the sheet is drafted before it is shown -->
+<div class="loader" aria-hidden="true">
+  <div class="loader-grid"></div>
+  <div class="loader-mark" data-chars>NL</div>
+  <div class="loader-foot mono">
+    <span class="loader-status">Drafting</span>
+    <span class="loader-count">000</span>
+  </div>
+</div>
+
+<!-- Fixed layers -->
+<div class="grid-layer" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"><i></i><span class="mono">x 0000 · y 0000</span></div>
+
+<aside class="ruler" aria-hidden="true">
+  <span class="mono">Draft</span>
+  <div class="ruler-track"><div class="ruler-fill"></div></div>
+  <span class="mono">Built</span>
+</aside>
+
+<header class="nav">
+  <a href="#top" class="nav-name">Nicho.dev</a>
+  <span class="nav-sheet mono"><b id="sheetNo">01</b> / 06 — <em id="sheetName">Cover</em></span>
+  <nav>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#milestones">Milestones</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- 01 COVER -->
+<section class="hero" data-sheet="Cover">
+  <p class="mono hero-kicker reveal">Portfolio — 2026 · Davao City, Philippines</p>
+  <h1 class="hero-title" aria-label="Nicho Lescano">
+    <span class="line" data-chars>Nicho</span>
+    <span class="line indent" data-chars>Lescano</span>
+  </h1>
+  <div class="dim reveal" aria-hidden="true">
+    <span class="dim-line"></span>
+    <span class="mono">IT student · Web · Mobile · UI/UX · Data</span>
+    <span class="dim-line"></span>
+  </div>
+  <div class="hero-foot">
+    <p class="hero-lede reveal">I start every project as a drawing and keep going until it works. This page does the same thing: scroll, and the blueprint gets built.</p>
+    <table class="titleblock mono reveal" aria-label="Title block">
+      <tr><th>Drawn by</th><td>N. Lescano</td></tr>
+      <tr><th>Course</th><td>BS Information Technology, 3rd year</td></tr>
+      <tr><th>School</th><td>University of Mindanao</td></tr>
+      <tr><th>Scale</th><td>1 : 1</td></tr>
+      <tr><th>Rev.</th><td>2026.11</td></tr>
+    </table>
+  </div>
+  <a href="#about" class="scroll-cue mono">Scroll to build <span>↓</span></a>
+</section>
+
+<!-- 02 ABOUT -->
+<section class="about" id="about" data-sheet="About">
+  <div class="sec-head"><span class="mono">02 — About</span><span class="rule"></span></div>
+  <p class="statement" data-words>I'm a third-year IT student who likes the whole trip of a project: sketching the screens in Figma, planning the database, building the thing, then testing it with real people until it holds up.</p>
+  <dl class="facts">
+    <div class="reveal"><dt class="mono">Based in</dt><dd>Davao City, Philippines</dd></div>
+    <div class="reveal"><dt class="mono">Focus</dt><dd>Web and mobile development, UI/UX design, databases</dd></div>
+    <div class="reveal"><dt class="mono">Right now</dt><dd>Building xpera CRM, a multi-tenant desktop system</dd></div>
+    <div class="reveal"><dt class="mono">How I work</dt><dd>Design first, build with AI-assisted development, test on real devices</dd></div>
+  </dl>
+  <h3 class="mono edu-head">Education</h3>
+  <ol class="milestones">
+    <li class="reveal"><time class="mono">2024 – Present</time><div><h4>University of Mindanao</h4><p>BS Information Technology. First year through third year, and still going.</p></div></li>
+    <li class="reveal"><time class="mono">Junior – Senior high</time><div><h4>Tandag National Science High School</h4><p>Junior and senior high school.</p></div></li>
+  </ol>
+</section>
+
+<!-- 03 WORK -->
+<section class="work" id="work" data-sheet="Work">
+  <div class="sec-head"><span class="mono">03 — Selected work</span><span class="rule"></span></div>
+  <h2 class="sec-title reveal">Three builds, each one<br><em>started as a sketch.</em></h2>
+
+  <!-- kuwaGO -->
+  <article class="project" style="--accent:#3F8F4E">
+    <div class="project-info">
+      <p class="mono project-no">Fig. 01 · Mobile app · 2026</p>
+      <h3 class="reveal">kuwaGO</h3>
+      <p class="project-lede reveal">A cozy pixel-art study garden. Finish a Pomodoro focus session and your plant grows; give up and it wilts. AI turns your own notes into quizzes and flashcards.</p>
+      <ul class="project-points">
+        <li class="reveal"><b>My part</b> Concept, game rules, Figma design, hand-drawn pixel art, Firebase setup and user testing. Built with AI-assisted development.</li>
+        <li class="reveal"><b>Proof</b> Built in 30 days, shipped to 18 testers, 72 automated tests. The Deep Focus feature came straight from a tester's request.</li>
+      </ul>
+      <p class="tags mono reveal"><span>Flutter</span><span>Dart</span><span>Firebase</span><span>Gemini</span><span>Cloudflare Workers</span><span>Figma</span></p>
+      <a class="btn reveal" href="https://neckolescano.github.io/kuwaGO/" target="_blank" rel="noopener">Visit the kuwaGO site <span>↗</span></a>
+    </div>
+    <figure class="visual" data-build>
+      <figcaption class="mono"><span>Fig. 01 — Three screens</span><span class="state">Draft</span></figcaption>
+      <div class="mock mock-phones">
+        <div class="phone"><div class="shot"><img src="assets/kuwago-1.webp" alt="kuwaGO home screen: a greenhouse with the owl mascot and a plant" loading="lazy"></div></div>
+        <div class="phone up"><div class="shot"><img src="assets/kuwago-2.webp" alt="kuwaGO focus timer in a forest scene" loading="lazy"></div></div>
+        <div class="phone"><div class="shot"><img src="assets/kuwago-3.webp" alt="kuwaGO flashcards made from notes" loading="lazy"></div></div>
+      </div>
+    </figure>
+  </article>
+
+  <!-- Cinematheque -->
+  <article class="project flip" style="--accent:#C2410C">
+    <div class="project-info">
+      <p class="mono project-no">Fig. 02 · Web system · 2026</p>
+      <h3 class="reveal">Cinematheque Centre Davao</h3>
+      <p class="project-lede reveal">A ticketing and reservation website for a real cinema. Moviegoers pick exact seats, pay online and get an e-ticket; staff schedule films, admit guests at the door and produce the report the head office needs.</p>
+      <ul class="project-points">
+        <li class="reveal"><b>My part</b> Built in a group of three for our System Integration and Architecture course, for a real client.</li>
+        <li class="reveal"><b>Proof</b> 129 automated tests, online payments through PayMongo, and a report export that matches the client's own spreadsheet row for row. Revised after the client's evaluation.</li>
+      </ul>
+      <p class="tags mono reveal"><span>Laravel 12</span><span>PHP</span><span>MySQL</span><span>PayMongo</span><span>Blade</span><span>Hand-written CSS/JS</span></p>
+    </div>
+    <figure class="visual" data-build>
+      <figcaption class="mono"><span>Fig. 02 — Seat plan, 120 seats</span><span class="state">Draft</span></figcaption>
+      <div class="mock mock-seats">
+        <div class="seats" id="seats"></div>
+        <div class="screen mono">Screen</div>
+        <div class="ticket">
+          <p class="mono">E-ticket</p>
+          <strong>Row F · Seats 6, 7</strong>
+          <p class="mono">2 tickets · ₱100 · Confirmed</p>
+        </div>
+      </div>
+    </figure>
+  </article>
+
+  <!-- xpera -->
+  <article class="project" style="--accent:#F43F5E">
+    <div class="project-info">
+      <p class="mono project-no">Fig. 03 · Desktop system · In progress</p>
+      <h3 class="reveal">xpera CRM</h3>
+      <p class="project-lede reveal">A customer system for small stores that sell gaming PC parts. It remembers every customer: who they are, what they buy, what they owe and what they need. The name means XP + era.</p>
+      <ul class="project-points">
+        <li class="reveal"><b>My part</b> Solo project. Brand and logo, Figma screens, use cases, schedule, the desktop app and its databases.</li>
+        <li class="reveal"><b>Proof</b> Multi-tenant: every store gets its own database, with a local copy and a cloud backup. 15 use cases, 4 user roles, 200+ seeded transactions per store.</li>
+      </ul>
+      <p class="tags mono reveal"><span>C#</span><span>.NET WinForms</span><span>SQL Server</span><span>EF Core</span><span>ASP.NET API</span><span>Figma</span></p>
+    </div>
+    <figure class="visual" data-build>
+      <figcaption class="mono"><span>Fig. 03 — Store dashboard</span><span class="state">Draft</span></figcaption>
+      <div class="mock mock-dash">
+        <div class="dash-side">
+          <strong>xpera</strong>
+          <i class="on"></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="dash-main">
+          <p class="dash-title">Dashboard</p>
+          <div class="tiles">
+            <div class="tile"><span class="mono">Customers</span><b>40</b></div>
+            <div class="tile"><span class="mono">Sales</span><b>210</b></div>
+            <div class="tile"><span class="mono">Payments</span><b>53</b></div>
+            <div class="tile alert"><span class="mono">Open concerns</span><b>6</b></div>
+          </div>
+          <div class="chart">
+            <span class="mono">Monthly sales</span>
+            <div class="bars" id="bars"></div>
+          </div>
+        </div>
+      </div>
+    </figure>
+  </article>
+</section>
+
+<!-- 04 PROCESS -->
+<section class="process" id="process" data-sheet="Process">
+  <div class="process-pin">
+    <div class="sec-head"><span class="mono">04 — Process</span><span class="rule"></span></div>
+    <h2 class="sec-title reveal">How a build <em>happens.</em></h2>
+    <div class="track">
+      <div class="track-line"><i></i></div>
+      <article class="step"><span class="step-no">01</span><h3>Idea</h3><p>I write down what the thing is for and who uses it, in plain words, before I open any tool.</p><p class="mono note">xpera began as a two-page rationale and 15 use cases.</p></article>
+      <article class="step"><span class="step-no">02</span><h3>Design</h3><p>Screens, colours and motion get decided in Figma first, so the build has something exact to match.</p><p class="mono note">Every kuwaGO screen was a Figma mockup first.</p></article>
+      <article class="step"><span class="step-no">03</span><h3>Build</h3><p>I direct the build feature by feature with AI-assisted development, and review each change against the design.</p><p class="mono note">Flutter, Laravel, C# — the tool follows the job.</p></article>
+      <article class="step"><span class="step-no">04</span><h3>Test</h3><p>Real devices, real people, automated tests. Feedback goes back into the plan, not into a drawer.</p><p class="mono note">18 testers. 201 automated tests across two projects.</p></article>
+      <article class="step"><span class="step-no">05</span><h3>Hand over</h3><p>Setup guides, decision logs and data dictionaries, so the next person can pick it up without me.</p><p class="mono note">Every project ships with its docs.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- 05 TOOLKIT + MILESTONES -->
+<section class="toolkit" data-sheet="Milestones">
+  <div class="marquee" aria-hidden="true"><div class="marquee-in">
+    <span>Flutter</span><span>Laravel</span><span>C# .NET</span><span>Figma</span><span>Firebase</span><span>MySQL</span><span>SQL Server</span><span>PHP</span><span>Dart</span><span>Git</span>
+    <span>Flutter</span><span>Laravel</span><span>C# .NET</span><span>Figma</span><span>Firebase</span><span>MySQL</span><span>SQL Server</span><span>PHP</span><span>Dart</span><span>Git</span>
+  </div></div>
+
+  <div class="stats">
+    <div class="stat"><b data-count="3">0</b><span class="mono">Systems built: mobile, web, desktop</span></div>
+    <div class="stat"><b data-count="201">0</b><span class="mono">Automated tests across two projects</span></div>
+    <div class="stat"><b data-count="18">0</b><span class="mono">Real testers on kuwaGO</span></div>
+    <div class="stat"><b data-count="3">0</b><span class="mono">IT Specialist certifications</span></div>
+  </div>
+
+  <div class="kit">
+    <div class="reveal"><h4 class="mono">Web</h4><p>Laravel · PHP · Blade · HTML/CSS/JS · REST APIs · PayMongo</p></div>
+    <div class="reveal"><h4 class="mono">Mobile</h4><p>Flutter · Dart · Firebase Auth · Firestore · App Distribution</p></div>
+    <div class="reveal"><h4 class="mono">UI / UX</h4><p>Figma · Brand and logo design · Pixel art (Piskel) · Design systems</p></div>
+    <div class="reveal"><h4 class="mono">Data and infra</h4><p>MySQL · SQL Server · EF Core migrations · Multi-tenant databases · Java · Git</p></div>
+  </div>
+
+  <div id="milestones" class="sec-head"><span class="mono">05 — Milestones</span><span class="rule"></span></div>
+  <ol class="milestones">
+    <li class="reveal"><time class="mono">Sep – Oct 2026</time><div><h4>kuwaGO reaches real users</h4><p>Designed, built and tested in 30 days. Version 1.0.5 went out to 18 testers, and I kept building it after the course ended, aiming for Google Play.</p></div></li>
+    <li class="reveal"><time class="mono">Oct 2026</time><div><h4>Cinematheque system passes client evaluation</h4><p>The revised system matched the client's own report sheets row for row, with 129 tests passing.</p></div></li>
+    <li class="reveal"><time class="mono">Nov 2026</time><div><h4>xpera CRM goes multi-tenant</h4><p>Four-project solution, one database per store, local and cloud copies, and a first lab release.</p></div></li>
+  </ol>
+
+  <div class="sec-head certs-head"><span class="mono">Certifications</span><span class="rule"></span></div>
+  <div class="certs">
+    <article class="cert reveal"><p class="mono">IT Specialist · Certiport, Pearson</p><h4>HTML and CSS</h4><p class="mono cert-date">Awarded May 20, 2026</p><span class="seal mono">Certified</span></article>
+    <article class="cert reveal"><p class="mono">IT Specialist · Certiport, Pearson</p><h4>Databases</h4><p class="mono cert-date">Awarded May 13, 2026</p><span class="seal mono">Certified</span></article>
+    <article class="cert reveal"><p class="mono">IT Specialist · Certiport, Pearson</p><h4>Java</h4><p class="mono cert-date">Awarded March 12, 2025</p><span class="seal mono">Certified</span></article>
+  </div>
+</section>
+
+<!-- 06 CONTACT -->
+<section class="contact" id="contact" data-sheet="Contact">
+  <p class="mono reveal">06 — Contact</p>
+  <h2 class="contact-title" aria-label="Let's build something.">
+    <span class="line" data-chars>Let's build</span>
+    <span class="line indent" data-chars>something.</span>
+  </h2>
+  <div class="contact-links reveal">
+    <a class="btn solid" href="mailto:neckolescano36@gmail.com">neckolescano36@gmail.com <span>↗</span></a>
+    <a class="btn" href="assets/Nicho-Lescano-Resume.pdf" download>Download resume <span>↓</span></a>
+    <a class="btn" href="https://github.com/neckolescano" target="_blank" rel="noopener">GitHub <span>↗</span></a>
+  </div>
+  <footer class="mono">
+    <span>Drafted and built by Nicho Lescano</span>
+    <span>Sheet 06 / 06 · As built</span>
+    <a href="#top">Back to top ↑</a>
+  </footer>
+</section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

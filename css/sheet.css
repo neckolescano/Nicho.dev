@@ -1,0 +1,86 @@
+/* Inner pages: the file you pressed, now a full sheet lying on the same desk.
+   Daylight = ink on drafting paper. Lamp light = a blueprint sheet on a dark desk. */
+.page-body { --room: #C9A271; --room-2: #B48A5A; --cast: rgba(60,38,14,.42);
+  --lamp-in: rgba(255,246,222,.22); --lamp-out: rgba(34,24,8,.18);
+  background: repeating-linear-gradient(90deg, rgba(0,0,0,.025) 0 2px, transparent 2px 13px, rgba(255,255,255,.025) 13px 14px, transparent 14px 23px), linear-gradient(var(--room), var(--room-2)); background-attachment: fixed; }
+:root[data-theme="dark"] .page-body { --room: #33241A; --room-2: #1F160F; --cast: rgba(0,0,0,.7);
+  --lamp-in: rgba(255,232,180,.10); --lamp-out: rgba(0,0,0,.55); }
+.page-body .sheetframe { display: none; }
+
+/* the desk light, under the sheet */
+.plamp { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(circle 60vmin at var(--mx, 50%) var(--my, 30%), var(--lamp-in) 0, rgba(0,0,0,0) 50%, var(--lamp-out) 100%); }
+
+.page-body .bar { background: color-mix(in srgb, var(--room) 86%, transparent); border-bottom: 1px solid rgba(0,0,0,.08); }
+:root[data-theme="dark"] .page-body .bar { border-bottom-color: rgba(255,255,255,.06); }
+:root[data-theme="dark"] .page-body .bar .back, :root[data-theme="dark"] .page-body .tabs a:hover, :root[data-theme="dark"] .page-body .tabs a[aria-current] { color: #EEF4FB; }
+
+/* the sheet */
+.page { position: relative; z-index: 1; max-width: min(1220px, calc(100vw - 80px)); margin: 96px auto 70px; padding: 70px clamp(26px, 5vw, 76px) 34px;
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--grid-2) 1px, transparent 1px), linear-gradient(90deg, var(--grid-2) 1px, transparent 1px), linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+  box-shadow: 0 1px 1px rgba(0,0,0,.08), 0 14px 26px -14px var(--cast), 0 50px 90px -40px var(--cast);
+  transform-origin: 50% 0; }
+/* drawing border, inside the paper's edge */
+.page::before { content: ""; position: absolute; inset: 16px; border: 1.5px solid var(--line); pointer-events: none; }
+.page::after { content: ""; position: absolute; inset: 21px; border: 1px solid var(--hair); pointer-events: none; }
+/* the sheet settles onto the desk as the page opens */
+.motion .page { animation: settle .8s var(--ease) both; }
+@keyframes settle { from { transform: perspective(1400px) rotateX(16deg) translateY(40px); opacity: 0; } }
+
+/* title block in the sheet's own corner */
+.page .tblock { position: relative; max-width: none; margin: 56px -6px 0; padding: 0; }
+
+@media (max-width: 760px) {
+  .page { margin: 74px 8px 30px; padding: 52px 22px 26px; }
+  .page::before { inset: 9px; } .page::after { inset: 13px; }
+}
+
+/* one project on its own sheet (opened from the desk) */
+.single .proj-list, .single .lede, .single .proj-text h2 { display: none; }
+.single .proj-layout { grid-template-columns: 1fr; }
+.single .proj { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+@media (max-width: 1040px) { .single .proj { grid-template-columns: 1fr; } }
+
+/* pages cross-fade into each other where the browser supports it */
+@view-transition { navigation: auto; }
+
+/* things rise into place as they come into view (only when motion is on) */
+.rv-on .rv, .rv-on .page .step { opacity: 0; transform: translateY(34px); transition: opacity .8s var(--ease), transform .9s var(--ease); transition-delay: var(--d, 0ms); }
+.rv-on .rv.in { opacity: 1; transform: none; }
+.rv-on .page .step.in { transform: none; }
+.rv-on .page .step.in:not(.on) { opacity: .35; }
+.rv-on .page .step.in.on { opacity: 1; }
+@media (max-width: 900px) { .rv-on .page .step.in:not(.on) { opacity: 1; } }
+.rv-on .page > * { animation: none; }
+.rv-on .rv.about-grid, .rv-on .rv.trays, .rv-on .rv.certs, .rv-on .rv.contact { opacity: 1; transform: none; }
+
+/* a sheet tilting in must never cause a sideways scrollbar */
+.page-body { overflow-x: clip; }
+
+/* the bar sits on the wood, so it uses paper type on a tinted strip */
+.page-body .bar { background: color-mix(in srgb, var(--room-2) 82%, transparent); border-bottom-color: rgba(0,0,0,.12); }
+.page-body .bar .back, .page-body .tabs a:hover, .page-body .tabs a[aria-current] { color: #F3F1EC; }
+.page-body .tabs a { color: rgba(243,241,236,.72); }
+.page-body .tabs a::after { background: #F3F1EC; }
+.page-body .bar .tool { background: rgba(243,241,236,.92); color: #161B26; border-color: transparent; }
+
+/* =====================================================================
+   Pages as artboards: the sheet you open is a frame on a design canvas.
+   ===================================================================== */
+.page-body { --room: #E4E2DD; --room-2: #E4E2DD; --canvas-dot: rgba(22,27,38,.13);
+  background: radial-gradient(var(--canvas-dot) 1px, transparent 1.2px) 0 0 / 22px 22px, var(--room); background-attachment: fixed; }
+:root[data-theme="dark"] .page-body { --room: #1C1E22; --room-2: #1C1E22; --canvas-dot: rgba(236,233,226,.09); }
+.page { background-image: none; border-radius: 2px; box-shadow: 0 1px 2px rgba(0,0,0,.08), 0 24px 60px -30px var(--shadow); margin-top: 118px; }
+.page::after { display: none; }
+/* the frame's name, above its top-left corner, like a design tool */
+.page::before { content: attr(data-frame); inset: auto; left: 0; top: -28px; border: 0; font: 500 12px var(--sans); color: var(--muted); white-space: nowrap; }
+.page .tblock { display: none; }
+/* the bar floats over the canvas */
+.page-body .bar { background: color-mix(in srgb, var(--room) 88%, transparent); border-bottom-color: rgba(0,0,0,.07); }
+.page-body .bar .back, .page-body .tabs a:hover, .page-body .tabs a[aria-current] { color: var(--ink); }
+.page-body .tabs a { color: var(--muted); }
+.page-body .tabs a::after { background: var(--mark); }
+.page-body .bar .tool { background: var(--bg-2); color: var(--ink); border-color: var(--hair); }
+:root[data-theme="dark"] .page-body .bar { border-bottom-color: rgba(255,255,255,.06); }

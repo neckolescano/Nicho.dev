@@ -1,0 +1,12 @@
+# system and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+*.log
+.vscode/
+.idea/
+
+# local tooling
+.claude/
+node_modules/

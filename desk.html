@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The room — Nicho.dev</title>
+<meta name="description" content="Nicho Lescano's studio at night, in 3D. Each toy on the shelf stands for a system he built.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161B26'/%3E%3Cpath d='M9 24V8l14 16V8' fill='none' stroke='%23F3F1EC' stroke-width='2.2'/%3E%3Ccircle cx='25' cy='25' r='2.4' fill='%23C4432D'/%3E%3C/svg%3E">
+<script>(function(){var d=document.documentElement,g=function(k){try{return localStorage.getItem(k)}catch(e){return null}};d.dataset.theme='dark';var m=g('motion');if(m?m==='on':!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion');if(/[?&]embed/.test(location.search))d.classList.add('embed')})()</script>
+<script>try{if(document.documentElement.classList.contains('motion')&&sessionStorage.getItem('nd-tx'))document.documentElement.classList.add('tx-hold')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css?v=11">
+<link rel="stylesheet" href="css/nav.css?v=11">
+<link rel="stylesheet" href="css/os.css?v=4">
+<link rel="stylesheet" href="css/room.css?v=12">
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+</head>
+<body class="room-page">
+<main id="main" class="room">
+  <canvas id="roomCanvas" aria-hidden="true"></canvas>
+
+  <!-- loading: the room is drafted as a line drawing, then the real room fades in behind it -->
+  <div class="r-load" aria-hidden="true">
+    <svg viewBox="0 0 1000 560">
+      <path pathLength="1" style="--d:0" d="M0 470H1000"/>
+      <rect pathLength="1" style="--d:1" x="300" y="70" width="400" height="300"/>
+      <path pathLength="1" style="--d:2" class="thin" d="M320 70V370M340 70V370M360 70V370M380 70V370M400 70V370M420 70V370M440 70V370M460 70V370M480 70V370M500 70V370M520 70V370M540 70V370M560 70V370M580 70V370M600 70V370M620 70V370M640 70V370M660 70V370M680 70V370"/>
+      <path pathLength="1" style="--d:3" class="acc" d="M330 190H650"/>
+      <path pathLength="1" style="--d:4" d="M345 190V168H365V190M372 190V172H384V190M425 190L430 160H452L457 190"/>
+      <path pathLength="1" style="--d:4" d="M440 394L452 326H548L560 394"/>
+      <path pathLength="1" style="--d:5" d="M430 394H570M610 394H640"/>
+      <path pathLength="1" style="--d:5" class="acc" d="M170 396H830M175 401H825"/>
+      <path pathLength="1" style="--d:6" d="M190 401V540M810 401V540"/>
+      <rect pathLength="1" style="--d:6" x="360" y="404" width="200" height="34"/>
+      <path pathLength="1" style="--d:7" d="M440 421H480"/>
+      <path pathLength="1" style="--d:7" d="M215 394H255M235 394L262 300L330 268M318 262L346 284L330 300"/>
+      
+      
+      <rect pathLength="1" style="--d:9" x="862" y="80" width="118" height="200"/>
+      <path pathLength="1" style="--d:9" class="thin" d="M862 100H980M862 120H980M862 140H980M862 160H980M862 180H980M862 200H980M862 220H980M862 240H980M862 260H980"/>
+      <rect pathLength="1" style="--d:10" x="110" y="120" width="140" height="108"/>
+      <path pathLength="1" style="--d:11" class="thin" d="M122 132h36v26h-36zM168 130h36v26h-36zM212 134h30v24h-30zM124 172h36v26h-36zM168 174h36v26h-36zM212 172h30v26h-30z"/>
+      <path pathLength="1" style="--d:11" d="M780 394V350M770 350H790"/>
+    </svg>
+    <p class="rl-cap mono"><span>Drafting the room</span><b class="rl-pct">0</b>%<i class="rl-bar"><i></i></i></p>
+  </div>
+
+  <header class="r-head">
+    <p class="mono r-kick">Fig. 04 · The room</p>
+    <h1>Nicho's studio</h1>
+    <p class="r-sub">The toys stand for what I built. The drawer holds the files. The board maps the main page. The laptop takes you in.</p>
+  </header>
+
+  <div class="r-hots" id="hots" aria-label="Things in the room"></div>
+  <aside class="r-card" id="card" aria-live="polite"></aside>
+  <div class="r-fade" aria-hidden="true"></div>
+  <p class="r-hint mono"><span class="h-desk">Click a dot to look closer · drag folders in the drawer · Esc to step back</span><span class="h-touch">Tap a dot to look closer</span></p>
+
+  <!-- the same things as plain links: for screen readers, and shown if 3D can't run -->
+  <nav class="r-list" aria-label="What's in the room">
+    <p class="mono">The room</p>
+    <a href="projects.html?p=kuwago"><b>kuwaGO</b> The study owl on its sprouting pot</a>
+    <a href="projects.html?p=cinematheque"><b>Cinematheque</b> Popcorn, a clapper and a ticket</a>
+    <a href="projects.html?p=xpera"><b>xpera CRM</b> A boxed graphics card</a>
+    <a href="about.html"><b>Sketchbook</b> Where every project starts</a>
+    <a href="index.html"><b>Laptop</b> Dive into the screen: the main page</a>
+    <a href="index.html?project=cinematheque"><b>Drawer</b> Project files: see each build in layers</a>
+  </nav>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="js/nav.js?v=11"></script>
+<script src="js/site.js?v=11"></script>
+<script src="js/os.js?v=7"></script>
+<script type="module" src="js/room.js?v=22"></script>
+</body>
+</html>

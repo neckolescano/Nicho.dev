@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicho B. Lescano — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4; margin: 0; }
+  :root { --ink: #121212; --muted: #55524c; --blue: #2447D6; --rule: #cfcabd; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #e9e6df; }
+  body { font: 400 8.3pt/1.42 "Inter", system-ui, sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  a { color: inherit; text-decoration: none; }
+  .page { width: 210mm; height: 297mm; margin: 24px auto; background: #fff; padding: 13mm 14mm 10mm; display: flex; flex-direction: column; overflow: hidden; }
+  @media print { html { background: #fff; } .page { margin: 0; } }
+
+  .mono { font: 500 6.9pt/1.5 "JetBrains Mono", monospace; letter-spacing: .09em; text-transform: uppercase; }
+  .serif { font-family: "Instrument Serif", serif; font-weight: 400; }
+
+  header { display: flex; align-items: flex-end; gap: 9mm; padding-bottom: 6mm; border-bottom: 1px solid var(--ink); }
+  .photo { width: 30mm; height: 30mm; flex: none; border: 1px solid var(--ink); overflow: hidden; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .id { flex: 1; }
+  .id .mono { color: var(--blue); }
+  h1 { font: 400 40pt/.9 "Instrument Serif", serif; letter-spacing: -.02em; margin: 2mm 0 2.5mm; }
+  .role { font-size: 9.6pt; color: var(--muted); }
+  .contact { text-align: right; display: grid; gap: 1mm; font-size: 8pt; }
+  .contact b { font-weight: 500; }
+
+  .cols { flex: 1; display: grid; grid-template-columns: 58mm 1fr; gap: 9mm; padding-top: 6mm; min-height: 0; }
+  section { margin-bottom: 4.2mm; }
+  h2 { font: 500 6.9pt/1.5 "JetBrains Mono", monospace; letter-spacing: .09em; text-transform: uppercase; color: var(--blue); display: flex; align-items: center; gap: 3mm; margin-bottom: 2.6mm; }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--blue); }
+  h3 { font: 400 13pt/1.1 "Instrument Serif", serif; }
+  p, li { color: var(--muted); }
+  .lead { font-size: 8.9pt; color: var(--ink); }
+
+  .item { margin-bottom: 2.4mm; }
+  .item:last-child { margin-bottom: 0; }
+  .item .mono { color: var(--muted); display: block; margin-top: .6mm; }
+  .item strong { font-weight: 600; color: var(--ink); display: block; }
+
+  .job { margin-bottom: 3.2mm; padding-bottom: 3.2mm; border-bottom: 1px solid var(--rule); }
+  .job:last-child { border: 0; margin: 0; padding: 0; }
+  .job-top { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; }
+  .job-top .mono { color: var(--muted); white-space: nowrap; }
+  .job .stack { color: var(--blue); margin: .8mm 0 1.4mm; display: block; }
+  ul { list-style: none; }
+  li { padding-left: 3.6mm; position: relative; margin-bottom: .7mm; }
+  li::before { content: "+"; position: absolute; left: 0; top: 0; color: var(--blue); font-family: "JetBrains Mono", monospace; font-size: 7.5pt; }
+  dl { display: grid; gap: 1.6mm; }
+  dt { font-weight: 600; color: var(--ink); }
+  dd { color: var(--muted); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2mm 6mm; }
+  .grid2 b { display: block; font-weight: 600; color: var(--ink); }
+
+  footer { border-top: 1px solid var(--ink); padding-top: 2.4mm; display: flex; justify-content: space-between; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="photo"><img src="assets/photo.jpg" alt="Photo of Nicho Lescano" onerror="this.parentElement.remove()"></div>
+    <div class="id">
+      <p class="mono">Resume · 2026</p>
+      <h1>Nicho B. Lescano</h1>
+      <p class="role">IT student · Web and mobile development · UI/UX design</p>
+    </div>
+    <div class="contact">
+      <span><b>neckolescano36@gmail.com</b></span>
+      <span>github.com/neckolescano</span>
+      <span>Davao City, Philippines</span>
+      <span>Born September 10, 2004 · 22 · Male</span>
+    </div>
+  </header>
+
+  <div class="cols">
+    <!-- left column -->
+    <div>
+      <section>
+        <h2>Education</h2>
+        <div class="item"><strong>University of Mindanao</strong>BS Information Technology, 3rd year<span class="mono">2024 – Present · Davao City</span></div>
+        <div class="item"><strong>Tandag National Science High School</strong>Junior and senior high school</div>
+      </section>
+
+      <section>
+        <h2>Certifications</h2>
+        <div class="item"><strong>IT Specialist: HTML and CSS</strong>Certiport, Pearson<span class="mono">May 2026</span></div>
+        <div class="item"><strong>IT Specialist: Databases</strong>Certiport, Pearson<span class="mono">May 2026</span></div>
+        <div class="item"><strong>IT Specialist: Java</strong>Certiport, Pearson<span class="mono">March 2025</span></div>
+      </section>
+
+      <section>
+        <h2>Skills</h2>
+        <dl>
+          <div><dt>Web</dt><dd>Laravel, PHP, Blade, HTML, CSS, JavaScript, REST APIs, PayMongo</dd></div>
+          <div><dt>Mobile</dt><dd>Flutter, Dart, Firebase Auth, Firestore</dd></div>
+          <div><dt>Desktop</dt><dd>C#, .NET WinForms, ASP.NET API, Java</dd></div>
+          <div><dt>Databases</dt><dd>MySQL, SQL Server, EF Core migrations, multi-tenant design</dd></div>
+          <div><dt>Design</dt><dd>Figma, UI/UX, brand and logo design, pixel art (Piskel)</dd></div>
+          <div><dt>Tools</dt><dd>Git and GitHub, AI-assisted development, ProjectLibre</dd></div>
+        </dl>
+      </section>
+
+      <section>
+        <h2>Interests</h2>
+        <p>Pixel art, game-style interface design, gaming PC hardware, and study tools that make focus feel less like a chore.</p>
+      </section>
+    </div>
+
+    <!-- right column -->
+    <div>
+      <section>
+        <h2>Profile</h2>
+        <p class="lead">Third-year IT student who designs before building. I plan the screens in Figma, build with AI-assisted development, and test with real people until the system holds up. I have shipped a mobile app to testers, a web system for a real client, and I am now building a multi-tenant desktop system on my own.</p>
+      </section>
+
+      <section>
+        <h2>Projects</h2>
+
+        <div class="job">
+          <div class="job-top"><h3>kuwaGO — study garden app</h3><span class="mono">Sep – Oct 2026 · Solo</span></div>
+          <span class="mono stack">Flutter · Dart · Firebase · Gemini · Cloudflare Workers · Figma</span>
+          <ul>
+            <li>Came up with the concept and game rules: finishing a Pomodoro focus session grows a pixel plant, and AI turns the student's own notes into quizzes and flashcards.</li>
+            <li>Designed every screen in Figma, drew the core pixel art by hand, and directed the build with AI-assisted development.</li>
+            <li>Set up Firebase sign-in, database and security rules, and a Cloudflare Worker so no AI key ships inside the app.</li>
+            <li>Went from idea to tester release in 30 days: 18 testers, 72 automated tests, and a Deep Focus feature added from tester feedback.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-top"><h3>Cinematheque Centre Davao ticketing</h3><span class="mono">2026 · Group of 3</span></div>
+          <span class="mono stack">Laravel 12 · PHP · MySQL · PayMongo · Blade</span>
+          <ul>
+            <li>Web ticketing and reservation system for a real cinema client: seat-by-seat booking on a 120-seat plan, online payment and emailed e-tickets.</li>
+            <li>Staff side covers film scheduling with draft, review and publish, door check-in, and a report export that matches the client's own spreadsheet row for row.</li>
+            <li>Revised after the client's evaluation, with 129 automated tests passing.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="job-top"><h3>xpera CRM — desktop system</h3><span class="mono">Oct 2026 – Present · Solo</span></div>
+          <span class="mono stack">C# · .NET WinForms · SQL Server · EF Core · ASP.NET API</span>
+          <ul>
+            <li>Customer system for stores that sell gaming PC parts. Designed the brand, logo and screens, wrote the rationale and 15 use cases for 4 user roles, and planned the schedule.</li>
+            <li>Building a multi-tenant system where every store has its own database, with a local copy and a cloud backup.</li>
+            <li>Split the solution into UI, domain, infrastructure and API projects, with 200+ seeded transactions per store for demos.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section>
+        <h2>What I am good at</h2>
+        <div class="grid2">
+          <p><b>Designing first</b>Clear screens and a story behind every design choice before any code.</p>
+          <p><b>Finishing things</b>Each project reached real users, a real client or a working release.</p>
+          <p><b>Testing with people</b>Real devices, real testers, and feedback that changes the plan.</p>
+          <p><b>Writing it down</b>Setup guides, decision logs and data dictionaries with every project.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer class="mono"><span>Nicho B. Lescano · Resume</span><span>Portfolio and references available on request</span></footer>
+</div>
+</body>
+</html>

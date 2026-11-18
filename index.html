@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nicho.dev — Portfolio of Nicho Lescano</title>
+<meta name="description" content="Portfolio of Nicho Lescano, a UI/UX designer and developer in Davao City who draws every project first, then builds it: web, mobile and desktop systems, plus machine learning and AI automation.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23161B26'/%3E%3Cpath d='M9 24V8l14 16V8' fill='none' stroke='%23F3F1EC' stroke-width='2.2'/%3E%3Ccircle cx='25' cy='25' r='2.4' fill='%23C4432D'/%3E%3C/svg%3E">
+<script>(function(){var d=document.documentElement,g=function(k){try{return localStorage.getItem(k)}catch(e){return null}};d.dataset.theme='dark';d.classList.add('home-black');var m=g('motion');if(m?m==='on':!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion')})()</script>
+<script>try{var D=document.documentElement;if(D.classList.contains('motion')&&!location.hash)D.classList.add('intro-on')}catch(e){}</script>
+<script>try{if(document.documentElement.classList.contains('motion')&&sessionStorage.getItem('nd-tx'))document.documentElement.classList.add('tx-hold')}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css?v=11">
+<link rel="stylesheet" href="css/nav.css?v=11">
+<link rel="stylesheet" href="css/home.css?v=13">
+</head>
+<body class="home">
+
+<!-- ============ INTRO — a project pulled apart into its layers. Press it, drag a layer out, scroll to go in. ============ -->
+<div class="intro" id="intro" role="region" aria-label="Intro: pick a project and pull it apart into its design layers. Scroll to enter the site.">
+  <div class="intro-grid" aria-hidden="true"></div>
+  <div class="boot" aria-hidden="true"><i class="boot-line"></i><span class="boot-label mono">Drafting the layers</span></div>
+
+  <div class="intro-top mono">
+    <span class="it-mark">N<i>.</i>&nbsp; Nicho.dev <a class="it-room" href="desk.html"><span aria-hidden="true">↙</span> Step into the room</a></span>
+    <span class="cover-status mono">Design · Code · AI</span>
+    <span>Davao City <time id="clock">--:--</time></span>
+  </div>
+
+  <div class="intro-copy">
+    <p class="it-name" aria-hidden="true"><span class="ln"><span>Nicho</span></span><span class="ln"><span class="outline">Lescano</span></span></p>
+    <p class="it-role mono">UI/UX designer &amp; developer · ML and AI automation</p>
+  </div>
+
+  <div class="scene" id="scene">
+    <div class="stack-shadow" aria-hidden="true"></div>
+    <div class="stack" id="stack" role="button" tabindex="0" aria-label="Project layers. Press to pull apart or put back together."></div>
+  </div>
+
+  <nav class="picker" aria-label="Projects">
+    <div class="pk-head">
+      <span class="pk-no mono"><b id="pkNo">01</b> / <span id="pkAll">03</span></span>
+      <span class="pk-title" id="pkTitle" aria-live="polite">kuwaGO</span>
+      <span class="pk-kind mono" id="pkKind">Mobile app</span>
+    </div>
+    <div class="pk-bar">
+      <div class="pk-row" id="pkRow" role="listbox" aria-label="Choose a project"></div>
+      <div class="pk-arrows">
+        <button type="button" class="pk-prev" aria-label="Previous project">←</button>
+        <button type="button" class="pk-next" aria-label="Next project">→</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hud" id="hud" aria-hidden="true">
+    <svg class="hud-svg"><g class="hud-links"></g></svg>
+    <div class="hud-title"><span class="mono hud-no"></span><strong class="hud-name"></strong><span class="mono hud-sub">Layer breakdown</span></div>
+    <div class="hud-labels"></div>
+    <div class="hud-help mono"><span>Drag a layer out to inspect</span><span>Esc to close</span><span>Scroll to enter</span></div>
+  </div>
+  <button class="hud-close mono" type="button" aria-label="Close the breakdown">Close <span aria-hidden="true">✕</span></button>
+  <aside class="vpanel" id="vpanel" aria-live="polite" aria-label="Layer details"></aside>
+  <p class="layer-hint mono" id="layerHint" aria-live="polite"><span class="h-touch">Tap the stack to pull it apart</span></p>
+  <div class="cursor-tag mono" aria-hidden="true"></div>
+  <button class="intro-enter mono" type="button"><span class="mouse" aria-hidden="true"><i></i></span><span class="ie-desk">Scroll to enter</span><span class="ie-touch">Swipe up to enter</span></button>
+</div>
+
+<div class="intro-black" aria-hidden="true"></div>
+<!-- a calm backdrop for the scrolling page: soft light and fine grain, no grid -->
+
+<div class="bg-dots" aria-hidden="true"></div>
+
+<main id="main">
+
+<!-- ============ 00 · LEAD — where the intro lands ============ -->
+<section class="lead" id="top" data-sheet="Cover" data-no="00" aria-labelledby="lead-name">
+  <p class="mono lead-kick">Davao City, Philippines</p>
+  <h1 class="lead-name" id="lead-name" tabindex="-1">Nicho Lescano</h1>
+  <p class="lead-line">UI/UX designer and developer, also into machine learning and building with AI automation. <span>I draw every project first, then I build it, layer by layer.</span></p>
+  <div class="cover-actions">
+    <a class="btn solid" href="#work">View the work <span>↓</span></a>
+    <button class="btn replay" type="button">Replay the intro <span>↺</span></button>
+  </div>
+  <dl class="cover-meta mono" aria-label="At a glance">
+    <div><dt>Builds</dt><dd>Web · Mobile · Desktop</dd></div>
+    <div><dt>Designs in</dt><dd>Figma · Pixel art</dd></div>
+    <div><dt>Studying</dt><dd>BS IT, University of Mindanao</dd></div>
+  </dl>
+</section>
+
+<!-- ============ 01 · WORK — backlit plates on a light table ============ -->
+<section class="sec work" id="work" data-sheet="Work" data-no="01">
+  <header class="sec-head"><span class="mono"><b>01</b> Selected work</span><i class="rule"></i><a class="mono sheet-link" href="projects.html">All projects, sheet A-101 →</a></header>
+  <h2 class="sec-title" data-rise>Three builds. <em>Hover one to see it built.</em></h2>
+
+  <div class="plates">
+
+    <article class="plate-wrap" id="kuwago">
+      <div class="plate" style="--accent:#5BB06A; --accent-rgb:91,176,106">
+        <a class="glass" href="projects.html?p=kuwago" aria-label="kuwaGO case study">
+          <span class="g-layer g-sketch g-phones" aria-hidden="true">
+            <img src="assets/sketch/kuwago-garden.jpg" alt="" loading="lazy"><img src="assets/sketch/kuwago-home.jpg" alt="" loading="lazy"><img src="assets/sketch/kuwago-timer.jpg" alt="" loading="lazy">
+          </span>
+          <span class="g-layer g-ink g-phones">
+            <img src="assets/shots/kuwago-garden.jpg" alt="kuwaGO garden where finished focus sessions grow pixel plants" loading="lazy"><img src="assets/shots/kuwago-home.jpg" alt="kuwaGO home screen with the owl mascot in a greenhouse" loading="lazy"><img src="assets/shots/kuwago-timer.jpg" alt="kuwaGO focus timer in a forest scene" loading="lazy">
+          </span>
+          <span class="g-sheen" aria-hidden="true"></span>
+          <span class="redline" aria-hidden="true">
+            <span class="rl-w mono"><em>3 × 390 pt · iPhone frames</em></span>
+            <span class="rl-h mono"><em>844 pt</em></span>
+            <span class="rl-call mono" style="--cx:50%; --cy:58%">Focus session, 25 min</span>
+          </span>
+        </a>
+        <div class="spec">
+          <p class="spec-no mono">Fig. 01 <i>/</i> Mobile app</p>
+          <h3>kuwaGO</h3>
+          <p class="spec-lede">A cozy pixel-art study garden. Finish a focus session and your plant grows; give up and it wilts. AI turns your own notes into quizzes.</p>
+          <dl class="spec-table">
+            <div><dt>Role</dt><dd>Concept, Figma design, pixel art, Firebase, testing</dd></div>
+            <div><dt>Built with</dt><dd>Flutter · Firebase · Gemini · Cloudflare Workers</dd></div>
+            <div><dt>Proof</dt><dd>30 days to ship · 18 testers · 72 automated tests</dd></div>
+            <div><dt>Status</dt><dd>v1.0.5 with testers, heading to Google Play</dd></div>
+          </dl>
+          <div class="spec-links"><a class="btn" href="projects.html?p=kuwago">Read the case study <span>→</span></a><a class="mono ext" href="https://neckolescano.github.io/kuwaGO/" target="_blank" rel="noopener">Live site ↗</a></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="plate-wrap" id="cinematheque">
+      <div class="plate" style="--accent:#E2763F; --accent-rgb:226,118,63">
+        <a class="glass" href="projects.html?p=cinematheque" aria-label="Cinematheque case study">
+          <span class="g-layer g-sketch" aria-hidden="true"><img src="assets/sketch/cinematheque-home.jpg" alt="" loading="lazy"></span>
+          <span class="g-layer g-ink"><img src="assets/shots/cinematheque-home.jpg" alt="Cinematheque Centre Davao home page with the film now showing" loading="lazy"></span>
+          <span class="g-inset" aria-hidden="true"><img class="i-sketch" src="assets/sketch/cinematheque-seats.jpg" alt="" loading="lazy"><img class="i-ink" src="assets/shots/cinematheque-seats.jpg" alt="" loading="lazy"></span>
+          <span class="g-sheen" aria-hidden="true"></span>
+          <span class="redline" aria-hidden="true">
+            <span class="rl-w mono"><em>1440 px · Desktop</em></span>
+            <span class="rl-h mono"><em>900 px</em></span>
+            <span class="rl-call mono" style="--cx:22%; --cy:44%">Primary action · Book seats</span>
+          </span>
+        </a>
+        <div class="spec">
+          <p class="spec-no mono">Fig. 02 <i>/</i> Web system</p>
+          <h3>Cinematheque</h3>
+          <p class="spec-lede">Ticketing for a real cinema. Moviegoers pick exact seats, pay online and get an e-ticket; staff schedule films, admit guests and export the head-office report.</p>
+          <dl class="spec-table">
+            <div><dt>Role</dt><dd>Group of three, for a real client</dd></div>
+            <div><dt>Built with</dt><dd>Laravel 12 · MySQL · PayMongo · Blade</dd></div>
+            <div><dt>Proof</dt><dd>129 automated tests · report matches the client's sheet row for row</dd></div>
+            <div><dt>Status</dt><dd>Revised after the client's evaluation</dd></div>
+          </dl>
+          <div class="spec-links"><a class="btn" href="projects.html?p=cinematheque">Read the case study <span>→</span></a></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="plate-wrap" id="xpera">
+      <div class="plate" style="--accent:#F4506A; --accent-rgb:244,80,106">
+        <a class="glass" href="projects.html?p=xpera" aria-label="xpera CRM case study">
+          <span class="g-layer g-sketch" aria-hidden="true"><img src="assets/sketch/xpera-sales.jpg" alt="" loading="lazy"></span>
+          <span class="g-layer g-ink"><img src="assets/shots/xpera-sales.jpg" alt="xpera CRM sales screen for a PC parts store" loading="lazy"></span>
+          <span class="g-inset" aria-hidden="true"><img class="i-sketch" src="assets/sketch/xpera-customers.jpg" alt="" loading="lazy"><img class="i-ink" src="assets/shots/xpera-customers.jpg" alt="" loading="lazy"></span>
+          <span class="g-sheen" aria-hidden="true"></span>
+          <span class="redline" aria-hidden="true">
+            <span class="rl-w mono"><em>1600 px · Windows desktop</em></span>
+            <span class="rl-h mono"><em>945 px</em></span>
+            <span class="rl-call mono" style="--cx:12%; --cy:40%">Nav rail · 4 user roles</span>
+          </span>
+        </a>
+        <div class="spec">
+          <p class="spec-no mono">Fig. 03 <i>/</i> Desktop system</p>
+          <h3>xpera CRM</h3>
+          <p class="spec-lede">A customer system for small stores that sell gaming PC parts: who each customer is, what they buy, what they owe and what they need. XP + era.</p>
+          <dl class="spec-table">
+            <div><dt>Role</dt><dd>Solo: brand, Figma, use cases, app and databases</dd></div>
+            <div><dt>Built with</dt><dd>C# · .NET WinForms · SQL Server · EF Core</dd></div>
+            <div><dt>Proof</dt><dd>One database per store · 15 use cases · 4 user roles</dd></div>
+            <div><dt>Status</dt><dd>In progress · first lab release done</dd></div>
+          </dl>
+          <div class="spec-links"><a class="btn" href="projects.html?p=xpera">Read the case study <span>→</span></a></div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ 02 · PROCESS — one screen, from brief to shipped ============ -->
+<section class="sec process" id="process" data-sheet="Process" data-no="02">
+  <div class="proc-pin">
+    <header class="sec-head"><span class="mono"><b>02</b> Process</span><i class="rule"></i><span class="mono proc-count"><b id="procNo">01</b> / 05</span></header>
+    <div class="proc-grid">
+      <ol class="proc-steps">
+        <li class="on"><span class="mono">01</span><div><h3>Brief</h3><p>What it's for and who uses it, in plain words, before any tool opens.</p></div></li>
+        <li><span class="mono">02</span><div><h3>Sketch</h3><p>Rough lines on paper first, so ideas stay cheap to change.</p></div></li>
+        <li><span class="mono">03</span><div><h3>Wireframe</h3><p>Boxes, hierarchy and flow in Figma. No colour yet.</p></div></li>
+        <li><span class="mono">04</span><div><h3>Design</h3><p>Type, colour and states, decided before the first line of code.</p></div></li>
+        <li><span class="mono">05</span><div><h3>Ship</h3><p>Built feature by feature, measured against the design, tested with people.</p></div></li>
+      </ol>
+      <figure class="proc-stage" data-step="1" aria-label="The Cinematheque home page at each stage of the process">
+        <div class="ps-frame">
+          <div class="ps-brief">
+            <p class="mono">Brief · Cinematheque Centre Davao</p>
+            <p class="ps-note">“Moviegoers should be able to pick their exact seats and pay online. Staff need tonight's guest list and the monthly report for head office.”</p>
+            <p class="mono ps-sign">Client meeting · 3 users · 2 must-haves</p>
+          </div>
+          <img class="ps-sketch" src="assets/sketch/cinematheque-home.jpg" alt="" loading="lazy">
+          <svg class="ps-wire" viewBox="0 0 1200 750" preserveAspectRatio="none" aria-hidden="true">
+            <rect x="130" y="10" width="180" height="34"/><rect x="760" y="12" width="300" height="30"/>
+            <rect x="150" y="80" width="900" height="380"/><rect x="205" y="190" width="250" height="60"/><rect x="205" y="310" width="110" height="38"/><rect x="785" y="120" width="190" height="290"/>
+            <rect x="130" y="590" width="240" height="56"/><rect x="715" y="605" width="350" height="44"/><rect x="130" y="675" width="640" height="34"/>
+            <path d="M150 80 L1050 460 M1050 80 L150 460"/>
+          </svg>
+          <img class="ps-ink" src="assets/shots/cinematheque-home.jpg" alt="" loading="lazy">
+          <div class="ps-marks" aria-hidden="true">
+            <span class="mono" style="left:17%; top:36%">Title · 64 / 600</span>
+            <span class="mono" style="left:17%; top:47%">Book seats · 44 px</span>
+            <span class="mono" style="left:63%; top:12%">Poster 3 : 4</span>
+            <span class="ps-stamp mono">Shipped · 129 tests passing</span>
+          </div>
+        </div>
+        <figcaption class="mono"><span id="procCap">Brief</span><span>Cinematheque · home page</span></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 · ABOUT — and the desk, for the curious ============ -->
+<section class="sec about" id="about" data-sheet="About" data-no="03">
+  <header class="sec-head"><span class="mono"><b>03</b> About</span><i class="rule"></i><a class="mono sheet-link" href="about.html">Profile, sheet A-102 →</a></header>
+  <div class="about-grid">
+    <div>
+      <p class="statement" data-rise>I'm a third-year IT student who <mark>draws it first</mark>. I sketch the screens, plan the database, build the thing, then test it with real people until it <mark>holds up</mark>.</p>
+      <dl class="facts">
+        <div data-rise><dt>Based in</dt><dd>Davao City, Philippines</dd></div>
+        <div data-rise><dt>Studying</dt><dd>BS Information Technology, 3rd year, University of Mindanao</dd></div>
+        <div data-rise><dt>Exploring</dt><dd>Machine learning and building with AI automation</dd></div>
+        <div data-rise><dt>Building</dt><dd>xpera CRM, a multi-tenant desktop system</dd></div>
+        <div data-rise><dt>How</dt><dd>Design first, build with AI-assisted development, test on real devices</dd></div>
+      </dl>
+      <ol class="numbers">
+        <li data-rise><b data-count="3">3</b><span class="mono">Systems shipped: mobile, web, desktop</span></li>
+        <li data-rise><b data-count="201">201</b><span class="mono">Automated tests across two projects</span></li>
+        <li data-rise><b data-count="18">18</b><span class="mono">Real testers on kuwaGO</span></li>
+      </ol>
+    </div>
+    <a class="desk-plate" href="desk.html" data-rise aria-label="Step into my room, a 3D model of my studio at night">
+      <span class="dp-view" aria-hidden="true"><img class="dp-img" src="assets/room.jpg" alt="" loading="lazy" decoding="async" width="1204" height="800"></span>
+      <span class="dp-cap"><span class="mono">Fig. 04 · My studio, at night</span><b>Step into my room <span>→</span></b></span>
+    </a>
+  </div>
+</section>
+
+<!-- ============ 04 · SKILLS — a legend, cross-referenced to the builds ============ -->
+<section class="sec skills" id="skills" data-sheet="Skills" data-no="04">
+  <header class="sec-head"><span class="mono"><b>04</b> Skills</span><i class="rule"></i><a class="mono sheet-link" href="skills.html">Skill trays, sheet A-103 →</a></header>
+  <div class="legend" role="table" aria-label="Skills and the builds that used them">
+    <div class="lg-row lg-head mono" role="row"><span role="columnheader">No.</span><span role="columnheader">Area</span><span role="columnheader">Tools</span><span role="columnheader" class="lg-used">Used in <i>K</i><i>C</i><i>X</i></span></div>
+    <div class="lg-row" role="row" data-rise><span class="mono" role="cell">01</span><h3 role="cell">Web</h3><p role="cell">Laravel · PHP · Blade · HTML · CSS · JavaScript · REST APIs</p><span class="lg-used" role="cell" aria-label="Cinematheque"><i></i><i class="y"></i><i></i></span></div>
+    <div class="lg-row" role="row" data-rise><span class="mono" role="cell">02</span><h3 role="cell">Mobile</h3><p role="cell">Flutter · Dart · Firebase Auth · Firestore</p><span class="lg-used" role="cell" aria-label="kuwaGO"><i class="y"></i><i></i><i></i></span></div>
+    <div class="lg-row" role="row" data-rise><span class="mono" role="cell">03</span><h3 role="cell">Desktop</h3><p role="cell">C# · .NET WinForms · ASP.NET API · Java</p><span class="lg-used" role="cell" aria-label="xpera CRM"><i></i><i></i><i class="y"></i></span></div>
+    <div class="lg-row" role="row" data-rise><span class="mono" role="cell">04</span><h3 role="cell">Data</h3><p role="cell">MySQL · SQL Server · EF Core · Firestore · Multi-tenant design</p><span class="lg-used" role="cell" aria-label="All three"><i class="y"></i><i class="y"></i><i class="y"></i></span></div>
+    <div class="lg-row" role="row" data-rise><span class="mono" role="cell">05</span><h3 role="cell">Design</h3><p role="cell">Figma · UI/UX · Brand and logo · Pixel art (Piskel)</p><span class="lg-used" role="cell" aria-label="All three"><i class="y"></i><i class="y"></i><i class="y"></i></span></div>
+    <div class="lg-row" role="row" data-rise><span class="mono" role="cell">06</span><h3 role="cell">Tools</h3><p role="cell">Git and GitHub · AI-assisted development · Cloudflare Workers</p><span class="lg-used" role="cell" aria-label="All three"><i class="y"></i><i class="y"></i><i class="y"></i></span></div>
+    <div class="lg-row" role="row" data-rise><span class="mono" role="cell">07</span><h3 role="cell">AI &amp; ML</h3><p role="cell">Machine learning · AI automation · LLM APIs (Gemini) · AI-assisted development</p><span class="lg-used" role="cell" aria-label="kuwaGO"><i class="y"></i><i></i><i></i></span></div>
+  </div>
+  <p class="lg-key mono">K kuwaGO · C Cinematheque · X xpera CRM</p>
+</section>
+
+<!-- ============ 05 · CERTIFICATES ============ -->
+<section class="sec certs" id="certs" data-sheet="Certificates" data-no="05">
+  <header class="sec-head"><span class="mono"><b>05</b> Certificates</span><i class="rule"></i><a class="mono sheet-link" href="certifications.html">Sheet A-104 →</a></header>
+  <div class="cert-row">
+    <article class="cert lit" data-rise><p class="mono">IT Specialist · Certiport, Pearson</p><h3>HTML and CSS</h3><time class="mono">Awarded May 20, 2026</time><span class="seal mono" aria-hidden="true">Certified</span></article>
+    <article class="cert lit" data-rise><p class="mono">IT Specialist · Certiport, Pearson</p><h3>Databases</h3><time class="mono">Awarded May 13, 2026</time><span class="seal mono" aria-hidden="true">Certified</span></article>
+    <article class="cert lit" data-rise><p class="mono">IT Specialist · Certiport, Pearson</p><h3>Java</h3><time class="mono">Awarded March 12, 2025</time><span class="seal mono" aria-hidden="true">Certified</span></article>
+  </div>
+</section>
+
+<!-- ============ 06 · CONTACT ============ -->
+<section class="sec contact" id="contact" data-sheet="Contact" data-no="06">
+  <header class="sec-head"><span class="mono"><b>06</b> Contact</span><i class="rule"></i></header>
+  <h2 class="big lens" id="bigInk"><span class="lens-sketch" aria-hidden="true">Let's build<br>something.</span><span class="lens-ink">Let's build<br>something.</span></h2>
+  <p class="lede" data-rise>Let's talk about a project, an idea, or anything that starts as a drawing.</p>
+  <div class="contact-row" data-rise>
+    <a class="btn solid" href="mailto:neckolescano36@gmail.com">neckolescano36@gmail.com <span>↗</span></a>
+    <button class="btn" type="button" data-copy="neckolescano36@gmail.com">Copy email</button>
+    <a class="btn" href="https://github.com/neckolescano" target="_blank" rel="noopener">GitHub <span>↗</span></a>
+    <a class="btn" href="assets/Nicho-Lescano-Resume.pdf" download>Resume <span>↓</span></a>
+  </div>
+  <p class="hand copied" aria-live="polite"></p>
+  <footer class="tblock-home mono">
+    <table>
+      <tr><td><small>Project</small>Nicho.dev</td><td><small>Drawn by</small>N. Lescano</td><td><small>Scale</small>1 : 1</td><td><small>Rev.</small>2026.11</td><td><small>Sheet</small><b>A-100</b></td><td><small>Status</small>As built</td></tr>
+    </table>
+    <a href="#top">Back to the top ↑</a>
+  </footer>
+</section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="js/nav.js?v=11"></script>
+<script src="js/site.js?v=11"></script>
+<script src="js/home.js?v=13"></script>
+</body>
+</html>

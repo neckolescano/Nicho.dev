@@ -1,0 +1,9 @@
+{
+  "name": "ccd-pitch",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "npx --yes hyperframes@0.8.186 check",
+    "render": "npx --yes hyperframes@0.8.186 render"
+  }
+}
