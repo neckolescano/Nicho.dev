@@ -143,8 +143,31 @@ at(cyl(.031, .031, .002, mat('#2a170d', { roughness: .2 })), 0, .084, 0, mug);
 
 const plant = new THREE.Group(); at(plant, .78, DESK_Y, -.44);
 at(cyl(.06, .045, .11, mat('#2d2f35', { roughness: .8 }), 24), 0, .055, 0, plant);
-const leafG = new THREE.SphereGeometry(1, 14, 10), leafM = mat('#2f6b3d', { roughness: .6, side: THREE.DoubleSide });
-for (let i = 0; i < 9; i++) { const l = new THREE.Mesh(leafG, leafM); const a = i / 9 * Math.PI * 2; l.scale.set(.05, .006, .025); l.position.set(Math.cos(a) * .05, .16 + (i % 3) * .05, Math.sin(a) * .05); l.rotation.set(Math.random() * .5, -a, .5 + Math.random() * .4); l.castShadow = true; plant.add(l); }
+// in the pot: one of the 12 plants drawn for kuwaGO, growing frame by frame from seed to bloom
+const PLANTS = ['owlbloom', 'storm_orchid', 'eternal_sakura', 'aurora_bell', 'crystal_lotus', 'desert_cactus', 'dragonheart_rose', 'forest_fern', 'glory_tree', 'moonpetal_lily', 'phoenix_bloom', 'starfall_willow'];
+const plantName = id => id.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+const sprite = { i: -1, frame: -1, t0: null };
+const spriteM = new THREE.MeshStandardMaterial({ transparent: true, alphaTest: .4, side: THREE.DoubleSide, roughness: .9 });
+const spriteMesh = new THREE.Mesh(new THREE.PlaneGeometry(.32, .32), spriteM); spriteMesh.position.set(0, .2, .012); spriteMesh.rotation.y = -.3; plant.add(spriteMesh);
+at(cyl(.052, .052, .006, mat('#3a2a1e', { roughness: 1 }), 24), 0, .108, 0, plant);   // the soil
+const sheets = {};
+const setFrame = f => { const t = spriteM.map; if (!t) return; t.offset.set((f % 10) * .1, 1 - (Math.floor(f / 10) + 1) * .25); };
+const plantNext = () => {
+  sprite.i = (sprite.i + 1) % PLANTS.length; sprite.frame = -1; sprite.t0 = null;
+  const id = PLANTS[sprite.i];
+  if (!sheets[id]) {
+    const t = new THREE.TextureLoader().load(`tinta/assets/plants/${id}.png`);
+    t.colorSpace = THREE.SRGBColorSpace; t.magFilter = t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; t.repeat.set(.1, .25);
+    sheets[id] = t;
+  }
+  spriteM.map = sheets[id]; spriteM.needsUpdate = true; setFrame(0);
+};
+plantNext();
+plant.userData.idle = t => {
+  if (sprite.t0 === null) sprite.t0 = t;
+  const f = Math.min(39, Math.floor((t - sprite.t0) / .8));   // about half a minute from seed to full bloom
+  if (f !== sprite.frame) { sprite.frame = f; setFrame(f); }
+};
 
 /* ---------- the ASUS laptop: the way into the portfolio (its screen is the landing page) ---------- */
 const ALU = mat('#23262d', { roughness: .42, metalness: .45, envMapIntensity: .5 });   // Vivobook "indie black"
@@ -362,14 +385,20 @@ gpu.userData.idle = (t, dt) => gpuFans.forEach(f => (f.rotation.z += dt * fanSpe
 // a short stack of books
 [['#2D4B6B', .024, 0], ['#C4432D', .02, .024], ['#D9CFB8', .018, .044]].forEach(([c, h, y], i) => { const b = box(.16 - i * .01, h, .12, mat(c, { roughness: .8 }), .002); b.rotation.y = .08 * i; at(b, .45, shelfTop + y + h / 2, -.5); });
 
-/* ---------- the task board: sketched notes for each part of the main page, and a few things I like ---------- */
+/* ---------- the board: sketched notes on what I am on now and next, and a few things I like ---------- */
 const TASKS = [
-  { id: 'work', no: '01', t: 'Work', d: 'three builds + case studies', c: '#E0533F', icon: 'frames' },
-  { id: 'process', no: '02', t: 'Process', d: 'brief → sketch → ship', c: '#E8B04A', icon: 'arrows' },
-  { id: 'about', no: '03', t: 'About', d: 'who I am, how I work', c: '#5BB06A', icon: 'face' },
-  { id: 'skills', no: '04', t: 'Skills', d: 'tools behind each build', c: '#6FA8DC', icon: 'wrench' },
-  { id: 'certs', no: '05', t: 'Certificates', d: 'three, from Certiport', c: '#C9A227', icon: 'medal' },
-  { id: 'contact', no: '06', t: 'Contact', d: 'email · GitHub · resume', c: '#F4506A', icon: 'mail' }
+  { id: 'play', no: '01', t: 'Play Store', d: 'kuwaGO: account, test, release', c: '#5BB06A', icon: 'frames', foot: '→ now',
+    more: 'kuwaGO is built and tested with 18 people. Next: a Google Play developer account, App Check switched on for the release build, 14 days of closed testing with 12 or more testers, then the public release.', href: 'projects.html?p=kuwago', cta: 'The kuwaGO case study' },
+  { id: 'lab2', no: '02', t: 'xpera Lab 2', d: 'retention campaigns', c: '#F4506A', icon: 'wrench', foot: '→ now',
+    more: 'Lab 1 is done: one database per store, sign-in, sales and payments. Lab 2 adds retention: campaigns that bring customers back to the store.', href: 'projects.html?p=xpera', cta: 'The xpera case study' },
+  { id: 'learn', no: '03', t: 'Learning', d: 'ML + AI automation', c: '#6FA8DC', icon: 'face', foot: '→ now',
+    more: 'Machine learning, and building with AI automation: letting models handle the repetitive parts of a workflow, the way kuwaGO turns notes into quizzes.' },
+  { id: 'xp', no: '04', t: 'XP levels', d: 'Rookie → Legend', c: '#C9A227', icon: 'medal', foot: '→ next',
+    more: 'An idea for xpera: customers earn XP for every ₱100 they spend and rank up from Rookie to Pro, Elite and Legend, with a small perk at each level.' },
+  { id: 'wait', no: '05', t: 'Restock list', d: 'who is waiting for which GPU', c: '#E8B04A', icon: 'mail', foot: '→ next',
+    more: 'Another xpera idea: a waiting list for each part, so staff can call everyone the day a sold-out graphics card comes back in.' },
+  { id: 'log', no: '06', t: 'Build log', d: 'kuwaGO in 30 days', c: '#E0533F', icon: 'arrows', foot: '→ done',
+    more: '22 Sep: the first commit. 28 Sep: Firebase and the first AI study tools. 30 Sep: release setup. 20 Oct: Deep Focus, flashcards and the owl tours. 21 Oct: version 1.0.5 for testers. 47 commits in 30 days.' }
 ];
 const HAND = '"Caveat", "Comic Sans MS", cursive';
 const BW = 1.8, BH = .48;   // the board is as wide as the desk
@@ -415,7 +444,7 @@ const noteTex = n => liveTex(320, 240, (g, w, h) => {
   g.fillText(n.t, 80, 60);
   g.strokeStyle = '#2a2d33'; g.lineWidth = 2.2; wob(g, [[80, 70], [120, 74], [160, 69], [200, 73], [Math.min(w - 90, 80 + g.measureText(n.t).width), 70]]);
   g.fillStyle = '#4a4f59'; g.font = `500 30px ${HAND}`; g.fillText(n.d, 22, 124);
-  g.fillStyle = n.c; g.font = `700 28px ${HAND}`; g.fillText('→ on the main page', 22, h - 32);
+  g.fillStyle = n.c; g.font = `700 28px ${HAND}`; g.fillText(n.foot, 22, h - 32);
   doodle(g, n.icon, w - 82, 20, 62, n.c);
 });
 const NOTE_AT = [[-.71, .09], [-.49, .125], [-.25, .135], [.27, .12], [.5, .085], [.72, .11]];
@@ -472,7 +501,7 @@ const stickyTex = (txt, c) => liveTex(200, 200, (g, w, h) => {
   g.fillStyle = c; g.fillRect(0, 0, w, h); g.fillStyle = 'rgba(0,0,0,.06)'; g.fillRect(0, 0, w, 26);
   g.fillStyle = '#2a2d33'; g.font = `700 38px ${HAND}`; txt.split('|').forEach((l, i) => g.fillText(l, 18, 76 + i * 44));
 });
-[['ship xpera|lab 2 ✓', '#F2D64B', -.37, -.1, .08], ['ideas:|more games', '#9ED6C0', .2, -.09, -.1]].forEach(([t, c, x, y, r]) => {
+[['47 commits|in 30 days', '#F2D64B', -.37, -.1, .08], ['ideas:|more games', '#9ED6C0', .2, -.09, -.1]].forEach(([t, c, x, y, r]) => {
   const g = new THREE.Group(); at(g, x, y, .016, board); g.rotation.z = r; g.userData = { z: .016 };
   const m = new THREE.Mesh(new THREE.PlaneGeometry(.075, .075), mat('#ffffff', { map: stickyTex(t, c), roughness: .9 })); m.castShadow = true; g.add(m);
   pinned.push(g);
@@ -783,7 +812,7 @@ const toggleLamp = () => { lampOn = !lampOn; tween(LK, { lamp: lampOn ? 1 : 0, d
 const layersHref = id => `index.html?project=${id}`;
 const SPOTS = [
   { id: 'drawer', obj: drawerFront, at: [0, 0, .012], label: 'Drawer', small: 'The archive', c: '#D8C49A', kind: 'drawer', side: 'left' },
-  { id: 'board', obj: board, at: [.84, .2, .03], label: 'Task board', small: 'Every part of the main page', c: '#E8B04A', kind: 'board' },
+  { id: 'board', obj: board, at: [.84, .2, .03], label: 'Now', small: 'What I am on, and what is next', c: '#E8B04A', kind: 'board' },
   { id: 'kuwago', obj: owl, at: [0, .07, 0], label: 'kuwaGO', small: 'The study owl', c: '#5BB06A', title: 'The study owl',
     text: "kuwaGO's mascot on its pot. Finish a focus session and the sprout grows; give up and it wilts. It's pixel art, because the whole app is.",
     dl: [['System', 'kuwaGO · mobile app'], ['Built with', 'Flutter · Firebase · Gemini'], ['Status', 'v1.0.5 · 18 testers']], project: 'kuwago',
@@ -800,6 +829,10 @@ const SPOTS = [
   { id: 'sketch', obj: sketch, at: [0, .03, 0], label: 'Sketchbook', small: 'Where it starts', c: '#E0533F', title: 'Where it starts', side: 'left',
     text: 'Every project begins as a drawing in here: screens, flows, the database on the back pages. Then it goes to Figma, then to code.',
     dl: [['Habit', 'Draw first, build second'], ['Next', 'Figma, then code']], href: 'about.html', cta: 'Read my profile', view: [.05, .32, .42] },
+  { id: 'plant', obj: plant, at: [0, .2, 0], label: 'Pixel plant', small: 'From kuwaGO', c: '#5BB06A', get title() { return plantName(PLANTS[sprite.i]); },
+    text: 'One of the 12 plants I drew pixel by pixel for kuwaGO. It grows from a seed while you are in the room. Look again to plant another one.',
+    dl: [['Drawn in', 'Piskel, 128 × 128'], ['Growth', '40 frames, seed to bloom']], href: 'projects.html?p=kuwago', cta: 'The kuwaGO case study', view: [.02, .12, .55],
+    focus() { plantNext(); showCard(this); } },
   { id: 'keychain', obj: keychain, at: [0, -.06, .02], label: 'Keychain', small: 'A gift', c: '#F2C53A', title: 'A gift from her', side: 'left',
     text: 'A little Belle keychain my girlfriend gave me. It hangs under the shelf, where I can see it while I work.',
     dl: [['From', 'My girlfriend'], ['Kept', 'Under the shelf']], view: [.04, -.02, .34],
@@ -884,13 +917,13 @@ const boardCard = () => {
   if (chosenNote) {
     const n = chosenNote.userData.n, k = notes.indexOf(chosenNote);
     card.style.setProperty('--c', n.c);
-    card.innerHTML = `${topLine(s, 'Task board · ' + n.no)}<h2 class="rc-title">${n.t}</h2><p class="rc-text">${n.d.charAt(0).toUpperCase() + n.d.slice(1)}.</p>${navRow('All notes')}
-      <a class="rc-go" href="index.html#${n.id}">Read it on the main page <span aria-hidden="true">→</span></a>`;
+    card.innerHTML = `${topLine(s, 'Now · ' + n.no)}<h2 class="rc-title">${n.t}</h2><p class="rc-text">${n.more}</p>${navRow('All notes')}
+      ${n.href ? `<a class="rc-go" href="${n.href}">${n.cta} <span aria-hidden="true">→</span></a>` : ''}`;
     wireNav(s, () => pickNote(notes[(k + 5) % 6]), () => pickNote(notes[(k + 1) % 6]), () => pickNote(null));
     return;
   }
   card.style.setProperty('--c', s.c);
-  card.innerHTML = `${topLine(s, 'Task board')}<h2 class="rc-title">The task board</h2><p class="rc-text">One note for each part of the main page; pick one to jump straight to it. Drag any note or photo to move it around. The photos are cars, games and badminton, what I do off the clock.</p>
+  card.innerHTML = `${topLine(s, 'Now')}<h2 class="rc-title">Now</h2><p class="rc-text">What I'm working on, what's next, and what just shipped. Drag any note or photo to move it. The photos are cars, games and badminton, what I do off the clock.</p>
     <div class="rc-files">${TASKS.map((n, i) => `<button type="button" data-n="${i}" style="--fc:${n.c}"><i aria-hidden="true"></i><span><b>${n.no} · ${n.t}</b><small class="mono">${n.d}</small></span><em aria-hidden="true">→</em></button>`).join('')}</div>${navRow()}`;
   card.querySelectorAll('[data-n]').forEach(b => b.addEventListener('click', () => pickNote(notes[+b.dataset.n])));
   wireNav(s);
@@ -1129,7 +1162,7 @@ const frame = () => {
   camera.lookAt(view.lx + ptr.x * .05 * drift + sway * .3, view.ly - ptr.y * .025 * drift, view.lz);
   if (pendingHover && !dragging) { doHover(pendingHover); pendingHover = null; }
   if (motion) {
-    owl.userData.idle(t); cine.userData.idle(t); gpu.userData.idle(t, dt); keychain.userData.idle(t);
+    owl.userData.idle(t); cine.userData.idle(t); gpu.userData.idle(t, dt); keychain.userData.idle(t); plant.userData.idle(t);
     const d = dustG.attributes.position;
     for (let i = 0; i < dustN; i++) { let y = d.getY(i) + dt * .012; if (y > DESK_Y + .65) y = DESK_Y; d.setY(i, y); d.setX(i, d.getX(i) + Math.sin(t + i) * dt * .003); }
     d.needsUpdate = true;
