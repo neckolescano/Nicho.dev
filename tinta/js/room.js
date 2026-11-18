@@ -663,6 +663,7 @@ let stack = [0, 1, 2];   // which envelope lies on top of which: the last one mo
 const toTop = f => { const i = folders.indexOf(f); stack = stack.filter(x => x !== i).concat(i); };   // which folder sits in which slot
 
 // the phone, lying face up at the front right of the drawer
+let phoneOpen = false;
 const lockTex = canvasTex(360, 760, (g, w, h) => { g.fillStyle = '#0b0c10'; g.fillRect(0, 0, w, h); });
 const drawLock = img => {
   const c = lockTex.image, g = c.getContext('2d'), w = c.width, h = c.height;
@@ -675,6 +676,12 @@ const drawLock = img => {
   g.font = '500 22px "IBM Plex Sans", sans-serif'; g.fillText(date, w / 2, 92);
   g.font = '600 96px "IBM Plex Sans Condensed", Arial Narrow, sans-serif'; g.fillText(time, w / 2, 186);
   g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(w / 2 - 60, h - 26, 120, 5);
+  // a padlock while locked, a small heart once it opens
+  const by = h - 92; g.fillStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.arc(w / 2, by, 26, 0, 7); g.fill();
+  g.strokeStyle = '#fff'; g.fillStyle = '#fff'; g.lineWidth = 3;
+  if (!phoneOpen) { g.strokeRect(w / 2 - 9, by - 3, 18, 14); g.beginPath(); g.arc(w / 2, by - 3, 7, Math.PI, 0); g.stroke(); }
+  else { g.fillStyle = '#F4A6B8'; g.beginPath(); g.moveTo(w / 2, by + 10); g.bezierCurveTo(w / 2 - 18, by - 4, w / 2 - 8, by - 16, w / 2, by - 6); g.bezierCurveTo(w / 2 + 8, by - 16, w / 2 + 18, by - 4, w / 2, by + 10); g.fill(); }
+  g.fillStyle = 'rgba(255,255,255,.85)'; g.font = '500 18px "IBM Plex Sans", sans-serif'; g.fillText(phoneOpen ? 'Unlocked' : 'Enter passcode', w / 2, by + 52);
   lockTex.needsUpdate = true;
 };
 const lockImg = new Image(); manager.itemStart('lock'); lockImg.onload = () => { drawLock(lockImg); manager.itemEnd('lock'); }; lockImg.onerror = () => manager.itemEnd('lock'); lockImg.src = 'tinta/assets/photos/lockscreen.jpg';
@@ -827,7 +834,7 @@ const SPOTS = [
     text: 'xpera CRM is for small stores that sell gaming PC parts, so its toy is a boxed graphics card. The fans spin up when you look closer.',
     dl: [['System', 'xpera CRM · desktop'], ['Built with', 'C# · WinForms · SQL Server'], ['Status', 'In progress · lab 1 done']], project: 'xpera',
     view: [.06, .07, .46], focus: () => G && G.to({ s: fanSpeed }, { s: 16, duration: .8, onUpdate() { fanSpeed = this.targets()[0].s; } }), blur: () => G && G.to({ s: fanSpeed }, { s: 1.5, duration: 1.2, onUpdate() { fanSpeed = this.targets()[0].s; } }) },
-  { id: 'phone', obj: phone, at: [0, .02, 0], label: 'Phone', small: 'My lock screen', c: '#F4A6B8', kind: 'phone' },
+  { id: 'phone', obj: phone, at: [0, .02, 0], label: 'Phone', small: 'Locked', c: '#F4A6B8', kind: 'phone' },
   { id: 'sketch', obj: sketch, at: [0, .03, 0], label: 'Sketchbook', small: 'Where it starts', c: '#E0533F', title: 'Where it starts', side: 'left',
     text: 'Every project begins as a drawing in here: screens, flows, the database on the back pages. Then it goes to Figma, then to code.',
     dl: [['Habit', 'Draw first, build second'], ['Next', 'Figma, then code']], href: 'index.html#process', cta: 'How I work', view: [.05, .32, .42] },
@@ -911,11 +918,66 @@ const drawerCard = () => {
   card.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => choose(folders[+b.dataset.f])));
   wireNav(s);
 };
-const phoneCard = () => {
+// a note, sealed with the passcode (AES-GCM with a key from PBKDF2), so it can't be read in the page's source
+const NOTE = { s: 'Ru03JO6BA6iUEKSGbA1B+A==', i: 'd4zJcXaNXxysZ03P', c: 'pSYFknEuXWHg01k5S5oRwbL0x9Ttb+JrD1ZqKIq0NjL1CszrAU2RpjTu3mQkkvEUdJ7KMtaxbs9/I5UvlgR6gTQXobjWsowWMfchnZSg9hPKAc41O1UtGS5q1kMZBGfaiEgC7YBcxqbY0ZTUV41r6MvfkcytED6xxx+7WUvsUbCKp1jFN802RznKQw3fCwpH+BPFjBqWPtUw5dC40pqT4a+rnJmztP12mQR4TDX1LF8FqKyytZRnt4O4vwEvPD2rAGB98M7ADyQhD9/KLnrUfNOyxsSucR1cpPsHdhGi+VBETpHLDgyd4RsHSBi33yI/ns0Ie1+mAD3xRzKmPnGjJLmGXTdSEiEocb0Jcyc+tAOn++qkATWZQgM2eesUoc5NjIiH06W/ghTlbv8Rfcr9aOtLt+gMJu5PXgBKpfKWag1DKhkhSWLdSbXW0GaYFTYKnS7PGKGIbDiaxfIQGGOyh8zMcMLX3dy2Q0C3qeRaIo3itaPFWjructsOVQuaavRgo1YTnFDABeYVfFU8mWpu+oEr9cHItL8uivulvL3mdcG8f1dQ3WUrY1XN1jRgAJIUHjSj4uMmzkMFGqSu2dmMQrdlDte981VhKoBVm6KTpda/Aw3bQA1wa3VqTuAdbIBYVElCHkflizsBS1Sla2BT1fFP1DMF5RSSpln3pv+RoqFncIhFn3DptjE5LddQ6J1HOVCEytZd4SKdnIVXplZRvzHk1uGoVHFVJ8gGtx9brAC7bDRGT3hsbzq8xt+cxize89m81QxzwXJVWQrIEHnQUyREzBo691vMx2R2Bbl/SfUh74cvEW5mXKyGLs3TlgBycBbfBjqd+tvfvhNvJ3Sqkhwfw89slvsgZwcibCLDKjn6ZNZ1qcmy802WN4c5oHnVp+697Oux8asSnif0RoKcPgPqtMMAxjrtouVMfJkQwI30CZOQdrZp75/nC11P4l+9qvY7r4NEwch99sgJmOH6pxGlf17KnrHZmJDRMeF6yAqX9rdMGrm7ms+73Vy8UTJwu9REuzoDgOPECoEzEf0Y4aii7i1+sQYf0XT/QiJEMGcp+TxTUPWiqx7oOrfen8RC5iTT/gqH7NEoWKhbG4MXtr9ZsOYGOJJC+Fmyo03DfDb5/Um15d7P8KnRjDc18SnbmH82KpyWCbL7k4QlWOmqm68i/VnE9y4DHMUYV9KQIDAcgyCJARrUJvEacj5htAeCDLrVV7Mz28Y1GC/Nt/aUk+od0oou0wr+85X1t6ikb5HxjgXapyhCgnCGSHSJtk6wrK/Oe0rcFuWxWXWySaB2cM1qJ2ERns6Yd2epd4L1nau/tp2GYm+t9DIeE+BwCdB57vabiN2AUTIGiD6iBWqR' };
+const unseal = async pass => {
+  const d = v => Uint8Array.from(atob(v), c => c.charCodeAt(0)), enc = new TextEncoder();
+  const base = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+  const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: d(NOTE.s), iterations: 250000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: d(NOTE.i) }, key, d(NOTE.c)));
+};
+let noteText = null;
+const esc = t => t.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const letterCard = () => {
   card.style.setProperty('--c', '#F4A6B8');
-  card.innerHTML = `<div class="rc-top mono"><span>Phone</span><span>On the desk</span></div><h2 class="rc-title">Lock screen</h2><p class="rc-text">The one who's always on my screen.</p>
+  card.innerHTML = `<div class="rc-top mono"><span>Phone</span><span>Unlocked</span></div>
+    <div class="rc-letter">${esc(noteText).split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`).join('')}</div>
     <div class="rc-nav rc-one"><button type="button" class="rc-back">Put it back</button></div>`;
   card.querySelector('.rc-back').onclick = () => { phoneDown(); };
+  if (G && motion) {
+    G.from(card.querySelectorAll('.rc-letter p'), { opacity: 0, y: 10, duration: .7, stagger: .18, ease: 'power2.out' });
+    hearts();
+  }
+};
+// a few small hearts float up from the phone when it opens
+const hearts = () => {
+  for (let i = 0; i < 14; i++) {
+    const h = document.createElement('i'); h.className = 'r-heart'; h.textContent = '♥';
+    h.style.left = (40 + Math.random() * 20) + '%'; h.style.top = (50 + Math.random() * 12) + '%'; h.style.fontSize = (12 + Math.random() * 16) + 'px';
+    roomEl.appendChild(h);
+    G.fromTo(h, { y: 0, opacity: 0, rotation: (Math.random() - .5) * 30 }, { y: -160 - Math.random() * 160, x: (Math.random() - .5) * 160, opacity: 1, duration: 2.2 + Math.random(), delay: i * .06, ease: 'power1.out', onComplete: () => h.remove() });
+    G.to(h, { opacity: 0, duration: .8, delay: 1.6 + i * .06 });
+  }
+};
+const phoneCard = () => {
+  if (noteText) { letterCard(); return; }
+  card.style.setProperty('--c', '#F4A6B8');
+  card.innerHTML = `<div class="rc-top mono"><span>Phone</span><span>Locked</span></div><h2 class="rc-title">Enter passcode</h2><p class="rc-text">Something's waiting on this phone. Hint: our date.</p>
+    <div class="rc-pin" aria-live="polite"><i></i><i></i><i></i><i></i></div>
+    <div class="rc-keys">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => `<button type="button" data-k="${n}">${n}</button>`).join('')}<span></span><button type="button" data-k="0">0</button><button type="button" data-k="del" aria-label="Delete">⌫</button></div>
+    <div class="rc-nav rc-one"><button type="button" class="rc-back">Put it back</button></div>`;
+  card.querySelector('.rc-back').onclick = () => { phoneDown(); };
+  const dots = [...card.querySelectorAll('.rc-pin i')], pin = card.querySelector('.rc-pin');
+  let code = '', busy = false;
+  const paint = () => dots.forEach((d, i) => d.classList.toggle('on', i < code.length));
+  const press = async k => {
+    if (busy) return;
+    if (k === 'del') { code = code.slice(0, -1); paint(); return; }
+    if (code.length >= 4) return;
+    code += k; paint();
+    if (code.length < 4) return;
+    busy = true;
+    try {
+      noteText = await unseal(code);
+      phoneOpen = true; if (lockImg.complete) drawLock(lockImg);
+      pin.classList.add('ok'); setTimeout(letterCard, 450);
+    } catch {
+      pin.classList.add('no'); setTimeout(() => { pin.classList.remove('no'); code = ''; paint(); busy = false; }, 600);
+    }
+  };
+  card.querySelectorAll('[data-k]').forEach(b => b.addEventListener('click', () => press(b.dataset.k)));
+  const onKey = e => { if (!card.querySelector('.rc-pin')) { removeEventListener('keydown', onKey); return; } if (/^[0-9]$/.test(e.key)) press(e.key); else if (e.key === 'Backspace') press('del'); };
+  addEventListener('keydown', onKey);
 };
 const choose = f => {
   chosen = f; settleFolders(); drawerCard();
