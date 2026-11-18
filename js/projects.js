@@ -56,10 +56,11 @@
   const p = P.find(x => x.id === id);
   const img = n => n.includes('/') ? `assets/${n}.jpg` : `assets/cs/${n}.jpg`;
   // a phone, a laptop or a monitor around the real screenshots
+  const LOCK = '<svg viewBox="0 0 12 12" aria-hidden="true"><rect x="2.5" y="5.5" width="7" height="5" rx="1"/><path d="M4 5.5V4a2 2 0 0 1 4 0v1.5"/></svg>';
   const device = (p, screens) => p.device === 'phone'
-    ? `<div class="device phone"><i class="island"></i><div class="screen">${screens}</div></div>`
+    ? `<div class="device phone"><div class="bezel"><i class="cam"></i><div class="screen">${screens}</div><i class="glass"></i></div><i class="key pw"></i><i class="key v1"></i><i class="ant a1"></i><i class="ant a2"></i><i class="ant a3"></i><i class="ant a4"></i><i class="port"></i></div>`
     : p.device === 'laptop'
-    ? `<div class="device laptop"><div class="lid"><div class="chrome"><i></i><i></i><i></i><span>${p.url || ''}</span></div><div class="screen">${screens}</div></div><div class="base"><i></i></div></div>`
+    ? `<div class="device laptop"><div class="lid"><div class="glassb"><i class="cam"></i><div class="display"><div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="navs">&lsaquo; &rsaquo;</span><span class="url">${LOCK}${p.url || ''}</span><span class="tools"><i></i></span></div><div class="screen">${screens}</div></div></div><i class="glare"></i></div><div class="hinge"></div><div class="deck"><i></i></div><div class="floor"></div></div>`
     : `<div class="device monitor"><div class="lid"><div class="screen">${screens}</div><i class="logo"></i></div><div class="neck"></div><div class="foot"></div></div>`;
   const chips = list => list.map(c => `<span class="chip">${c}</span>`).join('');
 
