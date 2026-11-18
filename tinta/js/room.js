@@ -323,7 +323,6 @@ const gownSkirt = new THREE.Mesh(new THREE.CylinderGeometry(.0075, .02, .03, 24)
 tor(.0158, .0013, TRIM, 0, -.091, 0, Math.PI / 2);
 tor(.0198, .0013, TRIM, 0, -.1075, 0, Math.PI / 2);
 [-1, 1].forEach(sd => ball(.003, GOWN, sd * .005, -.1095, .004));
-const kLight = new THREE.PointLight('#FFD39A', 0, .4, 2); kLight.position.set(0, -.06, .1); keychain.add(kLight);
 let kcLit = false;
 keychain.userData.idle = t => { kc.rotation.z = Math.sin(t * 1.1) * .045; kc.rotation.y = Math.sin(t * .6) * .25; };
 
@@ -855,8 +854,8 @@ const SPOTS = [
     dl: [['Drawn in', 'Piskel, 128 × 128'], ['Growth', '40 frames, seed to bloom']], href: 'projects.html?p=kuwago', cta: 'The kuwaGO case study', view: [.02, .12, .55],
     focus() { plantNext(); showCard(this); } },
   { id: 'keychain', obj: keychain, at: [0, -.06, .02], label: 'Keychain', small: 'A gift', c: '#F2C53A', get title() { return kcLit ? 'She knew the code' : 'A gift from her'; }, side: 'left',
-    get text() { return kcLit ? 'Belle lit up because you opened the phone, and only you know the code. Happy 6 months, my Belle Marie. ♥' : 'A little Belle keychain my girlfriend gave me. It hangs under the shelf, where I can see it while I work.'; },
-    dl: [['From', 'My girlfriend'], ['Kept', 'Under the shelf']], view: [.04, -.02, .34],
+    get text() { return kcLit ? 'Belle is celebrating because you opened the phone, and only you know the code. Happy 6 months, my Belle Marie. ♥' : 'A little Belle keychain my girlfriend gave me. It hangs under the shelf, where I can see it while I work.'; },
+    dl: [['From', 'My girlfriend'], ['Kept', 'Under the shelf']], view: [.06, -.03, .6],
     focus: () => G && G.fromTo(keychain.rotation, { z: .5 }, { z: 0, duration: 2.4, ease: 'elastic.out(1, .25)' }) },
   { id: 'laptop', obj: laptop, at: [0, .16, -.06], label: 'The lab', small: 'My laptop: garden, drafts, notes', c: '#BFD0FF', kind: 'desk' },
   { id: 'lamp', obj: head, at: [0, 0, 0], label: 'Lamp', small: 'Click to switch', c: '#FFB774', kind: 'lamp', side: 'left' },
@@ -1044,27 +1043,24 @@ const hearts = () => {
 // Belle celebrates: only the one who knows the passcode ever sees this
 const belleCelebrates = () => {
   kcLit = true;
-  if (!G || !motion) { kLight.intensity = .3; return; }
+  if (!G || !motion) return;
   const y0 = SHELF_Y - .016;
   G.timeline()
-    .to(kLight, { intensity: .9, duration: .5, ease: 'power2.out' }, 0)
-    .to(keychain.scale, { x: 1.35, y: 1.35, z: 1.35, duration: .4, ease: 'back.out(3)' }, 0)
     .to(keychain.position, { y: y0 + .025, duration: .22, yoyo: true, repeat: 5, ease: 'power1.out' }, .1)
     .to(keychain.rotation, { y: '+=' + (Math.PI * 4), duration: 1.6, ease: 'power2.inOut' }, .15)
     .to(keychain.rotation, { z: .35, duration: .25, yoyo: true, repeat: 3, ease: 'sine.inOut' }, .3)
     .set(keychain.rotation, { y: 0 }, 1.8)
-    .to(keychain.scale, { x: 1, y: 1, z: 1, duration: .8, ease: 'elastic.out(1, .4)' }, 1.8)
     .to(keychain.position, { y: y0, duration: .3 }, 1.8)
-    .to(kLight, { intensity: .3, duration: 1.4 }, 2);
+    ;
   // hearts rise from where she hangs
   const v = new THREE.Vector3(0, -.06, 0); keychain.localToWorld(v); v.project(camera);
   const x = (v.x + 1) / 2 * canvas.clientWidth, y = (1 - v.y) / 2 * canvas.clientHeight;
-  for (let i = 0; i < 18; i++) {
+  for (let i = 0; i < 30; i++) {
     const h = document.createElement('i'); h.className = 'r-heart'; h.textContent = '♥';
-    h.style.left = (x + (Math.random() - .5) * 30) + 'px'; h.style.top = (y + (Math.random() - .5) * 20) + 'px'; h.style.fontSize = (10 + Math.random() * 14) + 'px';
+    h.style.left = (x + (Math.random() - .5) * 90) + 'px'; h.style.top = (y + (Math.random() - .5) * 120) + 'px'; h.style.fontSize = (12 + Math.random() * 18) + 'px';
     roomEl.appendChild(h);
-    G.fromTo(h, { y: 0, opacity: 0, scale: .4 }, { y: -90 - Math.random() * 140, x: (Math.random() - .5) * 180, opacity: 1, scale: 1, duration: 2 + Math.random(), delay: .3 + i * .07, ease: 'power1.out', onComplete: () => h.remove() });
-    G.to(h, { opacity: 0, duration: .8, delay: 1.7 + i * .07 });
+    G.fromTo(h, { y: 0, opacity: 0, scale: .4 }, { y: -90 - Math.random() * 140, x: (Math.random() - .5) * 180, opacity: 1, scale: 1, duration: 2 + Math.random(), delay: .2 + i * .08, ease: 'power1.out', onComplete: () => h.remove() });
+    G.to(h, { opacity: 0, duration: .8, delay: 1.6 + i * .08 });
   }
   shadowsDirty();
 };
