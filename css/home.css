@@ -504,43 +504,31 @@ body.home { background: #07080A; }
 .how { padding-bottom: 0; }
 .how-pin { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; padding: clamp(64px, 8vh, 90px) 0 20px; box-sizing: border-box; }
 .how-ref { margin-left: 0; color: var(--muted) !important; }
-.how-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(280px, 4fr) minmax(0, 8fr); gap: clamp(20px, 3vw, 48px); align-items: stretch; }
-.how-left { display: grid; grid-template-rows: auto 1fr; min-height: 0; gap: 10px; }
-.how-copy { position: relative; padding-top: 14px; }
-.how-panels { list-style: none; position: relative; min-height: 196px; }
+.how-grid { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(260px, 3.6fr) minmax(0, 8.4fr); gap: clamp(16px, 2.5vw, 40px); align-items: stretch; }
+.how-left { display: grid; align-content: center; min-height: 0; }
+.how-copy { position: relative; }
+.how-panels { list-style: none; position: relative; min-height: 230px; }
 .how-panels li { position: absolute; inset: 0 0 auto; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: opacity .22s ease, transform .3s ease; }
 .how-panels li.on { opacity: 1; transform: none; pointer-events: auto; transition: opacity .5s .18s var(--ease), transform .7s .18s var(--ease); }
 .how-panels li.on ~ li { transform: translateY(18px); }
 .how-kick { color: var(--muted); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; }
-.how-panels h3 { display: flex; align-items: baseline; gap: 12px; margin: 10px 0 12px; font: 600 clamp(2.2rem, 3.6vw, 3.4rem)/.95 var(--cond); text-transform: uppercase; letter-spacing: -.01em; }
+.how-panels h3 { display: flex; align-items: baseline; gap: 12px; margin: 10px 0 12px; font: 600 clamp(2.4rem, 3.8vw, 3.6rem)/.95 var(--cond); text-transform: uppercase; letter-spacing: -.01em; }
 .how-panels h3 .mono { font-size: .9rem; color: var(--mark); letter-spacing: .06em; }
 .how-lede { font: 500 1.05rem/1.4 var(--sans); color: var(--ink); margin-bottom: 8px; }
-.how-panels li > p:last-child { color: var(--muted); font-size: .95rem; line-height: 1.6; max-width: 38ch; }
-.how-stage { position: relative; min-height: 0; display: grid; place-items: center; }
-.how-scene { position: relative; perspective: 1500px; perspective-origin: 50% 40%; display: grid; place-items: center; --cw: min(26vw, 380px); }
-.how-stack { cursor: default; }
-.how-stack .layer { transition: opacity .4s ease; }
-.how-stack .layer.out { opacity: .14 !important; }
-.how-stack .layer.out .lc { outline: 1px dashed rgba(236,233,226,.45) !important; background: transparent !important; }
-.how-stack .layer.out .lc > * { visibility: hidden; }
-.how-shadow { position: absolute; left: 50%; top: 58%; width: 80%; height: 30%; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter: blur(14px); pointer-events: none; }
-.how-axis { position: absolute; left: 0; bottom: 0; display: flex; gap: 16px; color: var(--muted); font-size: 10px; letter-spacing: .12em; }
-/* the pulled-out layer, with its annotation lines */
+.how-panels li > p:last-child { color: var(--muted); font-size: .95rem; line-height: 1.6; max-width: 36ch; }
+/* the stack, centre stage; the active layer slides out of it toward the labels */
 .how-detail { position: relative; min-height: 0; }
-.how-card { position: absolute; left: 22%; top: 50%; width: 56%; aspect-ratio: 16 / 10; transform-origin: 50% 50%; opacity: 0; will-change: transform, opacity; }
-.how-card .layer { position: absolute; inset: 0; }
-.how-card .lc { box-shadow: 0 30px 60px -24px rgba(0,0,0,.8); }
-.how-brief { position: absolute; inset: 0; display: grid; align-content: center; gap: 14px; padding: 0 9%; border-radius: 6px; background: #F3EFE6 repeating-linear-gradient(transparent 0 27px, rgba(40,50,70,.08) 27px 28px); color: #161B26; box-shadow: 0 30px 60px -24px rgba(0,0,0,.8); }
-.how-brief .mono { color: #C4432D; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
-.how-brief q { font: 500 clamp(1rem, 1.6vw, 1.45rem)/1.4 var(--cond); quotes: "“" "”"; }
-.how-brief .sign { color: #5C6270 !important; }
+.how-scene { position: absolute; left: 34%; top: 58%; transform: translate(-50%, -50%); perspective: 1700px; perspective-origin: 50% 40%; display: grid; place-items: center; --cw: min(34vw, 500px); }
+.how-stack { cursor: default; }
+.how-stack .layer { will-change: transform, opacity; }
+.how-stack .hpt { position: absolute; width: 2px; height: 2px; pointer-events: none; }
+.how-shadow { position: absolute; left: 50%; top: 58%; width: 80%; height: 30%; transform: translate(-50%, -50%); background: radial-gradient(closest-side, rgba(0,0,0,.6), transparent); filter: blur(14px); pointer-events: none; }
 .how-lines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.how-lines path { fill: none; stroke: rgba(236,233,226,.55); stroke-width: 1; }
+.how-lines path { fill: none; stroke: rgba(236,233,226,.5); stroke-width: 1; }
 .how-lines circle { fill: var(--mark); }
-.how-lines circle.ring { fill: none; stroke: var(--mark); stroke-width: 1; opacity: .6; }
+.how-lines circle.ring { fill: none; stroke: var(--mark); stroke-width: 1; opacity: .55; }
 .how-anns { position: absolute; inset: 0; pointer-events: none; }
-.how-ann { position: absolute; width: 19%; transform: translateY(-50%); opacity: 0; }
-.how-ann.l { text-align: right; }
+.how-ann { position: absolute; right: 0; width: 21%; transform: translateY(-50%); opacity: 0; }
 .how-ann b { display: block; font: 500 10px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mark); }
 .how-ann span { display: block; margin-top: 3px; font-size: .85rem; line-height: 1.35; color: var(--ink); }
 .how-tabs { list-style: none; display: grid; grid-template-columns: repeat(5, 1fr); }
@@ -554,18 +542,17 @@ body.home { background: #07080A; }
 .how-foot { display: flex; justify-content: space-between; padding-top: 12px; color: var(--muted); font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (max-width: 1000px) {
-  .how-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 6px; }
-  .how-left { grid-template-rows: auto; }
-  .how-stage { display: none; }
-  .how-panels { min-height: 150px; }
+  .how-grid { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: 4px; }
+  .how-panels { min-height: 160px; }
   .how-panels h3 { font-size: 2rem; margin: 6px 0 8px; }
-  .how-card { left: 6%; width: 88%; }
+  .how-scene { left: 40%; --cw: min(62vw, 360px); }
   .how-lines { display: none; }
-  .how-anns { position: absolute; inset: auto 0 0; display: flex; flex-wrap: wrap; gap: 6px 14px; }
-  .how-ann { position: static; width: auto; transform: none; text-align: left !important; }
+  .how-anns { inset: auto 0 0; display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .how-ann { position: static; width: auto; transform: none; }
   .how-ann span { display: none; }
   .how-tabs button { font-size: 9.5px; letter-spacing: .06em; }
   .how-tabs button b { display: block; }
+}
 }
 /* the landing shows the layers; the breakdown lives in How it works */
 .layer-hint, .hud, .hud-close, .vpanel { display: none !important; }

@@ -514,73 +514,77 @@
   const howP = PROJECTS.find(p => p.name === 'Cinematheque') || PROJECTS[0];
   const howSec = document.getElementById('process'), howStack = document.getElementById('howStack');
   howSec.style.setProperty('--acc', howP.acc); howSec.style.setProperty('--acc-rgb', howP.rgb);
-  howStack.innerHTML = KIND.map((k, i) => `<div class="layer ${k}"><div class="lc">${content(howP, i)}</div></div>`).join('');
-  const hLayers = [...howStack.children], hPanels = $('.how-panels li'), hTabs = $('.how-tabs button'), hBar = howSec.querySelector('.how-bar i'), hPct = howSec.querySelector('.how-pct');
-  // what each layer shows, pointed out with a line: [x %, y % on the screen, side, label, detail]
+  // what each layer shows, pointed out with a line: [x %, y % on the screen, label, detail]
   const ANNS = [
-    [[14, 5, 'l', 'Header', 'Logo and nav, roughed in'], [26, 28, 'l', 'Hero', 'The film title, biggest of all'], [72, 36, 'r', 'Poster', 'Beside the title, 3 : 4'], [22, 78, 'r', 'Below', 'Screenings, then the schedule']],
-    [[75, 5, 'r', 'Nav', 'Four links, top right'], [50, 34, 'r', 'Hero block', '136 × 50 on a 160 × 100 grid'], [17, 49, 'l', 'One action', 'Book seats, nothing beside it'], [30, 95, 'l', 'Cards', 'Three across, same height']],
-    [[17, 49, 'l', 'Ember', 'Only on the one action'], [72, 36, 'r', 'Brass', 'Frames the poster'], [12, 92, 'l', 'Palette', 'Ink · Ember · Paper · Brass'], [90, 92, 'r', 'Type', 'Display · 64 / 600']],
-    [[26, 28, 'l', 'Title', '64 / 600, as designed'], [17, 49, 'l', 'Book seats', '44 px tall, easy to hit'], [72, 36, 'r', 'Poster', 'The real one, 3 : 4'], [60, 82, 'r', 'Shipped', '129 tests passing']]
+    [[14, 5, 'Header', 'Logo and nav, roughed in'], [26, 28, 'Hero', 'The film title, biggest of all'], [72, 36, 'Poster', 'Beside the title, 3 : 4'], [22, 78, 'Below', 'Screenings, then the schedule']],
+    [[75, 5, 'Nav', 'Links, top right'], [50, 34, 'Hero block', '136 × 50 on a 160 × 100 grid'], [17, 49, 'One action', 'Book seats, nothing beside it'], [30, 95, 'Cards', 'Three across, same height']],
+    [[17, 49, 'Ember', 'Only on the one action'], [72, 36, 'Poster', 'Framed in the accent'], [12, 92, 'Palette', 'Ink · Ember · Paper · Brass'], [90, 92, 'Type', 'Display · 64 / 600']],
+    [[26, 28, 'Title', '64 / 600, as designed'], [17, 49, 'Book seats', '44 px tall, easy to hit'], [72, 36, 'Poster', 'The real one, 3 : 4'], [60, 82, 'Shipped', '129 tests passing']]
   ];
-  const card = document.getElementById('howCard'), lines = document.getElementById('howLines'), anns = document.getElementById('howAnns'), detail = howSec.querySelector('.how-detail');
-  const BRIEF = `<div class="how-brief"><p class="mono">Brief · Cinematheque Centre Davao</p><q>Moviegoers should be able to pick their exact seats and pay online. Staff need tonight's guest list and the monthly report for head office.</q><p class="mono sign">Client meeting · 3 users · 2 must-haves</p></div>`;
-  // the stack: closed for the brief, opened into layers once the work starts, closed again at the end
-  const H = { rx: 8, rz: 0, gap: 0, sc: .92 };
+  // the stack, with a small anchor on each part a line will point to
+  howStack.innerHTML = KIND.map((k, i) => `<div class="layer ${k}"><div class="lc">${content(howP, i)}</div>${ANNS[i].map(([x, y]) => `<i class="hpt" style="left:${x}%;top:${y}%"></i>`).join('')}</div>`).join('');
+  const hLayers = [...howStack.children], hPanels = $('.how-panels li'), hTabs = $('.how-tabs button'), hBar = howSec.querySelector('.how-bar i'), hPct = howSec.querySelector('.how-pct');
+  const lines = document.getElementById('howLines'), anns = document.getElementById('howAnns'), detail = howSec.querySelector('.how-detail');
+  // the pose: closed for the brief, opened into layers, closed again at the end; `out` is how far each layer has slid out
+  const H = { rx: 8, rz: 0, gap: 0, sc: .94 }, OUT = [0, 0, 0, 0];
+  let annOn = -1, annEls = [];
   const renderHow = () => {
     howStack.style.transform = `rotateX(${H.rx.toFixed(2)}deg) rotateZ(${H.rz.toFixed(2)}deg) scale(${H.sc.toFixed(4)})`;
-    hLayers.forEach((l, i) => { l.style.transform = `translate3d(0, 0, ${((i - 1.5) * H.gap).toFixed(1)}px)`; });
+    const any = Math.max(...OUT);
+    hLayers.forEach((l, i) => {
+      const o = OUT[i];
+      // out along the layer's own width (toward the labels), and lifted a little above the rest
+      // the pulled layer rises to the top of the stack as it slides out, whichever slot it came from
+      const k = i - 1.5;
+      l.style.transform = `translate3d(${(o * 62).toFixed(2)}%, ${(o * 4).toFixed(2)}%, ${(k * H.gap + o * ((1.5 - k) * H.gap + 70)).toFixed(1)}px)`;
+      l.style.opacity = (1 - (any - o) * .84).toFixed(3);
+    });
+    if (annOn >= 0) placeAnns();
   };
-  // annotations: a dot on the screen, an elbow line out to a label beside the card
-  const drawAnns = n => {
-    lines.innerHTML = ''; anns.innerHTML = '';
-    if (n < 1) return;
-    const d = detail.getBoundingClientRect(), c = card.getBoundingClientRect(), cx = c.left - d.left, cy = c.top - d.top, used = { l: [], r: [] };
-    ANNS[n - 1].forEach(([x, y, side, label, text], k) => {
-      const px = cx + c.width * x / 100, py = cy + c.height * y / 100;
-      let ly = py; while (used[side].some(u => Math.abs(u - ly) < 46)) ly += 46; used[side].push(ly);
-      const ex = side === 'l' ? cx - 18 : cx + c.width + 18, lx = side === 'l' ? ex - 10 : ex + 10;
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', `M${px.toFixed(1)} ${py.toFixed(1)} L${ex.toFixed(1)} ${ly.toFixed(1)} L${lx.toFixed(1)} ${ly.toFixed(1)}`);
-      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); dot.setAttribute('cx', px); dot.setAttribute('cy', py); dot.setAttribute('r', 2.6);
-      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); ring.setAttribute('class', 'ring'); ring.setAttribute('cx', px); ring.setAttribute('cy', py); ring.setAttribute('r', 7);
-      lines.append(path, ring, dot);
-      const el = document.createElement('div'); el.className = 'how-ann ' + side;
-      el.innerHTML = `<b>${label}</b><span>${text}</span>`;
-      el.style.top = ly + 'px';
-      if (side === 'l') el.style.right = (d.width - (lx - 6)) + 'px'; else el.style.left = (lx + 6) + 'px';
-      anns.appendChild(el);
-      const len = path.getTotalLength();
-      if (hasGsap && motion) {
-        gsap.fromTo(path, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: .55, delay: .1 + k * .1, ease: 'power2.out' });
-        gsap.fromTo([dot, ring], { scale: 0, transformOrigin: `${px}px ${py}px` }, { scale: 1, duration: .4, delay: .05 + k * .1, ease: 'back.out(2)' });
-        gsap.fromTo(el, { opacity: 0, x: side === 'l' ? 8 : -8 }, { opacity: 1, x: 0, duration: .45, delay: .35 + k * .1, ease: 'power2.out' });
-      } else el.style.opacity = 1;
+  // the lines: from each anchor on the slid-out layer to its label in the column on the right
+  const placeAnns = () => {
+    const d = detail.getBoundingClientRect(), pts = [...hLayers[annOn].querySelectorAll('.hpt')].map(p => { const r = p.getBoundingClientRect(); return [r.left - d.left, r.top - d.top]; });
+    const order = pts.map((p, k) => k).sort((a, b) => pts[a][1] - pts[b][1]);
+    const lx = d.width * .79 - 14, top = d.height * .12, step = Math.max(54, (d.height * .76) / 4);
+    order.forEach((k, j) => {
+      const [px, py] = pts[k], ly = top + j * step + step / 2, el = annEls[k];
+      if (!el) return;
+      el.path.setAttribute('d', `M${px.toFixed(1)} ${py.toFixed(1)} L${(lx - 30).toFixed(1)} ${ly.toFixed(1)} L${lx.toFixed(1)} ${ly.toFixed(1)}`);
+      el.dot.setAttribute('cx', px.toFixed(1)); el.dot.setAttribute('cy', py.toFixed(1)); el.ring.setAttribute('cx', px.toFixed(1)); el.ring.setAttribute('cy', py.toFixed(1));
+      el.label.style.top = ly + 'px';
     });
   };
-  // the card flies between the layer's spot in the stack and its place on the right
-  const flyFrom = i => {
-    const c = card.getBoundingClientRect(), r = hLayers[i].getBoundingClientRect();
-    return { x: (r.left + r.width / 2) - (c.left + c.width / 2), y: (r.top + r.height / 2) - (c.top + c.height / 2), scale: Math.max(.2, r.width / c.width * .82), rotation: -16, opacity: 0 };
+  const clearAnns = () => { annOn = -1; annEls = []; lines.innerHTML = ''; anns.innerHTML = ''; };
+  const drawAnns = n => {
+    clearAnns(); if (n < 1) return;
+    annOn = n - 1;
+    annEls = ANNS[annOn].map(([, , label, text]) => {
+      const ns = 'http://www.w3.org/2000/svg', path = document.createElementNS(ns, 'path'), ring = document.createElementNS(ns, 'circle'), dot = document.createElementNS(ns, 'circle');
+      ring.setAttribute('class', 'ring'); ring.setAttribute('r', 7); dot.setAttribute('r', 2.6);
+      lines.append(path, ring, dot);
+      const el = document.createElement('div'); el.className = 'how-ann'; el.innerHTML = `<b>${label}</b><span>${text}</span>`; anns.appendChild(el);
+      return { path, ring, dot, label: el };
+    });
+    placeAnns();
+    if (hasGsap && motion) annEls.forEach((e, k) => {
+      const len = e.path.getTotalLength();
+      gsap.fromTo(e.path, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: .6, delay: .05 + k * .09, ease: 'power2.out' });
+      gsap.fromTo([e.dot, e.ring], { opacity: 0 }, { opacity: 1, duration: .3, delay: k * .09 });
+      gsap.fromTo(e.label, { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: .5, delay: .3 + k * .09, ease: 'power2.out' });
+    }); else annEls.forEach(e => (e.label.style.opacity = 1));
   };
-  let howNow = -1, flight = null, shown = -1;
-  const fillCard = n => { card.innerHTML = n === 0 ? BRIEF : `<div class="layer ${KIND[n - 1]}"><div class="lc">${content(howP, n - 1)}</div></div>`; };
+  // one layer at a time: the last one slides home, then the next slides out and its lines draw
+  let howNow = -1, move = null;
   const pullOut = n => {
-    if (flight) flight.kill();
-    const prev = shown; shown = n;
-    const back = () => { if (prev > 0) hLayers[prev - 1].classList.remove('out'); };
-    const out = () => {
-      fillCard(n); if (n > 0) hLayers[n - 1].classList.add('out');
-      gsap.set(card, { yPercent: -50, x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
-      const from = n > 0 ? flyFrom(n - 1) : { x: 0, y: 30, scale: .96, rotation: 0, opacity: 0 };
-      flight = gsap.fromTo(card, from, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1, duration: .75, ease: 'power3.out', onComplete: () => drawAnns(n) });
-    };
-    if (!hasGsap || !motion) { back(); fillCard(n); if (n > 0) hLayers[n - 1].classList.add('out'); card.style.opacity = 1; card.style.transform = 'translateY(-50%)'; drawAnns(n); return; }
-    lines.innerHTML = ''; anns.innerHTML = '';
-    if (prev < 0) { out(); return; }
-    // the last layer goes back into its slot first
-    const to = prev > 0 ? flyFrom(prev - 1) : { x: 0, y: -24, scale: .96, rotation: 0, opacity: 0 };
-    flight = gsap.to(card, { x: to.x, y: to.y, scale: to.scale, rotation: to.rotation, opacity: 0, duration: .45, ease: 'power2.in', onComplete: () => { back(); out(); } });
+    if (move) move.kill();
+    clearAnns();
+    if (!hasGsap || !motion) { OUT.fill(0); if (n > 0) OUT[n - 1] = 1; renderHow(); drawAnns(n); return; }
+    const t = { k: 0 }, from = OUT.slice(), to = [0, 0, 0, 0]; if (n > 0) to[n - 1] = 1;
+    const home = from.some((v, i) => v > .01 && to[i] === 0);
+    move = gsap.timeline({ onUpdate: renderHow })
+      .to(t, { k: 1, duration: home ? .55 : 0, ease: 'power2.inOut', onUpdate: () => from.forEach((v, i) => { if (to[i] === 0) OUT[i] = v * (1 - t.k); }) })
+      .to(OUT, { ...Object.fromEntries(to.map((v, i) => [i, v]).filter(([i, v]) => v === 1)), duration: .85, ease: 'power3.inOut' }, home ? '-=.12' : 0)
+      .call(() => drawAnns(n));
   };
   const setHow = n => {
     if (n === howNow) return; howNow = n;
@@ -589,9 +593,8 @@
     pullOut(n);
   };
   const howProgress = p => { hBar.style.width = (p * 100).toFixed(1) + '%'; hPct.textContent = Math.round(p * 100) + '%'; setHow(Math.min(4, Math.floor(p * 5))); };
-  if (hasGsap) gsap.set(card, { yPercent: -50 }); else card.style.transform = 'translateY(-50%)';
   renderHow(); setTimeout(() => { if (howNow < 0) setHow(0); }, 0);
-  addEventListener('resize', () => { if (howNow >= 0) drawAnns(howNow); });
+  addEventListener('resize', () => { if (annOn >= 0) placeAnns(); });
 
   /* =====================================================================
      scroll motion
