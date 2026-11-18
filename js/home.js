@@ -542,13 +542,15 @@
     const W = detail.clientWidth, Hh = detail.clientHeight, a = H.away;
     // where the stack sits: centre stage, or aside in the bottom-left corner under the text
     const d = detail.getBoundingClientRect(), c = copyCol.getBoundingClientRect();
-    const asideX = (c.left + c.width * .5) - (d.left + W * .5), asideY = Hh * .24;
-    const px = asideX * a, py = asideY * a, ps = 1 - .45 * a;
+    // on phones there is no side column: the stack tucks into the bottom-right corner, small, and the layer takes the space above
+    const mob = innerWidth < 1000;
+    const asideX = mob ? W * .3 : (c.left + c.width * .5) - (d.left + W * .5), asideY = mob ? Hh * .3 : Hh * .24;
+    const px = asideX * a, py = asideY * a, ps = 1 - (mob ? .62 : .45) * a;
     hScene.style.transform = `translate(-50%, -50%) translate(${px.toFixed(1)}px, ${py.toFixed(1)}px) scale(${ps.toFixed(4)})`;
     howStack.style.transform = `rotateX(${H.rx.toFixed(2)}deg) rotateZ(${H.rz.toFixed(2)}deg) scale(${H.sc.toFixed(4)})`;
     const any = Math.max(...OUT), total = ps * H.sc;
     // where a pulled layer lands: facing you, left of the labels, a little larger than the stack
-    const want = Math.min(W * .56, Hh * .62 * 1.6, 620), tx = W * .5 - (W * .5 + px), ty = Hh * .5 - (Hh * .52 + py), [lx, ly, lz] = toLocal(tx, ty, 30, total), big = want / (howStack.offsetWidth || want) / total;
+    const want = mob ? Math.min(W * .94, Hh * .6 * 1.6) : Math.min(W * .56, Hh * .62 * 1.6, 620), tx = W * .5 - (W * .5 + px), ty = (mob ? Hh * .36 : Hh * .5) - (Hh * .52 + py), [lx, ly, lz] = toLocal(tx, ty, 30, total), big = want / (howStack.offsetWidth || want) / total;
     hLayers.forEach((l, i) => {
       const o = OUT[i], k = i - 1.5, bz = k * H.gap;
       const x = lx * o, y = ly * o, z = bz + (lz - bz) * o, sc = 1 + (big - 1) * o;

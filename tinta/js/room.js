@@ -23,15 +23,17 @@ if (/[?&]shot/.test(location.search)) window.__shot = home => { if (home && type
 const setLoad = p => { if (!loader) return; loader.style.setProperty('--p', p.toFixed(3)); const o = loader.querySelector('.rl-pct'); if (o) o.textContent = Math.round(p * 100); };
 
 let renderer;
-try { renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: /[?&]shot/.test(location.search) }); }
+// phones and small screens: no MSAA, 1x pixels, lighter shadows; the frame-time check below can still step down further
+const lowPower = matchMedia('(pointer: coarse)').matches || innerWidth < 760;
+try { renderer = new THREE.WebGLRenderer({ canvas, antialias: !lowPower, powerPreference: 'high-performance', preserveDrawingBuffer: /[?&]shot/.test(location.search) }); }
 catch (e) { document.body.classList.add('no-webgl'); loader && loader.classList.add('done'); throw e; }
-let maxDpr = embed ? 1 : 1.25;
+let maxDpr = embed || lowPower ? 1 : 1.25;
 renderer.setPixelRatio(Math.min(devicePixelRatio || 1, maxDpr));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.1;
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = lowPower ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
 const shadowsDirty = () => { renderer.shadowMap.needsUpdate = true; };
 RectAreaLightUniformsLib.init();
 
@@ -252,7 +254,7 @@ const head = new THREE.Group(); at(head, .42, .5, 0, lamp); head.rotation.z = -2
 at(cyl(.035, .07, .1, mat('#16171a', { roughness: .4, metalness: .5, side: THREE.DoubleSide }), 28, true), 0, 0, 0, head);
 const bulbM = glow('#FFC98A', 0); const bulb = new THREE.Mesh(new THREE.SphereGeometry(.028, 16, 12), bulbM); bulb.position.y = -.02; head.add(bulb);
 const lampLight = new THREE.SpotLight('#FFB774', 0, 3, .75, .55, 2);
-lampLight.castShadow = true; lampLight.shadow.mapSize.set(1024, 1024); lampLight.shadow.bias = -.0004; lampLight.shadow.radius = 6;
+lampLight.castShadow = true; lampLight.shadow.mapSize.setScalar(lowPower ? 512 : 1024); lampLight.shadow.bias = -.0004; lampLight.shadow.radius = 6;
 head.add(lampLight); lampLight.position.set(0, -.03, 0);
 const lampTarget = new THREE.Object3D(); at(lampTarget, -.42, DESK_Y, .06); lampLight.target = lampTarget;
 
@@ -726,8 +728,11 @@ const cam = { px: HOME.pos.x, py: HOME.pos.y, pz: HOME.pos.z, lx: HOME.look.x, l
 const view = { ...cam };   // where the camera actually is: it eases toward cam every frame
 let focus = null, introRunning = false, introTl = null, dragging = null;
 const fitHome = () => {
-  const a = camera.aspect, k = a < 1 ? 1.35 + (1 - a) * 1.6 : a < 1.4 ? 1.12 : 1;
-  HOME.pos.set(-.04, 1.27 + (k - 1) * .25, 2.4 * k);
+  const a = camera.aspect, k = a < 1 ? 1.35 + (1 - a) * 2.1 : a < 1.4 ? 1.12 : 1;
+  // portrait screens: step back further and slide right, so the plant and the light switch stay in view
+  const sx = a < 1 ? (1 - a) * .52 : 0;
+  HOME.pos.set(-.04 + sx, 1.27 + (k - 1) * .25, 2.4 * k);
+  HOME.look.set(-.06 + sx, 1.06, -.3);
 };
 const resize = () => {
   const w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;

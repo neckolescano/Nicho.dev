@@ -565,3 +565,19 @@ body.home { background: #07080A; }
 .how-ann { right: auto; width: auto; max-width: 180px; transform: none; }
 .how-ann b { white-space: nowrap; }
 .how-ann.l { text-align: right; }
+
+/* ---------- phones ---------- */
+@media (max-width: 760px) {
+  /* skills: the header keeps No., Area and the Used-in key; the tools column is under each row anyway */
+  .lg-head > span:nth-child(3) { display: none; }
+  .lg-head .lg-used { grid-column: 3; justify-content: flex-end; white-space: nowrap; }
+  /* the title block wraps into two rows of three instead of running off the side */
+  .tblock-home table, .tblock-home tbody { display: block; width: 100%; }
+  .tblock-home tr { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .tblock-home td { display: block; margin: 0 -1px -1px 0; }
+  /* how it works: the reference line drops, and the step bar stays clear of the floating Index button */
+  .how-ref { display: none; }
+  .how-pin { padding-bottom: 86px; }
+  .how-panels { min-height: 128px; }
+  .how-panels li > p:last-child { font-size: .9rem; }
+}
