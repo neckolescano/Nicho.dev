@@ -443,6 +443,7 @@
     setHint();
 
     addEventListener('wheel', e => {
+      if (root.classList.contains('panel-open')) return;
       if (open) { e.preventDefault(); if (e.deltaY > 4) enter(); return; }
       if (scrollY <= 2 && e.deltaY < -10) replay();
     }, { passive: false });

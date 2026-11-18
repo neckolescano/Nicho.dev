@@ -24,7 +24,6 @@
   const CASE_ROWS = [['kuwago', 'kuwaGO', 'Mobile app', 'assets/cs/kuwago-garden.jpg', '#5BB06A'], ['cinematheque', 'Cinematheque', 'Web system', 'assets/cs/cinematheque-title.jpg', '#E2763F'],
     ['xpera', 'xpera CRM', 'Desktop system', 'assets/cs/xpera-logo.jpg', '#F4506A']];
   const MORE = [['projects.html', 'All projects'], ['about.html', 'Profile'], ['skills.html', 'Skills'], ['certifications.html', 'Certificates'], ['resume.html', 'Resume'], ['desk.html', 'The room']];
-  const themeIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor"/></svg>';
   const motionIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c3-6 6-6 9 0s6 6 9 0"/></svg>';
   const pad = n => String(n).padStart(2, '0');
   const isCur = h => h === file || h === file + location.search;
@@ -33,15 +32,14 @@
   document.body.insertAdjacentHTML('afterbegin', `
 <a class="skip" href="#main">Skip to content</a>
 <aside class="rail" aria-label="Site">
-  <a class="rail-mark" href="${home || 'index.html'}" aria-label="Nicho.dev, back to the start">N<i>.</i></a>
+  <a class="rail-mark" href="${home || 'index.html'}" aria-label="Nicho.dev, back to the start"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><path class="mk-crop" d="M3 9V3h6M31 3h6v6M37 31v6h-6M9 37H3v-6"/><path class="mk-guide" d="M8 6.5L31 35"/><path class="mk-n" d="M10 30V10h5l8 12V10h5v20h-5l-8-12v12z"/><path class="mk-base" d="M8 33.5h18M8 32v3M26 32v3"/><rect class="mk-dot" x="30" y="26.5" width="3.5" height="3.5"/></svg></a>
   <button class="rail-menu" aria-expanded="false" aria-controls="panel"><span class="burger" aria-hidden="true"><i></i><i></i></span><span class="rail-word">Index</span></button>
   <div class="rail-tools">
-    <button class="rtool" data-theme-toggle>${themeIcon}<span class="sr">Light</span></button>
     <button class="rtool" data-motion-toggle>${motionIcon}<span class="sr">Motion</span></button>
   </div>
 </aside>
 <div class="scrim" aria-hidden="true"></div>
-<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Index" tabindex="-1" inert>
+<div class="panel" id="panel" role="dialog" aria-modal="true" aria-label="Index" tabindex="-1" data-lenis-prevent inert>
   <div class="panel-head"><span class="mono">Index</span><button class="panel-close mono" type="button">Close <kbd>Esc</kbd></button></div>
   <nav class="p-sec" aria-label="Sections">
     <p class="p-label mono">On the main page</p>
@@ -57,7 +55,7 @@
   </nav>
   <div class="p-foot">
     <div class="mono"><a href="mailto:neckolescano36@gmail.com">Email ↗</a><a href="https://github.com/neckolescano" target="_blank" rel="noopener">GitHub ↗</a><a href="assets/Nicho-Lescano-Resume.pdf" download>Resume ↓</a></div>
-    <div class="p-tools"><button class="p-tool mono" type="button" data-theme-toggle><span>Light</span></button><button class="p-tool mono" type="button" data-motion-toggle><span>Motion</span></button></div>
+    <div class="p-tools"><button class="p-tool mono" type="button" data-motion-toggle><span>Motion</span></button></div>
   </div>
 </div>`);
 
