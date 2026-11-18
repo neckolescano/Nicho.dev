@@ -29,7 +29,7 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/site.css?v=11">
 <link rel="stylesheet" href="css/nav.css?v=14">
-<link rel="stylesheet" href="css/home.css?v=18">
+<link rel="stylesheet" href="css/home.css?v=19">
 </head>
 <body class="home">
 
@@ -207,19 +207,25 @@
   <div class="how-pin">
     <header class="sec-head"><span class="mono"><b>02</b> How it works</span><i class="rule"></i><span class="mono how-ref">Cinematheque · home page, taken apart</span></header>
     <div class="how-grid">
-      <div class="how-stage" aria-hidden="true">
-        <div class="how-scene"><div class="how-shadow"></div><div class="stack how-stack" id="howStack"></div></div>
-        <div class="how-axis mono"><span>Z ↑ layers</span><span>X → screen</span></div>
+      <div class="how-left">
+        <div class="how-copy">
+          <h2 class="sr-only" id="how-title">How it works: one screen, from brief to shipped</h2>
+          <ol class="how-panels">
+            <li class="on"><p class="mono how-kick">The problem first</p><h3><span class="mono">01</span> Brief</h3><p class="how-lede">What it's for, and who uses it.</p><p>Before any tool opens, I write the problem down in plain words.</p></li>
+            <li><p class="mono how-kick">Layer 01 · pencil on paper</p><h3><span class="mono">02</span> Sketch</h3><p class="how-lede">Rough lines, cheap to change.</p><p>Every screen is drawn by hand first, so I can try many layouts before keeping one.</p></li>
+            <li><p class="mono how-kick">Layer 02 · structure, no colour</p><h3><span class="mono">03</span> Wireframe</h3><p class="how-lede">Boxes, hierarchy and flow.</p><p>In Figma, grey on purpose, so the layout is judged on its own.</p></li>
+            <li><p class="mono how-kick">Layer 03 · type, colour, states</p><h3><span class="mono">04</span> Design</h3><p class="how-lede">Decided before the code.</p><p>Type, colour and every state. The finished design is the spec I build against.</p></li>
+            <li><p class="mono how-kick">Layer 04 · measured against the design</p><h3><span class="mono">05</span> Build &amp; ship</h3><p class="how-lede">Built, tested, shipped.</p><p>Feature by feature, checked against every layer underneath, tested with real people.</p></li>
+          </ol>
+        </div>
+        <div class="how-stage" aria-hidden="true">
+          <div class="how-scene"><div class="how-shadow"></div><div class="stack how-stack" id="howStack"></div></div>
+        </div>
       </div>
-      <div class="how-copy">
-        <h2 class="sr-only" id="how-title">How it works: one screen, from brief to shipped</h2>
-        <ol class="how-panels">
-          <li class="on"><p class="mono how-kick">The problem first</p><h3><span class="mono">01</span> Brief</h3><p class="how-lede">What it's for, and who uses it.</p><p>Before any tool opens, I write the problem down in plain words. For Cinematheque: moviegoers pick their exact seats and pay online; staff need tonight's guest list and the monthly report for head office.</p><p class="mono how-meta">Client meeting · 3 users · 2 must-haves</p></li>
-          <li><p class="mono how-kick">Layer 01 · pencil on paper</p><h3><span class="mono">02</span> Sketch</h3><p class="how-lede">Rough lines, cheap to change.</p><p>I sketch every screen by hand first. Moving a box in pencil costs seconds, so I try many layouts before I commit to one.</p><p class="mono how-meta">Paper · many versions · one kept</p></li>
-          <li><p class="mono how-kick">Layer 02 · structure, no colour</p><h3><span class="mono">03</span> Wireframe</h3><p class="how-lede">Boxes, hierarchy and flow.</p><p>In Figma, the sketch becomes a wireframe: where everything sits, what matters most, and how one screen leads to the next. It stays grey, so the layout is judged on its own.</p><p class="mono how-meta">Figma · 13 boxes · hierarchy first</p></li>
-          <li><p class="mono how-kick">Layer 03 · type, colour, states</p><h3><span class="mono">04</span> Design</h3><p class="how-lede">Decided before the first line of code.</p><p>Then the type, the colours and every state: empty, loading, error, done. The finished design is the spec I build against.</p><p class="mono how-meta">Ink · Ember · Paper · Brass</p></li>
-          <li><p class="mono how-kick">Layer 04 · measured against the design</p><h3><span class="mono">05</span> Build &amp; ship</h3><p class="how-lede">Built, tested, shipped.</p><p>Built feature by feature with AI-assisted development, checked against every layer underneath it, and tested with the people who use it.</p><p class="mono how-meta">Laravel 12 · 129 tests passing · client approved</p></li>
-        </ol>
+      <div class="how-detail" aria-hidden="true">
+        <div class="how-card" id="howCard"></div>
+        <svg class="how-lines" id="howLines"></svg>
+        <div class="how-anns" id="howAnns"></div>
       </div>
     </div>
     <div class="how-rail">
@@ -315,6 +321,6 @@
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="js/nav.js?v=15"></script>
 <script src="js/site.js?v=11"></script>
-<script src="js/home.js?v=16"></script>
+<script src="js/home.js?v=18"></script>
 </body>
 </html>

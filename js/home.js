@@ -516,30 +516,88 @@
   howSec.style.setProperty('--acc', howP.acc); howSec.style.setProperty('--acc-rgb', howP.rgb);
   howStack.innerHTML = KIND.map((k, i) => `<div class="layer ${k}"><div class="lc">${content(howP, i)}</div></div>`).join('');
   const hLayers = [...howStack.children], hPanels = $('.how-panels li'), hTabs = $('.how-tabs button'), hBar = howSec.querySelector('.how-bar i'), hPct = howSec.querySelector('.how-pct');
-  // the pose: flat and closed for the brief, then apart, one layer lifted at a time, then back together
-  const H = { rx: 8, rz: 0, gap: 0, sc: .92, lift: [0, 0, 0, 0], dim: [0, 0, 0, 0] };
+  // what each layer shows, pointed out with a line: [x %, y % on the screen, side, label, detail]
+  const ANNS = [
+    [[14, 5, 'l', 'Header', 'Logo and nav, roughed in'], [26, 28, 'l', 'Hero', 'The film title, biggest of all'], [72, 36, 'r', 'Poster', 'Beside the title, 3 : 4'], [22, 78, 'r', 'Below', 'Screenings, then the schedule']],
+    [[75, 5, 'r', 'Nav', 'Four links, top right'], [50, 34, 'r', 'Hero block', '136 × 50 on a 160 × 100 grid'], [17, 49, 'l', 'One action', 'Book seats, nothing beside it'], [30, 95, 'l', 'Cards', 'Three across, same height']],
+    [[17, 49, 'l', 'Ember', 'Only on the one action'], [72, 36, 'r', 'Brass', 'Frames the poster'], [12, 92, 'l', 'Palette', 'Ink · Ember · Paper · Brass'], [90, 92, 'r', 'Type', 'Display · 64 / 600']],
+    [[26, 28, 'l', 'Title', '64 / 600, as designed'], [17, 49, 'l', 'Book seats', '44 px tall, easy to hit'], [72, 36, 'r', 'Poster', 'The real one, 3 : 4'], [60, 82, 'r', 'Shipped', '129 tests passing']]
+  ];
+  const card = document.getElementById('howCard'), lines = document.getElementById('howLines'), anns = document.getElementById('howAnns'), detail = howSec.querySelector('.how-detail');
+  const BRIEF = `<div class="how-brief"><p class="mono">Brief · Cinematheque Centre Davao</p><q>Moviegoers should be able to pick their exact seats and pay online. Staff need tonight's guest list and the monthly report for head office.</q><p class="mono sign">Client meeting · 3 users · 2 must-haves</p></div>`;
+  // the stack: closed for the brief, opened into layers once the work starts, closed again at the end
+  const H = { rx: 8, rz: 0, gap: 0, sc: .92 };
   const renderHow = () => {
     howStack.style.transform = `rotateX(${H.rx.toFixed(2)}deg) rotateZ(${H.rz.toFixed(2)}deg) scale(${H.sc.toFixed(4)})`;
-    hLayers.forEach((l, i) => {
-      const k = i - 1.5, up = H.lift[i];
-      l.style.transform = `translate3d(${(-up * 24).toFixed(1)}%, ${(-up * 10).toFixed(1)}%, ${(k * H.gap + up * 110).toFixed(1)}px)`;
-      l.style.opacity = (1 - H.dim[i] * .78).toFixed(3);
+    hLayers.forEach((l, i) => { l.style.transform = `translate3d(0, 0, ${((i - 1.5) * H.gap).toFixed(1)}px)`; });
+  };
+  // annotations: a dot on the screen, an elbow line out to a label beside the card
+  const drawAnns = n => {
+    lines.innerHTML = ''; anns.innerHTML = '';
+    if (n < 1) return;
+    const d = detail.getBoundingClientRect(), c = card.getBoundingClientRect(), cx = c.left - d.left, cy = c.top - d.top, used = { l: [], r: [] };
+    ANNS[n - 1].forEach(([x, y, side, label, text], k) => {
+      const px = cx + c.width * x / 100, py = cy + c.height * y / 100;
+      let ly = py; while (used[side].some(u => Math.abs(u - ly) < 46)) ly += 46; used[side].push(ly);
+      const ex = side === 'l' ? cx - 18 : cx + c.width + 18, lx = side === 'l' ? ex - 10 : ex + 10;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', `M${px.toFixed(1)} ${py.toFixed(1)} L${ex.toFixed(1)} ${ly.toFixed(1)} L${lx.toFixed(1)} ${ly.toFixed(1)}`);
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); dot.setAttribute('cx', px); dot.setAttribute('cy', py); dot.setAttribute('r', 2.6);
+      const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); ring.setAttribute('class', 'ring'); ring.setAttribute('cx', px); ring.setAttribute('cy', py); ring.setAttribute('r', 7);
+      lines.append(path, ring, dot);
+      const el = document.createElement('div'); el.className = 'how-ann ' + side;
+      el.innerHTML = `<b>${label}</b><span>${text}</span>`;
+      el.style.top = ly + 'px';
+      if (side === 'l') el.style.right = (d.width - (lx - 6)) + 'px'; else el.style.left = (lx + 6) + 'px';
+      anns.appendChild(el);
+      const len = path.getTotalLength();
+      if (hasGsap && motion) {
+        gsap.fromTo(path, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: .55, delay: .1 + k * .1, ease: 'power2.out' });
+        gsap.fromTo([dot, ring], { scale: 0, transformOrigin: `${px}px ${py}px` }, { scale: 1, duration: .4, delay: .05 + k * .1, ease: 'back.out(2)' });
+        gsap.fromTo(el, { opacity: 0, x: side === 'l' ? 8 : -8 }, { opacity: 1, x: 0, duration: .45, delay: .35 + k * .1, ease: 'power2.out' });
+      } else el.style.opacity = 1;
     });
   };
-  let howNow = -1;
+  // the card flies between the layer's spot in the stack and its place on the right
+  const flyFrom = i => {
+    const c = card.getBoundingClientRect(), r = hLayers[i].getBoundingClientRect();
+    return { x: (r.left + r.width / 2) - (c.left + c.width / 2), y: (r.top + r.height / 2) - (c.top + c.height / 2), scale: Math.max(.2, r.width / c.width * .82), rotation: -16, opacity: 0 };
+  };
+  let howNow = -1, flight = null, shown = -1;
+  const fillCard = n => { card.innerHTML = n === 0 ? BRIEF : `<div class="layer ${KIND[n - 1]}"><div class="lc">${content(howP, n - 1)}</div></div>`; };
+  const pullOut = n => {
+    if (flight) flight.kill();
+    const prev = shown; shown = n;
+    const back = () => { if (prev > 0) hLayers[prev - 1].classList.remove('out'); };
+    const out = () => {
+      fillCard(n); if (n > 0) hLayers[n - 1].classList.add('out');
+      gsap.set(card, { yPercent: -50, x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 });
+      const from = n > 0 ? flyFrom(n - 1) : { x: 0, y: 30, scale: .96, rotation: 0, opacity: 0 };
+      flight = gsap.fromTo(card, from, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1, duration: .75, ease: 'power3.out', onComplete: () => drawAnns(n) });
+    };
+    if (!hasGsap || !motion) { back(); fillCard(n); if (n > 0) hLayers[n - 1].classList.add('out'); card.style.opacity = 1; card.style.transform = 'translateY(-50%)'; drawAnns(n); return; }
+    lines.innerHTML = ''; anns.innerHTML = '';
+    if (prev < 0) { out(); return; }
+    // the last layer goes back into its slot first
+    const to = prev > 0 ? flyFrom(prev - 1) : { x: 0, y: -24, scale: .96, rotation: 0, opacity: 0 };
+    flight = gsap.to(card, { x: to.x, y: to.y, scale: to.scale, rotation: to.rotation, opacity: 0, duration: .45, ease: 'power2.in', onComplete: () => { back(); out(); } });
+  };
   const setHow = n => {
     if (n === howNow) return; howNow = n;
     hPanels.forEach((li, i) => li.classList.toggle('on', i === n));
     hTabs.forEach((b, i) => i === n ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
+    pullOut(n);
   };
   const howProgress = p => { hBar.style.width = (p * 100).toFixed(1) + '%'; hPct.textContent = Math.round(p * 100) + '%'; setHow(Math.min(4, Math.floor(p * 5))); };
-  renderHow(); setHow(0);
+  if (hasGsap) gsap.set(card, { yPercent: -50 }); else card.style.transform = 'translateY(-50%)';
+  renderHow(); setTimeout(() => { if (howNow < 0) setHow(0); }, 0);
+  addEventListener('resize', () => { if (howNow >= 0) drawAnns(howNow); });
 
   /* =====================================================================
      scroll motion
      ===================================================================== */
   if (!motion || !hasGsap) {
-    Object.assign(H, { rx: 56, rz: -36, gap: 40, sc: 1 }); renderHow();
+    Object.assign(H, { rx: 56, rz: -36, gap: 40, sc: 1 }); renderHow(); setHow(1);
     hTabs.forEach((b, i) => b.addEventListener('click', () => { setHow(i); hBar.style.width = ((i + 1) * 20) + '%'; hPct.textContent = ((i + 1) * 20) + '%'; }));
     return;
   }
@@ -559,15 +617,9 @@
       gsap.timeline({ scrollTrigger: { trigger: wraps[i + 1], start: 'top bottom', end: 'top 10%', scrub: .4 } }).to(plate, { scale: .94, ease: 'none', force3D: true }, 0).to(dim, { opacity: .55, ease: 'none' }, 0); }
   });
 
-  // the timeline: 5 equal steps across the pinned scroll
+  // the stack opens as the work starts and closes once it has shipped; the layers themselves are pulled out step by step
   const hTl = gsap.timeline({ defaults: { ease: 'power2.inOut' }, onUpdate: renderHow });
-  hTl.to(H, { rx: 56, rz: -36, gap: 46, sc: 1, duration: .9 }, .1)                                    // 01 → 02: the closed sheet opens into layers
-     .to(H.lift, { 0: 1, duration: .5 }, 1.1).to(H.dim, { 1: 1, 2: 1, 3: 1, duration: .5 }, 1.1)          // 02 sketch
-     .to(H.lift, { 0: 0, 1: 1, duration: .5 }, 2.1).to(H.dim, { 0: 1, 1: 0, duration: .5 }, 2.1)          // 03 wireframe
-     .to(H.lift, { 1: 0, 2: 1, duration: .5 }, 3.1).to(H.dim, { 1: 1, 2: 0, duration: .5 }, 3.1)          // 04 design
-     .to(H.lift, { 2: 0, 3: 1, duration: .5 }, 4.0).to(H.dim, { 2: 1, 3: 0, duration: .5 }, 4.0)          // 05 build
-     .to(H.lift, { 3: 0, duration: .45 }, 4.55).to(H.dim, { 0: 0, 1: 0, 2: 0, duration: .45 }, 4.55)      // and it all goes back together
-     .to(H, { gap: 10, duration: .45 }, 4.55);
+  hTl.to(H, { rx: 56, rz: -36, gap: 40, sc: 1, duration: .8 }, .2).to(H, { gap: 40, duration: 3.3 }, 1).to(H, { gap: 8, duration: .5 }, 4.5);
   const pin = ScrollTrigger.create({
     trigger: '.how-pin', start: 'top top', end: () => '+=' + Math.round(innerHeight * 3.4), pin: '.how-pin', anticipatePin: 1, scrub: .6, invalidateOnRefresh: true,
     animation: hTl, onUpdate: s => howProgress(s.progress)
