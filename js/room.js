@@ -566,31 +566,38 @@ const proofTex = (p, [shot, name, size]) => {
   im.src = `assets/shots/${shot}.jpg`;
   return t;
 };
-const SLOTS = [-.09, .03, .15];
-const FX = -.08;
-const envBack = mat('#2a2f37', { roughness: .88 }), envFront = mat('#343a44', { roughness: .85 }), envFlap = mat('#30363f', { roughness: .88, side: THREE.DoubleSide });
+const EW = .22, ED = .15;                    // an envelope, lying flat
+const HOMES = [[-.12, .1, .05], [-.12, -.105, -.04], [.14, -.02, .07]];   // where each one lies: x, z, turn
+const envBack = mat('#262b33', { roughness: .85 }), envFront = mat('#2f353f', { roughness: .8 }), envFlap = mat('#22262d', { roughness: .9, side: THREE.DoubleSide });
 const btnM = mat('#E4E1D9', { roughness: .4 }), threadM = mat('#C4432D', { roughness: .7 });
-const flapShape = new THREE.Shape([new THREE.Vector2(-.18, 0), new THREE.Vector2(.18, 0), new THREE.Vector2(.12, .04), new THREE.Vector2(-.12, .04)]);
+const flapShape = new THREE.Shape([new THREE.Vector2(-EW / 2, 0), new THREE.Vector2(EW / 2, 0), new THREE.Vector2(.075, .058), new THREE.Vector2(-.075, .058)]);
+const flat = m => { m.rotation.x = -Math.PI / 2; return m; };
 const folders = PROJ.map((p, i) => {
-  const f = new THREE.Group(); at(f, FX, .006, SLOTS[i], drawer); f.rotation.x = -.12;
-  at(box(.36, .1, .003, envBack), 0, .05, 0, f);                                    // the back of the envelope
-  const flap = new THREE.Mesh(new THREE.ShapeGeometry(flapShape), envFlap); flap.position.set(0, .1, -.001); flap.rotation.x = -.5; flap.castShadow = true; f.add(flap);   // the flap, folded open
-  // the proofs inside: they rise and fan out when the envelope is opened
+  const [hx, hz, hr] = HOMES[i];
+  const f = new THREE.Group(); at(f, hx, .006, hz, drawer); f.rotation.y = hr;
+  at(box(EW, .003, ED, envBack, .002), 0, .0015, 0, f);                                   // the back
+  // the proofs, tucked inside; they slide out when it is opened
   const proofs = PROOFS[p.id].map((pr, k) => {
-    const m = new THREE.Mesh(new THREE.PlaneGeometry(.11, .0864), mat('#ffffff', { map: proofTex(p, pr), roughness: .8 }));
-    m.position.set((k - 1) * .012, .046, .0016 + k * .0009); m.castShadow = true; f.add(m); return m;
+    const m = flat(new THREE.Mesh(new THREE.PlaneGeometry(.19, .143), mat('#c9c9c9', { map: proofTex(p, pr), roughness: .9 })));
+    m.position.set(0, .0032 + k * .0003, -.002); f.add(m); return m;
   });
-  const cover = new THREE.Group(); at(cover, 0, 0, .0052, f);                        // the pocket, hinged at the bottom
-  at(box(.36, .088, .003, envFront), 0, .044, 0, cover);
-  const lab = new THREE.Mesh(new THREE.PlaneGeometry(.17, .049), new THREE.MeshStandardMaterial({ map: labelTex(p), transparent: true, roughness: .7 }));
-  lab.position.set(-.085, .032, .0017); cover.add(lab);
-  // the button-and-string closure, at the top centre
-  [.078, .056].forEach(y => { const b = cyl(.0065, .0065, .002, btnM, 16); b.rotation.x = Math.PI / 2; at(b, .02, y, .0026, cover); });
-  [.072, .062].forEach(y => { const t = new THREE.Mesh(new THREE.TorusGeometry(.0058, .0007, 6, 22), threadM); t.position.set(.02, y, .0034); cover.add(t); });
-  f.userData = { p, slot: i, cover, proofs, flap };
+  const pocket = at(box(EW, .002, .11, envFront, .0015), 0, .0052, .02, f);                // the front pocket
+  const edge = flat(new THREE.Mesh(new THREE.PlaneGeometry(EW - .006, .0016), mat('#4a515d', { roughness: .7 }))); edge.position.set(0, .0063, -.034); f.add(edge);
+  const lab = flat(new THREE.Mesh(new THREE.PlaneGeometry(.15, .0433), new THREE.MeshStandardMaterial({ map: labelTex(p), transparent: true, roughness: .7 })));
+  lab.position.set(-.028, .0064, .046); f.add(lab);
+  // the flap, hinged at the top edge: folded down over the pocket when closed, laid flat behind it when open
+  const hinge = new THREE.Group(); at(hinge, 0, .0068, -ED / 2, f); hinge.rotation.x = Math.PI / 2;
+  const flapM = new THREE.Mesh(new THREE.ShapeGeometry(flapShape), envFlap); flapM.castShadow = true; hinge.add(flapM);
+  const bA = cyl(.0068, .0068, .0022, btnM, 18); bA.rotation.x = Math.PI / 2; bA.position.set(0, .046, -.0013); hinge.add(bA);   // button on the flap
+  const bB = at(cyl(.0068, .0068, .0022, btnM, 18), 0, .0072, .006, f);                    // button on the pocket
+  const string = new THREE.Group(); at(string, 0, .0085, 0, f);                           // the red string, wound in a figure eight
+  [-.0125, .0005].forEach(z => { const loop = flat(new THREE.Mesh(new THREE.TorusGeometry(.0068, .0008, 6, 24), threadM)); loop.position.z = z; string.add(loop); });
+  f.userData = { p, slot: i, proofs, hinge, string, pord: [0, 1, 2] };
   return f;
 });
-let order = [0, 1, 2];   // which folder sits in which slot
+let order = [0, 1, 2];
+let stack = [0, 1, 2];   // which envelope lies on top of which: the last one moved goes on top
+const toTop = f => { const i = folders.indexOf(f); stack = stack.filter(x => x !== i).concat(i); };   // which folder sits in which slot
 
 // the phone, lying face up at the front right of the drawer
 const lockTex = canvasTex(360, 760, (g, w, h) => { g.fillStyle = '#0b0c10'; g.fillRect(0, 0, w, h); });
@@ -668,18 +675,18 @@ const wide = () => innerWidth > 760;
 let drawerOpen = false, chosen = null, hoverFolder = null, phoneUp = false;
 const POP = .03, CHOSEN = .15;
 const settleFolders = (instant) => folders.forEach(f => {
-  const s = order.indexOf(folders.indexOf(f));
-  const open = drawerOpen && f === chosen;
-  const y = .006 + (drawerOpen ? (open ? CHOSEN : f === hoverFolder ? POP + .015 : POP) : 0);
+  const open = drawerOpen && f === chosen, d = instant ? 0 : 1;
   if (f === dragging) return;
-  tween(f.position, { y, z: SLOTS[s] + (open ? .07 : 0), duration: instant ? 0 : .6, ease: open ? 'power3.out' : 'back.out(1.6)', overwrite: true, onUpdate: shadowsDirty });
-  tween(f.rotation, { x: open ? -.55 : -.12, duration: instant ? 0 : .7, ease: 'power3.out', overwrite: true });
-  tween(f.userData.cover.rotation, { x: open ? .32 : 0, duration: instant ? 0 : .6, delay: open ? .15 : 0, ease: 'power3.out', overwrite: true });
-  tween(f.userData.flap.rotation, { x: open ? -1.2 : -.5, duration: instant ? 0 : .6, ease: 'power3.out', overwrite: true });
+  const y = .006 + stack.indexOf(folders.indexOf(f)) * .0045 + (open ? .02 : drawerOpen && f === hoverFolder ? .008 : 0);
+  tween(f.position, { y, duration: .45 * d, ease: 'power3.out', overwrite: true, onUpdate: shadowsDirty });
+  // the string comes undone, then the flap opens back
+  f.userData.string.visible = !open;
+  tween(f.userData.hinge.rotation, { x: open ? -Math.PI / 2 : Math.PI / 2, duration: .7 * d, delay: open ? .1 * d : 0, ease: 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
+  // the proofs slide out, one behind the other, so each one's caption shows
   f.userData.proofs.forEach((m, k) => {
-    const d = k - 1;
-    tween(m.position, { x: open ? d * .118 : d * .012, y: open ? .118 - Math.abs(d) * .012 : .046, z: open ? .0045 + k * .0009 : .0016 + k * .0009, duration: instant ? 0 : .7, delay: open ? .2 + k * .06 : 0, ease: open ? 'back.out(1.5)' : 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
-    tween(m.rotation, { z: open ? -d * .09 : 0, duration: instant ? 0 : .7, delay: open ? .2 + k * .06 : 0, ease: 'power3.out', overwrite: true });
+    const r = f.userData.pord.indexOf(k);
+    tween(m.position, { y: open ? .0078 + r * .0013 : .0032 + k * .0003, z: open ? -.088 + r * .034 : -.002, duration: .7 * d, delay: open ? (.35 + r * .07) * d : 0, ease: open ? 'power3.out' : 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
+    tween(m.rotation, { z: open ? (r - 1) * -.025 : 0, duration: .6 * d, delay: open ? (.35 + r * .07) * d : 0, ease: 'power3.out', overwrite: true });
   });
 });
 const setDrawer = on => {
@@ -687,8 +694,7 @@ const setDrawer = on => {
   tween(drawer.position, { z: DR.z + (on ? DR.open : 0), duration: on ? 1.1 : .7, ease: on ? 'power3.out' : 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
   tween(drawerLight, { intensity: on ? .6 : 0, duration: .8 });
   // the folders pop up one after another once the drawer is out
-  if (on && G && motion) folders.forEach((f, i) => G.to(f.position, { y: .006 + POP, duration: .6, delay: .55 + i * .1, ease: 'back.out(2.4)', overwrite: true, onUpdate: shadowsDirty }));
-  else settleFolders();
+  settleFolders();
 };
 const drawerView = () => {
   const c = V3(DR.x, DR.top - .06, DR.z + DR.open), side = wide() ? .1 : 0;
@@ -767,13 +773,16 @@ const SPOTS = [
   { id: 'switch', obj: sw, at: [0, 0, .01], label: 'Light switch', small: 'The room light', c: '#FFE7C8', kind: 'switch' }
 ];
 const hots = document.getElementById('hots'), card = document.getElementById('card');
-hots.innerHTML = SPOTS.map((s, i) => `<button class="hs${s.side === 'left' ? ' left' : ''}" type="button" data-i="${i}" style="--c:${s.c}" aria-label="${s.label}: ${s.small}"><span class="hs-label">${s.label}<small>${s.small}</small></span></button>`).join('');
+hots.innerHTML = SPOTS.map((s, i) => `<button class="hs${s.side === 'left' ? ' left' : ''}" type="button" data-i="${i}" style="--c:${s.c}" aria-label="${s.label}: ${s.small}"><i class="hs-lead" aria-hidden="true"></i><span class="hs-label">${s.label}<small>${s.small}</small></span></button>`).join('');
 const hsEls = [...hots.children];
 const wp = new THREE.Vector3();
+const HS_DX = 22, HS_DY = 18;
 const placeHots = () => SPOTS.forEach((s, i) => {
   s.obj.localToWorld(wp.set(...s.at)); wp.project(camera);
   const el = hsEls[i];
-  el.style.transform = `translate(${((wp.x + 1) / 2 * canvas.clientWidth).toFixed(1)}px, ${((1 - wp.y) / 2 * canvas.clientHeight).toFixed(1)}px)`;
+  // the dot sits a little to the side of the object, tied to it by a short line, so it never covers it
+  const dx = s.side === 'left' ? -HS_DX : HS_DX;
+  el.style.transform = `translate(${((wp.x + 1) / 2 * canvas.clientWidth + dx).toFixed(1)}px, ${((1 - wp.y) / 2 * canvas.clientHeight - HS_DY).toFixed(1)}px)`;
   el.style.visibility = wp.z < 1 ? 'visible' : 'hidden';
 });
 
@@ -813,7 +822,7 @@ const drawerCard = () => {
     return;
   }
   card.style.setProperty('--c', s.c);
-  card.innerHTML = `${topLine(s, 'Drawer')}<h2 class="rc-title">Project files</h2><p class="rc-text">One envelope of proofs for each build. Drag them into any order, or pick one to open it.</p>
+  card.innerHTML = `${topLine(s, 'Drawer')}<h2 class="rc-title">Project files</h2><p class="rc-text">One envelope of proofs for each build. Drag them around the drawer, or pick one to open it; click a proof to bring it to the front.</p>
     <div class="rc-files">${order.map(i => PROJ[i]).map(p => `<button type="button" data-f="${PROJ.indexOf(p)}" style="--fc:${p.c}"><i aria-hidden="true"></i><span><b>${p.name}</b><small class="mono">${p.kind}</small></span><em aria-hidden="true">→</em></button>`).join('')}</div>${navRow()}`;
   card.querySelectorAll('[data-f]').forEach(b => b.addEventListener('click', () => choose(folders[+b.dataset.f])));
   wireNav(s);
@@ -828,8 +837,9 @@ const choose = f => {
   chosen = f; settleFolders(); drawerCard();
   if (!f) { drawerView(); return; }
   // lean in so the proofs can be read
-  const c = drawer.localToWorld(V3(FX, CHOSEN + .05, SLOTS[order.indexOf(folders.indexOf(f))] + .07)).add(V3(0, 0, DR.open - (drawer.position.z - DR.z)));
-  camTo(V3(c.x + (wide() ? .12 : 0), c.y + .5, c.z + .46 + (wide() ? 0 : .16)), V3(c.x + (wide() ? .12 : 0), c.y + .03 - (wide() ? 0 : .08), c.z - .02), 1);
+  const c = drawer.localToWorld(V3(f.position.x, .02, f.position.z - .04)).add(V3(0, 0, DR.open - (drawer.position.z - DR.z)));
+  const sx = wide() ? .1 : 0;
+  camTo(V3(c.x + sx, c.y + .6, c.z + .34 + (wide() ? 0 : .14)), V3(c.x + sx, c.y - (wide() ? 0 : .06), c.z + .01), 1);
 };
 const boardCard = () => {
   const s = SPOTS[1];
@@ -970,9 +980,10 @@ canvas.addEventListener('pointerdown', e => {
     return;
   }
   if (h && h.folder && focus && focus.kind === 'drawer') {
-    dragging = h.folder; dragging.userData.moved = false; canvas.setPointerCapture(e.pointerId);
+    dragging = h.folder; dragging.userData.moved = false; toTop(dragging); try { canvas.setPointerCapture(e.pointerId); } catch {}
     const wpos = new THREE.Vector3(); dragging.getWorldPosition(wpos);
     dragPlane.setFromNormalAndCoplanarPoint(V3(0, 1, 0), wpos);
+    setRay(e); if (ray.ray.intersectPlane(dragPlane, dragHit)) { drawer.worldToLocal(local.copy(dragHit)); dragging.userData.grab = [dragging.position.x - local.x, dragging.position.z - local.z]; }
     G && G.killTweensOf(dragging.position);
   }
 });
@@ -997,14 +1008,10 @@ canvas.addEventListener('pointermove', e => {
     setRay(e);
     if (ray.ray.intersectPlane(dragPlane, dragHit)) {
       drawer.worldToLocal(local.copy(dragHit));
-      const z = Math.max(SLOTS[0] - .05, Math.min(SLOTS[2] + .06, local.z));
-      dragging.position.z = z; dragging.position.y = .006 + .07; shadowsDirty();
-      // reorder by where the dragged folder now sits
-      const fi = folders.indexOf(dragging);
-      const rest = order.filter(i => i !== fi);
-      const slot = SLOTS.reduce((best, s, i) => Math.abs(s - z) < Math.abs(SLOTS[best] - z) ? i : best, 0);
-      rest.splice(slot, 0, fi);
-      if (rest.join() !== order.join()) { order = rest; settleFolders(); }
+      const g = dragging.userData.grab || [0, 0], mx = (dW - .03) / 2 - EW / 2 - .01, mz0 = -dD / 2 + ED / 2 + .065, mz1 = dD / 2 - ED / 2 - .02;
+      dragging.position.x = Math.max(-mx, Math.min(mx, local.x + g[0]));
+      dragging.position.z = Math.max(mz0, Math.min(mz1, local.z + g[1]));
+      dragging.position.y = .006 + .045; shadowsDirty();
     }
     return;
   }
@@ -1020,12 +1027,21 @@ const doHover = e => {
   if (hn !== hoverNote && focus && focus.kind === 'board') { hoverNote = hn; settleNotes(); }
   hsEls.forEach((el, i) => el.classList.toggle('on', (h && SPOTS[i] === h.spot) || SPOTS[i] === focus));
 };
-const endDrag = () => {
+const endDrag = e => {
   if (!dragging) return false;
   const moved = dragging.userData.moved, f = dragging;
   dragging = null; document.body.classList.remove('dragging');
+  if (moved) {
+    // it stays where it was dropped, landing with a slight new turn
+    tween(f.rotation, { y: f.rotation.y + (Math.random() - .5) * .12, duration: .35, ease: 'power2.out' });
+    settleFolders(); if (f === chosen) choose(f); return true;
+  }
+  // on an open envelope, a click on a proof brings that proof to the front
+  if (f === chosen && e) {
+    setRay(e); const hp = ray.intersectObjects(f.userData.proofs, false)[0];
+    if (hp) { const k = f.userData.proofs.indexOf(hp.object), o = f.userData.pord; o.splice(o.indexOf(k), 1); o.push(k); settleFolders(); return true; }
+  }
   settleFolders();
-  if (moved) { drawerCard(); return true; }
   choose(f === chosen ? null : f); return true;
 };
 const endPin = () => {
@@ -1041,7 +1057,7 @@ const endPin = () => {
   shadowsDirty();
   return true;
 };
-canvas.addEventListener('pointerup', () => { if (endPin() || endDrag()) downAt = null; });
+canvas.addEventListener('pointerup', e => { if (endPin() || endDrag(e)) downAt = null; });
 canvas.addEventListener('click', e => {
   if (!downAt) return;   // a drag or a folder press already handled it
   const h = hit(e); downAt = null;
