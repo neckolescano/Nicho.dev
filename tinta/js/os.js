@@ -2,7 +2,7 @@
    The screen is a fixed 1280 x 800 stage (the laptop's 16:10 panel), scaled to fit. Because every position is fixed,
    the same layout is painted onto the laptop's screen in the room (ndOS.paint), so the closed laptop and the open
    desktop look the same.
-   Apps: a browser running the portfolio, a file explorer with the projects, Notepad and the resume.
+   It is Tinta's lab: kuwaGO's pixel garden, the promo drafts side by side, and two notes from building kuwaGO.
    The room calls window.ndOS.open(onExit); every "Back to the room" control calls onExit. */
 (() => {
   const SW = 1280, SH = 800, BAR = 48;
@@ -23,12 +23,45 @@
   ];
   const IC = { nicho: 'tinta/assets/icons/nicho.svg', browser: 'tinta/assets/icons/browser.svg', folder: 'tinta/assets/icons/folder.svg', notepad: 'tinta/assets/icons/notepad.svg', pdf: 'tinta/assets/icons/pdf.svg', room: 'tinta/assets/icons/room.svg' };
   PROJECTS.forEach(p => (IC[p.id] = p.icon));
+  IC.garden = 'tinta/assets/icons/garden.svg'; IC.film = 'tinta/assets/icons/film.svg';
+  // the laptop is the lab: small things that are not case studies
   const APPS = {
-    browser: { t: 'Nicho.dev', icon: IC.browser },
-    explorer: { t: 'File Explorer', icon: IC.folder },
-    notepad: { t: 'Notepad', icon: IC.notepad },
-    pdf: { t: 'Resume.pdf', icon: IC.pdf }
+    garden: { t: 'Garden', icon: IC.garden },
+    promo: { t: 'Promo drafts', icon: IC.film },
+    notepad: { t: 'Notepad', icon: IC.notepad }
   };
+  const PLANTS = ['owlbloom', 'storm_orchid', 'eternal_sakura', 'aurora_bell', 'crystal_lotus', 'desert_cactus', 'dragonheart_rose', 'forest_fern', 'glory_tree', 'moonpetal_lily', 'phoenix_bloom', 'starfall_willow'];
+  const plantName = id => id.split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ');
+  const sheetOf = id => `tinta/assets/plants/${id}.png`;
+  const BUILD_LOG = `kuwaGO · build log
+==================
+47 commits in 30 days.
+
+22 Sep  first commit ("first butang")
+27 Sep  notes feature
+28 Sep  Firebase set up; the first AI study tools
+29 Sep  splash screen and profile card
+30 Sep  release setup: new app ID, signing, a Google Sign-In fix
+02 Oct  AI batching, the study quiz, Groq as the backup AI
+20 Oct  owl tours, Deep Focus, the flashcard deck, AI study tools
+21 Oct  account deletion, privacy pages, the store kit
+21 Oct  version 1.0.5 goes to testers
+
+Next: a Google Play developer account, closed testing, release.
+`;
+  const AI_NOTE = `No keys in the app
+==================
+An Android app can be unpacked, so any API key inside it can be read.
+
+So kuwaGO never ships one. The first version didn't fake it either:
+with no AI connected, it said "not connected" instead of pretending.
+
+Now the app calls a small Cloudflare Worker. The Worker holds the
+Groq key and talks to Groq; the app only knows the Worker's address.
+
+Gemini is the main AI and Groq is the backup. If both are down,
+kuwaGO falls back to study material that works offline.
+`;
   const ABOUT = `About me
 ========
 
@@ -77,19 +110,19 @@ github.com/neckolescano
 
   /* ---------- layout: the same numbers drive the page and the painted screen ---------- */
   const DESK = [
-    { id: 'browser', t: 'Nicho.dev', icon: IC.nicho, open: () => openApp('browser') },
-    { id: 'explorer', t: 'Projects', icon: IC.folder, open: () => openApp('explorer', '') },
-    { id: 'about', t: 'About me.txt', icon: IC.notepad, open: () => openNote('About me.txt', ABOUT) },
-    { id: 'pdf', t: 'Resume.pdf', icon: IC.pdf, open: () => openApp('pdf') },
-    { id: 'room', t: 'Back to the room', icon: IC.room, open: () => exit() },
-    ...PROJECTS.map(p => ({ id: p.id, t: p.name, icon: p.icon, open: () => openApp('explorer', p.id) }))
+    { id: 'garden', t: 'Garden', icon: IC.garden, open: () => openApp('garden') },
+    { id: 'promo', t: 'Promo drafts', icon: IC.film, open: () => openApp('promo') },
+    { id: 'log', t: 'Build log.txt', icon: IC.notepad, open: () => openNote('Build log.txt', BUILD_LOG) },
+    { id: 'key', t: 'No keys in the app.txt', icon: IC.notepad, open: () => openNote('No keys in the app.txt', AI_NOTE) },
+    { id: 'site', t: 'Nicho.dev ↗', icon: IC.nicho, open: () => leave('index.html') },
+    { id: 'room', t: 'Back to the room', icon: IC.room, open: () => exit() }
   ];
-  const ROOT_ORDER = ['browser', 'explorer', 'about', 'pdf', 'room', 'kuwago', 'cinematheque', 'xpera'];
+  const ROOT_ORDER = ['garden', 'promo', 'log', 'key', 'site', 'room'];
   let order = ROOT_ORDER.slice(), iconSize = 'm';
   const CELL = { m: [84, 96, 44], l: [104, 120, 60] };
   const iconPos = (i, h = SH - BAR) => { const [cw, ch] = CELL[iconSize], rows = Math.max(1, Math.floor((h - 8) / ch)); return [8 + Math.floor(i / rows) * cw, 8 + (i % rows) * ch]; };
-  const WIN0 = { x: 196, y: 64, w: 590, h: 470 };
-  const TB = { x0: 498, step: 48, w: 44, items: ['start', 'search', 'browser', 'explorer', 'notepad', 'pdf'] };
+  const WIN0 = { x: 196, y: 64, w: 622, h: 430 };
+  const TB = { x0: 522, step: 48, w: 44, items: ['start', 'search', 'garden', 'promo', 'notepad'] };
   const WALLS = { drafting: 'Drafting', blueprint: 'Layers', dots: 'Dots' };
   const st = { wall: 'drafting', bright: 1, night: false, focus: false, wifi: true, sound: true, opened: false };
 
@@ -125,10 +158,10 @@ github.com/neckolescano
       tick(800, 214.5); tick(1120, 214.5); tick(764.5, 250); tick(764.5, 610);
       g.fillStyle = ink(.5); g.font = `500 11px ${MONO}`; g.textAlign = 'center'; g.fillText('320', 960, 205);
       g.save(); g.translate(754, 430); g.rotate(-Math.PI / 2); g.fillText('360', 0, 0); g.restore();
-      g.textAlign = 'left'; g.fillStyle = red(.7); g.fillText('A-100', 1146, 640);
+      g.textAlign = 'left'; g.fillStyle = red(.7); g.fillText('T-000', 1146, 640);
       g.strokeStyle = ink(.18); g.strokeRect(1000.5, 676.5, 264, 60); g.beginPath(); g.moveTo(1180.5, 676.5); g.lineTo(1180.5, 736.5); g.stroke();
-      g.fillStyle = ink(.7); g.font = `600 15px ${COND}`; g.fillText('NICHO.DEV', 1012, 700);
-      g.fillStyle = ink(.4); g.font = `400 10.5px ${MONO}`; g.fillText('DESIGN · CODE · AI', 1012, 722); g.fillText('SHEET', 1192, 700); g.fillText('01 / 01', 1192, 722);
+      g.fillStyle = ink(.7); g.font = `600 15px ${COND}`; g.fillText('TINTA STUDIO', 1012, 700);
+      g.fillStyle = ink(.4); g.font = `400 10.5px ${MONO}`; g.fillText('THE LAB', 1012, 722); g.fillText('SHEET', 1192, 700); g.fillText('01 / 01', 1192, 722);
     }
     g.restore();
   };
@@ -137,34 +170,26 @@ github.com/neckolescano
   const IMGS = {};
   let onChange = null;
   const loadImg = src => { if (IMGS[src]) return IMGS[src]; const im = new Image(); im.onload = () => onChange && onChange(); im.src = src; return (IMGS[src] = im); };
-  Object.values(IC).forEach(loadImg);
+  Object.values(IC).forEach(loadImg); PLANTS.forEach(id => loadImg(sheetOf(id)));
   const ok = im => im && im.complete && im.naturalWidth;
   const rr = (g, x, y, w, h, r) => { g.beginPath(); g.roundRect ? g.roundRect(x, y, w, h, r) : g.rect(x, y, w, h); };
   const glyph = (g, k, x, y, s, c, lw = 1.6) => { g.save(); g.translate(x, y); g.scale(s / 24, s / 24); g.strokeStyle = c; g.lineWidth = lw * 24 / s; g.lineCap = 'round'; g.lineJoin = 'round'; g.stroke(new Path2D(P[k])); g.restore(); };
   const pic = (g, src, x, y, s) => { const im = loadImg(src); if (ok(im)) g.drawImage(im, x, y, s, s); };
   const wrap = (g, text, maxW) => { const words = text.split(' '), out = []; let line = ''; words.forEach(w => { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW && line) { out.push(line); line = w; } else line = t; }); out.push(line); return out.slice(0, 2); };
 
-  const paintExplorer = (g, r) => {
+  // the Garden window, painted for the laptop screen: the twelve plants in full bloom
+  const bloomAt = (g, id, x, y, s) => { const im = loadImg(sheetOf(id)); if (!ok(im)) return; g.imageSmoothingEnabled = false; g.drawImage(im, 9 * 128, 3 * 128, 128, 128, x, y, s, s); g.imageSmoothingEnabled = true; };
+  const paintGarden = (g, r) => {
     const { x, y, w, h } = r;
     g.save(); g.shadowColor = 'rgba(0,0,0,.55)'; g.shadowBlur = 40; g.shadowOffsetY = 18; g.fillStyle = '#1C1D22'; rr(g, x, y, w, h, 8); g.fill(); g.restore();
     g.save(); rr(g, x, y, w, h, 8); g.clip(); g.translate(x, y);
     g.fillStyle = '#141519'; g.fillRect(0, 0, w, 36);
-    pic(g, IC.folder, 12, 10, 16); g.fillStyle = '#E8E9EC'; g.font = `400 12px ${F}`; g.fillText('Projects', 38, 22.5);
+    pic(g, IC.garden, 12, 10, 16); g.fillStyle = '#E8E9EC'; g.font = `400 12px ${F}`; g.fillText('Garden', 38, 22.5);
     glyph(g, 'min', w - 138 + 15, 10, 16, '#C9CCD3', 1.2); glyph(g, 'max', w - 92 + 15, 10, 16, '#C9CCD3', 1.2); glyph(g, 'close', w - 46 + 15, 10, 16, '#C9CCD3', 1.2);
-    g.fillStyle = 'rgba(255,255,255,.07)'; g.fillRect(0, 79, w, 1);
-    [['back', '#5C606A'], ['fwd', '#5C606A'], ['up', '#5C606A'], ['refresh', '#C9CCD3']].forEach(([k, c], i) => glyph(g, k, 8 + i * 34 + 8, 50, 16, c));
-    g.fillStyle = '#26272D'; rr(g, 150, 43, w - 390, 30, 6); g.fill();
-    g.fillStyle = '#8E93A0'; g.font = `400 12.5px ${F}`; g.fillText('This PC', 162, 62.5); const tw = g.measureText('This PC').width;
-    g.fillText('›', 170 + tw, 62.5); g.fillStyle = '#E8E9EC'; g.fillText('Projects', 184 + tw, 62.5);
-    g.fillStyle = '#26272D'; rr(g, w - 226, 43, 214, 30, 6); g.fill(); g.fillStyle = '#8E93A0'; g.fillText('Search Projects', w - 214, 62.5); glyph(g, 'search', w - 36, 51, 14, '#8E93A0');
-    g.fillStyle = 'rgba(255,255,255,.07)'; g.fillRect(180, 80, 1, h - 106); g.fillRect(0, h - 26, w, 1);
-    const side = [['Projects', IC.folder, true], ...PROJECTS.map(p => [p.name, p.icon]), null, ['About me.txt', IC.notepad], ['Resume.pdf', IC.pdf]];
-    let sy = 88; g.font = `400 13px ${F}`;
-    side.forEach(s => { if (!s) { g.fillStyle = 'rgba(255,255,255,.07)'; g.fillRect(14, sy + 4, 152, 1); sy += 10; return; } if (s[2]) { g.fillStyle = 'rgba(255,255,255,.07)'; rr(g, 6, sy, 168, 30, 5); g.fill(); } pic(g, s[1], 14, sy + 6, 18); g.fillStyle = '#E8E9EC'; g.fillText(s[0], 42, sy + 19.5); sy += 32; });
-    g.fillStyle = '#E8E9EC'; g.font = `600 20px ${F}`; g.fillText('Projects', 200, 116);
-    g.fillStyle = '#8E93A0'; g.font = `400 12px ${F}`; g.fillText('3 items · click a folder to open it', 200, 136);
-    PROJECTS.forEach((p, i) => { const tx = 196 + i * 128, ty = 152; pic(g, p.icon, tx + 24, ty + 14, 72); g.textAlign = 'center'; g.fillStyle = '#E8E9EC'; g.font = `400 13px ${F}`; g.fillText(p.name, tx + 60, ty + 108); g.fillStyle = '#8E93A0'; g.font = `400 11.5px ${F}`; g.fillText(p.kind, tx + 60, ty + 126); g.textAlign = 'left'; });
-    g.fillStyle = '#8E93A0'; g.font = `400 12px ${F}`; g.fillText('3 items', 12, h - 9);
+    g.fillStyle = '#E8E9EC'; g.font = `600 20px ${F}`; g.fillText('Garden', 20, 70);
+    g.fillStyle = '#8E93A0'; g.font = `400 12px ${F}`; g.fillText('12 plants I drew for kuwaGO. Pick one to watch it grow.', 20, 90);
+    PLANTS.forEach((id, i) => { const c = i % 6, rw = Math.floor(i / 6), tx = 14 + c * 96, ty = 110 + rw * 168;
+      bloomAt(g, id, tx + 4, ty, 88); g.textAlign = 'center'; g.fillStyle = '#C9CCD3'; g.font = `400 11.5px ${F}`; wrap(g, plantName(id), 88).forEach((l, j) => g.fillText(l, tx + 48, ty + 104 + j * 14)); g.textAlign = 'left'; });
     g.restore();
   };
   const paintFrame = (g, r, t, icon) => {   // any other open window: its frame and title
@@ -182,14 +207,14 @@ github.com/neckolescano
         g.fillStyle = '#F1F2F5'; g.shadowColor = 'rgba(0,0,0,.9)'; g.shadowBlur = 4; wrap(g, d.t, cw - 8).forEach((l, j) => g.fillText(l, x + cw / 2, y + is + 24 + j * 15)); g.shadowBlur = 0; });
       g.textAlign = 'left';
     }
-    const list = st.opened ? Object.entries(wins).filter(([, w]) => !w.el.hidden).sort((a, b) => (+a[1].el.style.zIndex || 0) - (+b[1].el.style.zIndex || 0)) : [['explorer', null]];
-    list.forEach(([k, w]) => { const r = w ? rect(w.el) : WIN0; if (k === 'explorer' && (!w || w.view === '')) paintExplorer(g, r); else paintFrame(g, r, w ? w.title : APPS[k].t, APPS[k].icon); });
+    const list = st.opened ? Object.entries(wins).filter(([, w]) => !w.el.hidden).sort((a, b) => (+a[1].el.style.zIndex || 0) - (+b[1].el.style.zIndex || 0)) : [['garden', null]];
+    list.forEach(([k, w]) => { const r = w ? rect(w.el) : WIN0; if (k === 'garden' && (!w || w.view === null)) paintGarden(g, r); else paintFrame(g, r, w ? w.title : APPS[k].t, APPS[k].icon); });
     // taskbar
     g.fillStyle = 'rgba(19,20,25,.96)'; g.fillRect(0, SH - BAR, SW, BAR); g.fillStyle = 'rgba(255,255,255,.08)'; g.fillRect(0, SH - BAR, SW, 1);
     g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 1; g.fillStyle = 'rgba(255,255,255,.04)'; rr(g, 10.5, 760.5, 150, 31, 6); g.fill(); g.stroke();
     g.fillStyle = '#F1F2F5'; g.font = `400 12.5px ${F}`; g.fillText('← Back to the room', 23, 780.5);
     TB.items.forEach((k, i) => { const x = TB.x0 + i * TB.step; if (k === 'start') pic(g, IC.nicho, x + 10, 764, 24); else if (k === 'search') glyph(g, 'search', x + 12, 766, 20, '#E8E9EC'); else pic(g, APPS[k].icon, x + 10, 764, 24);
-      const w = st.opened ? wins[k] : (k === 'explorer' ? { el: { hidden: false } } : null);
+      const w = st.opened ? wins[k] : (k === 'garden' ? { el: { hidden: false } } : null);
       if (w) { const active = st.opened ? top === k && !w.el.hidden : true; g.fillStyle = active ? '#9DB8FF' : '#8E93A0'; rr(g, x + 22 - (active ? 8 : 3), 794, active ? 16 : 6, 3, 1.5); g.fill(); } });
     glyph(g, 'chev', 1043, 764, 16, '#E8E9EC');
     g.fillStyle = '#E8E9EC'; g.font = `400 12px ${F}`; g.textAlign = 'center'; g.fillText('ENG', 1086, 780);
@@ -331,15 +356,15 @@ github.com/neckolescano
   };
   const renderStart = () => {
     const s = $('.os-start');
-    const pins = [['app:browser', 'Nicho.dev', IC.nicho], ['app:explorer', 'File Explorer', IC.folder], ['note', 'About me.txt', IC.notepad], ['app:pdf', 'Resume.pdf', IC.pdf], ...PROJECTS.map(p => ['proj:' + p.id, p.name, p.icon]), ['room', 'The room', IC.room]];
-    s.innerHTML = `<label class="os-search">${svg('search')}<input type="search" placeholder="Search apps, projects and pages" aria-label="Search"></label>
+    const pins = [['app:garden', 'Garden', IC.garden], ['app:promo', 'Promo drafts', IC.film], ['log', 'Build log.txt', IC.notepad], ['key', 'No keys in the app.txt', IC.notepad], ['site', 'Nicho.dev', IC.nicho], ['room', 'The room', IC.room]];
+    s.innerHTML = `<label class="os-search">${svg('search')}<input type="search" placeholder="Search the lab" aria-label="Search"></label>
       <div class="os-start-h"><b>Pinned</b></div>
       <div class="os-start-grid">${pins.map(([a, t, i]) => `<button type="button" data-go="${a}">${img(i)}<span>${t}</span></button>`).join('')}</div>
       <div class="os-start-h"><b>Recommended</b></div>
       <div class="os-rec">${PROJECTS.map(p => `<button type="button" data-go="case:${p.id}">${img(p.icon)}<span><b>${p.name} case study</b><small>${p.kind} · ${p.year}</small></span></button>`).join('')}
-        <button type="button" data-go="url:index.html#process">${img(IC.browser)}<span><b>How I work</b><small>nicho.dev/#process</small></span></button></div>
-      <p class="os-none" hidden>Nothing found. Try “kuwaGO” or “resume”.</p>
-      <div class="os-start-foot"><button type="button" class="os-user" data-go="note"><i>NL</i>Nicho Lescano</button>
+        <button type="button" data-go="url:index.html#process">${img(IC.nicho)}<span><b>How I work</b><small>nicho.dev/#process</small></span></button></div>
+      <p class="os-none" hidden>Nothing found. Try “garden” or “kuwaGO”.</p>
+      <div class="os-start-foot"><button type="button" class="os-user" data-go="url:index.html#about"><i>NL</i>Nicho Lescano</button>
         <div class="os-pw"><button type="button" class="os-power" aria-label="Power" aria-expanded="false">${svg('power')}</button>
           <div class="os-pwm" hidden><button type="button" data-go="lock">${svg('lock')}Lock</button><button type="button" data-go="restart">${svg('restart')}Restart</button><button type="button" data-go="room">${svg('door')}Back to the room</button></div></div></div>`;
     s.addEventListener('click', e => {
@@ -356,11 +381,12 @@ github.com/neckolescano
     $('.os-none', s).hidden = any;
   };
   const go = a => {
-    if (a.startsWith('app:')) openApp(a.slice(4), a === 'app:explorer' ? '' : undefined);
-    else if (a.startsWith('proj:')) openApp('explorer', a.slice(5));
+    if (a.startsWith('app:')) openApp(a.slice(4));
     else if (a.startsWith('case:')) leave('projects.html?p=' + a.slice(5));
-    else if (a.startsWith('url:')) browse(a.slice(4));
-    else if (a === 'note') openNote('About me.txt', ABOUT);
+    else if (a.startsWith('url:')) leave(a.slice(4));
+    else if (a === 'log') openNote('Build log.txt', BUILD_LOG);
+    else if (a === 'key') openNote('No keys in the app.txt', AI_NOTE);
+    else if (a === 'site') leave('index.html');
     else if (a === 'room') exit();
     else if (a === 'lock') lockScreen();
     else if (a === 'restart') restart();
@@ -382,7 +408,7 @@ github.com/neckolescano
   };
   const renderTrayMore = () => {
     const m = $('.os-tray-more');
-    m.innerHTML = `<button type="button" data-go="app:browser" title="Nicho.dev">${img(IC.nicho)}</button><button type="button" data-go="app:pdf" title="Resume.pdf">${img(IC.pdf)}</button><button type="button" data-go="room" title="Back to the room">${img(IC.room)}</button>`;
+    m.innerHTML = `<button type="button" data-go="app:garden" title="Garden">${img(IC.garden)}</button><button type="button" data-go="site" title="Nicho.dev">${img(IC.nicho)}</button><button type="button" data-go="room" title="Back to the room">${img(IC.room)}</button>`;
     m.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if (b) { fly(null); go(b.dataset.go); } });
   };
   let calMonth = null;
@@ -414,7 +440,7 @@ github.com/neckolescano
   const restart = () => {
     const b = $('.os-boot'); b.hidden = false;
     Object.keys(wins).forEach(closeApp);
-    setTimeout(() => { b.hidden = true; openApp('explorer', ''); }, 1400);
+    setTimeout(() => { b.hidden = true; openApp('garden'); }, 1400);
   };
 
   /* ---------- windows ---------- */
@@ -422,7 +448,7 @@ github.com/neckolescano
   const makeWin = (key, t, icon, r) => {
     const w = el(`<section class="os-win" data-app="${key}" role="dialog" aria-label="${esc(t)}">${titleBar(key, t, icon)}<div class="os-body"></div></section>`);
     const W = layer.clientWidth, H = layer.clientHeight;
-    if (!r) { const n = Object.keys(wins).length; r = { w: Math.min(W - 24, { browser: 900, notepad: 560, pdf: 620 }[key] || 720), h: Math.min(H - 24, { browser: 600, notepad: 460, pdf: 640 }[key] || 500) }; r.x = Math.max(12, (W - r.w) / 2 + (n - 1) * 26); r.y = Math.max(12, Math.min(H - r.h - 12, 56 + (n - 1) * 22)); }
+    if (!r) { const n = Object.keys(wins).length; r = { w: Math.min(W - 24, { promo: 780, notepad: 560 }[key] || 720), h: Math.min(H - 24, { promo: 560, notepad: 460 }[key] || 500) }; r.x = Math.max(12, (W - r.w) / 2 + (n - 1) * 26); r.y = Math.max(12, Math.min(H - r.h - 12, 56 + (n - 1) * 22)); }
     Object.assign(w.style, { left: r.x + 'px', top: r.y + 'px', width: r.w + 'px', height: r.h + 'px' });
     layer.appendChild(w);
     const o = wins[key] = { el: w, title: t, view: null };
@@ -438,20 +464,17 @@ github.com/neckolescano
     return o;
   };
   const setTitle = (key, t) => { const o = wins[key]; if (!o) return; o.title = t; $('.os-title span', o.el).textContent = t; o.el.setAttribute('aria-label', t); };
-  const openApp = (key, arg) => {
+  const openApp = key => {
     fly(null); ctx(null);
     let o = wins[key];
     const fresh = !o;
-    if (fresh) o = makeWin(key, APPS[key].t, APPS[key].icon, key === 'explorer' && !st.opened ? { ...WIN0 } : null);
+    if (fresh) o = makeWin(key, APPS[key].t, APPS[key].icon, key === 'garden' && !st.opened ? { ...WIN0 } : null);
     st.opened = true;
-    if (key === 'explorer') explorer(o, fresh ? (arg || '') : arg);
-    if (key === 'browser' && fresh) browser(o, arg || 'index.html');
-    else if (key === 'browser' && arg) o.nav(arg);
-    if (key === 'pdf' && fresh) pdf(o);
+    if (fresh && key === 'garden') garden(o);
+    if (fresh && key === 'promo') promo(o);
     o.el.hidden = false; focusWin(key); mark();
     return o;
   };
-  const browse = url => openApp('browser', url);
   const leave = url => {
     fly(null);
     let gone = false; const go = () => { if (gone) return; gone = true; location.href = url; };
@@ -462,7 +485,7 @@ github.com/neckolescano
   const closeApp = key => { const o = wins[key]; if (!o) return; o.el.classList.remove('in'); const n = o.el; setTimeout(() => n.remove(), 180); delete wins[key]; if (top === key) top = null; mark(); changed(); };
   const toggleApp = key => {
     const o = wins[key];
-    if (!o) { key === 'notepad' ? openNote('About me.txt', ABOUT) : openApp(key, key === 'explorer' ? '' : undefined); return; }
+    if (!o) { key === 'notepad' ? openNote('Build log.txt', BUILD_LOG) : openApp(key); return; }
     if (o.el.hidden || top !== key) { o.el.hidden = false; focusWin(key); } else { o.el.hidden = true; top = null; }
     mark();
   };
@@ -480,100 +503,47 @@ github.com/neckolescano
     bar.addEventListener('pointerup', e => { if (!on) return; on = false; root.classList.remove('dragging'); w.classList.remove('dragging'); if ((e.clientY - stage.getBoundingClientRect().top) / k < 4) max(); changed(); });
   };
 
-  /* ---------- app: file explorer ---------- */
-  const explorer = (o, arg) => {
-    const w = o.el;
-    if (!o.hist) {
-      o.hist = []; o.hi = -1;
-      $('.os-body', w).innerHTML = `<div class="os-tool">
-          <button type="button" data-nav="back" aria-label="Back">${svg('back')}</button><button type="button" data-nav="fwd" aria-label="Forward">${svg('fwd')}</button>
-          <button type="button" data-nav="up" aria-label="Up">${svg('up')}</button><button type="button" data-nav="refresh" aria-label="Refresh">${svg('refresh')}</button>
-          <div class="os-crumb"></div><label class="os-find">${svg('search')}<input type="search" placeholder="Search Projects" aria-label="Search Projects"></label></div>
-        <div class="os-ex"><nav class="os-side"></nav><div class="os-main"></div></div><div class="os-status"></div>`;
-      $('.os-side', w).innerHTML = `<button type="button" data-folder="">${img(IC.folder)}Projects</button>${PROJECTS.map(p => `<button type="button" data-folder="${p.id}">${img(p.icon)}${p.name}</button>`).join('')}<hr>
-        <button type="button" data-open="note">${img(IC.notepad)}About me.txt</button><button type="button" data-open="pdf">${img(IC.pdf)}Resume.pdf</button>`;
-      w.addEventListener('click', e => {
-        const n = e.target.closest('[data-nav]');
-        if (n) { const a = n.dataset.nav; if (a === 'back' && o.hi > 0) show(o.hist[--o.hi]); if (a === 'fwd' && o.hi < o.hist.length - 1) show(o.hist[++o.hi]); if (a === 'up' && o.view) exGo(o, ''); if (a === 'refresh') { const m = $('.os-main', w); m.style.opacity = 0; setTimeout(() => { show(o.view); m.style.opacity = ''; }, 150); } return; }
-        const f = e.target.closest('.os-side [data-folder], .os-crumb [data-folder]'); if (f) { exGo(o, f.dataset.folder); return; }
-        const op = e.target.closest('[data-open]'); if (op) { op.dataset.open === 'note' ? openNote('About me.txt', ABOUT) : openApp('pdf'); return; }
-        const b = e.target.closest('[data-browse]'); if (b) { browse(b.dataset.browse); return; }
-        const lv = e.target.closest('[data-leave]'); if (lv) { leave(lv.dataset.leave); return; }
-        const tile = e.target.closest('.os-file'); if (tile) { w.querySelectorAll('.os-file.sel').forEach(x => x.classList.remove('sel')); tile.classList.add('sel'); exGo(o, tile.dataset.folder); }
-      });
-      $('.os-find input', w).addEventListener('input', e => { if (o.view) exGo(o, ''); const q = e.target.value.trim().toLowerCase(); let n = 0; w.querySelectorAll('.os-file').forEach(t => { const on = !q || t.textContent.toLowerCase().includes(q); t.hidden = !on; n += on; }); $('.os-status', w).textContent = n + (n === 1 ? ' item' : ' items'); });
-      const show = v => renderEx(o, v);
-      o.show = show;
-    }
-    if (arg !== undefined) exGo(o, arg);
-  };
-  const exGo = (o, v) => { if (o.view === v && o.hist.length) return; o.hist = o.hist.slice(0, o.hi + 1); o.hist.push(v); o.hi = o.hist.length - 1; renderEx(o, v); };
-  const renderEx = (o, v) => {
-    const w = o.el, p = PROJECTS.find(x => x.id === v);
-    o.view = v;
-    setTitle('explorer', p ? p.name : 'Projects');
-    $('.os-title img', w).src = p ? p.icon : IC.folder;
-    w.querySelectorAll('.os-side [data-folder]').forEach(b => b.toggleAttribute('aria-current', b.dataset.folder === v));
-    $('[data-nav="back"]', w).disabled = o.hi <= 0; $('[data-nav="fwd"]', w).disabled = o.hi >= o.hist.length - 1; $('[data-nav="up"]', w).disabled = !p;
-    $('.os-crumb', w).innerHTML = `<span>This PC</span><i>›</i><button type="button" data-folder="">Projects</button>${p ? `<i>›</i><b>${p.name}</b>` : ''}`;
-    $('.os-find input', w).placeholder = 'Search ' + (p ? p.name : 'Projects');
-    const m = $('.os-main', w);
-    if (!p) {
-      m.innerHTML = `<div class="os-h"><h3>Projects</h3><p>3 items · click a folder to open it</p></div><div class="os-grid">${PROJECTS.map(x => `<button type="button" class="os-file" data-folder="${x.id}">${img(x.icon)}<span>${x.name}</span><small>${x.kind}</small></button>`).join('')}</div>`;
-      $('.os-status', w).textContent = '3 items';
-    } else {
-      m.innerHTML = `<article class="os-proj" style="--pc:${p.c}"><img src="${p.img}" alt="${p.name} screenshot"><div><p class="os-kind">${img(p.icon, 'os-kind-i')}${p.kind} · ${p.year}</p><h3>${p.name}</h3><p>${p.text}</p><ul>${p.points.map(x => `<li>${x}</li>`).join('')}</ul>
-        <div class="os-actions"><button type="button" class="os-btn" data-browse="index.html?project=${p.id}">See its layers</button><button type="button" class="os-btn ghost" data-leave="projects.html?p=${p.id}">Read the case study ↗</button></div></div></article>`;
-      $('.os-status', w).textContent = `${p.name} · 1 item selected`;
-    }
-    changed();
+  /* ---------- app: the garden (kuwaGO's pixel plants) ---------- */
+  const drawFrame = (cv, id, f) => { const g = cv.getContext('2d'), im = loadImg(sheetOf(id)); g.clearRect(0, 0, cv.width, cv.height); if (!ok(im)) { im.addEventListener('load', () => drawFrame(cv, id, f), { once: true }); return; } g.imageSmoothingEnabled = false; g.drawImage(im, (f % 10) * 128, Math.floor(f / 10) * 128, 128, 128, 0, 0, cv.width, cv.height); };
+  const garden = o => {
+    const w = o.el, body = $('.os-body', w);
+    body.innerHTML = `<div class="lab-garden">
+        <div class="lab-h"><h3>Garden</h3><p>12 plants I drew for kuwaGO, pixel by pixel. Pick one to watch it grow.</p></div>
+        <div class="lab-plants">${PLANTS.map((id, i) => `<button type="button" data-plant="${i}"><canvas width="128" height="128"></canvas><span>${plantName(id)}</span></button>`).join('')}</div>
+        <div class="lab-grow" hidden><canvas width="256" height="256"></canvas><div class="lab-grow-t"><p class="mono lab-frame"></p><h3></h3><p>Seed to bloom in 40 frames, drawn in Piskel at 128 × 128.</p>
+          <div class="lab-acts"><button type="button" class="os-btn" data-desk>Plant it on the desk</button><button type="button" class="os-btn ghost" data-replay>Grow it again</button><button type="button" class="os-btn ghost" data-all>All plants</button></div><p class="lab-ok mono" hidden>Planted. It's growing on the desk.</p></div></div>
+      </div>`;
+    body.querySelectorAll('[data-plant] canvas').forEach((cv, i) => drawFrame(cv, PLANTS[i], 39));
+    const grid = $('.lab-plants', w), grow = $('.lab-grow', w), big = $('.lab-grow canvas', w), lab = $('.lab-frame', w);
+    let cur = 0, timer = null;
+    const play = () => { clearInterval(timer); let f = 0; $('.lab-ok', w).hidden = true; const step = () => { drawFrame(big, PLANTS[cur], f); lab.textContent = `Frame ${String(f + 1).padStart(2, '0')} / 40`; if (++f > 39) clearInterval(timer); }; step(); timer = setInterval(step, 110); };
+    const show = i => { cur = i; o.view = PLANTS[i]; grid.hidden = true; grow.hidden = false; $('.lab-h', w).hidden = true; $('h3', grow).textContent = plantName(PLANTS[i]); setTitle('garden', 'Garden · ' + plantName(PLANTS[i])); play(); changed(); };
+    const all = () => { clearInterval(timer); o.view = null; grid.hidden = false; grow.hidden = true; $('.lab-h', w).hidden = false; setTitle('garden', 'Garden'); changed(); };
+    w.addEventListener('click', e => {
+      const b = e.target.closest('[data-plant]'); if (b) { show(+b.dataset.plant); return; }
+      if (e.target.closest('[data-all]')) all();
+      if (e.target.closest('[data-replay]')) play();
+      if (e.target.closest('[data-desk]')) { window.ndPlant && window.ndPlant(PLANTS[cur]); $('.lab-ok', w).hidden = false; }
+    });
   };
 
-  /* ---------- app: browser (the portfolio, inside the laptop) ---------- */
-  const PAGES = ['index', 'about', 'skills', 'certifications', 'contact', 'projects', 'resume'];
-  const toAddr = url => { const m = url.match(/([a-z-]+)\.html(.*)$/i); if (!m) return 'nicho.dev'; return 'nicho.dev/' + (m[1] === 'index' ? '' : m[1]) + (m[2] || ''); };
-  const fromAddr = s => {
-    s = s.trim().replace(/^https?:\/\//, '').replace(/^www\./, '');
-    if (!/^nicho\.dev/i.test(s)) { const q = s.toLowerCase(); const hit = ['work', 'process', 'about', 'skills', 'certs', 'contact'].find(x => q.includes(x)); if (hit) return 'index.html#' + hit; const pj = PROJECTS.find(p => q.includes(p.id) || q.includes(p.name.toLowerCase())); if (pj) return 'projects.html?p=' + pj.id; return null; }
-    s = s.replace(/^nicho\.dev\/?/i, ''); const m = s.match(/^([a-z-]*)(\.html)?(.*)$/i); const page = (m[1] || 'index').toLowerCase();
-    if (page === 'desk' || page === 'room') return 'room'; if (!PAGES.includes(page)) return null; return page + '.html' + (m[3] || '');
+  /* ---------- app: the promo drafts (first and last, side by side) ---------- */
+  const DRAFTS = { 1: ['v1', '30 s', 'Opens on a phone mock-up and an instruction.'], 4: ['v4', '47 s', 'Opens on a question instead.'], 7: ['v7', '47.5 s', 'Opens on the question, in a tighter frame.'] };
+  const promo = o => {
+    const w = o.el, body = $('.os-body', w), src = v => `tinta/assets/archive/kuwago-promo-v${v}.jpg`;
+    body.innerHTML = `<div class="lab-promo">
+        <div class="lab-compare"><img class="lab-a" src="${src(1)}" alt="kuwaGO promo, draft v1"><div class="lab-b"><img src="${src(7)}" alt="kuwaGO promo, final v7"></div><i class="lab-line"></i>
+          <span class="lab-tag l mono">v1</span><span class="lab-tag r mono">v7</span><input type="range" min="0" max="100" value="50" aria-label="Compare the drafts"></div>
+        <div class="lab-side"><h3>Promo drafts</h3><p>The kuwaGO promo went through seven versions. Drag across the picture to compare an early draft with the final one.</p>
+          <p class="lab-pick-l mono">Compare with</p><div class="lab-pick">${[1, 4].map(v => `<button type="button" data-v="${v}" aria-pressed="${v === 1}">${DRAFTS[v][0]}<small>${DRAFTS[v][1]}</small></button>`).join('')}</div>
+          <p class="lab-note"></p><p class="mono lab-fin">Final: v7 · 47.5 s</p></div></div>`;
+    const range = $('input', w), b = $('.lab-b', w), line = $('.lab-line', w), note = $('.lab-note', w);
+    const set = v => { b.style.clipPath = `inset(0 0 0 ${v}%)`; line.style.left = v + '%'; };
+    const pick = v => { $('.lab-a', w).src = src(v); $('.lab-tag.l', w).textContent = DRAFTS[v][0]; note.textContent = `${DRAFTS[v][0]}: ${DRAFTS[v][2]} v7: ${DRAFTS[7][2]}`; w.querySelectorAll('[data-v]').forEach(x => x.setAttribute('aria-pressed', x.dataset.v == v)); };
+    range.addEventListener('input', () => set(range.value));
+    w.addEventListener('click', e => { const x = e.target.closest('[data-v]'); if (x) pick(+x.dataset.v); });
+    set(50); pick(1);
   };
-  const browser = (o, url) => {
-    const w = o.el;
-    o.hist = []; o.hi = -1;
-    $('.os-body', w).innerHTML = `<div class="os-tool">
-        <button type="button" data-b="back" aria-label="Back">${svg('back')}</button><button type="button" data-b="fwd" aria-label="Forward">${svg('fwd')}</button>
-        <button type="button" data-b="refresh" aria-label="Refresh">${svg('refresh')}</button><button type="button" data-b="home" aria-label="Home">${svg('home')}</button>
-        <form class="os-url"><img src="${IC.nicho}" alt=""><input type="text" spellcheck="false" aria-label="Address"></form>
-        <a class="os-full" target="_top" title="Open full screen">${svg('ext')}<span>Full screen</span></a></div>
-      <div class="os-marks">${[['Home', 'index.html'], ['Work', 'index.html#work'], ['Process', 'index.html#process'], ['About', 'index.html#about'], ['Skills', 'index.html#skills'], ['Contact', 'index.html#contact'], ['Case studies', 'projects.html']].map(([t, u]) => `<button type="button" data-u="${u}">${svg('star')}${t}</button>`).join('')}</div>
-      <div class="os-view"><iframe class="os-frame" title="Nicho.dev"></iframe><div class="os-load"><i></i></div></div>`;
-    const fr = $('iframe', w), input = $('.os-url input', w), full = $('.os-full', w), ld = $('.os-load', w);
-    let internal = false;
-    const paintNav = () => { $('[data-b="back"]', w).disabled = o.hi <= 0; $('[data-b="fwd"]', w).disabled = o.hi >= o.hist.length - 1; };
-    const load = u => {
-      if (u === 'room') { fr.removeAttribute('src'); fr.srcdoc = page404('You are already in the room', 'This laptop sits on the desk in it. Use “Back to the room” on the taskbar.'); input.value = 'nicho.dev/room'; setTitle('browser', 'The room'); return; }
-      if (!u) { fr.removeAttribute('src'); fr.srcdoc = page404('This page isn’t on nicho.dev', 'Try nicho.dev, nicho.dev/about or a project name like kuwaGO.'); setTitle('browser', 'Page not found'); return; }
-      fr.removeAttribute('srcdoc'); internal = true; ld.classList.add('on'); fr.src = u; input.value = toAddr(u); full.href = u; setTitle('browser', 'Nicho.dev');
-    };
-    o.nav = u => { o.hist = o.hist.slice(0, o.hi + 1); o.hist.push(u); o.hi = o.hist.length - 1; load(u); paintNav(); };
-    fr.addEventListener('load', () => {
-      ld.classList.remove('on');
-      let href = null; try { const l = fr.contentWindow.location; if (l.href !== 'about:srcdoc') href = l.pathname.split('/').pop() + l.search + l.hash; setTitle('browser', fr.contentDocument.title || 'Nicho.dev'); } catch {}
-      if (href && !internal && href !== o.hist[o.hi]) { o.hist = o.hist.slice(0, o.hi + 1); o.hist.push(href); o.hi = o.hist.length - 1; paintNav(); }
-      if (href) { input.value = toAddr(href); full.href = href; }
-      internal = false;
-    });
-    w.addEventListener('click', e => {
-      const b = e.target.closest('[data-b]');
-      if (b) { const a = b.dataset.b; if (a === 'back' && o.hi > 0) { load(o.hist[--o.hi]); paintNav(); } if (a === 'fwd' && o.hi < o.hist.length - 1) { load(o.hist[++o.hi]); paintNav(); } if (a === 'home') o.nav('index.html'); if (a === 'refresh') { try { ld.classList.add('on'); internal = true; fr.contentWindow.location.reload(); } catch { load(o.hist[o.hi]); } } return; }
-      const m = e.target.closest('[data-u]'); if (m) o.nav(m.dataset.u);
-    });
-    $('.os-url', w).addEventListener('submit', e => { e.preventDefault(); o.nav(fromAddr(input.value)); input.blur(); });
-    input.addEventListener('focus', () => input.select());
-    o.nav(url);
-  };
-  const page404 = (h, p) => `<!doctype html><meta charset="utf-8"><body style="margin:0;height:100vh;display:grid;place-content:center;gap:10px;background:#07080A;color:#ECE9E2;font:15px 'Segoe UI',system-ui,sans-serif;text-align:center;background-image:radial-gradient(rgba(236,233,226,.07) 1px,transparent 1.3px);background-size:28px 28px"><b style="font:600 64px 'IBM Plex Sans Condensed','Arial Narrow',sans-serif;color:#E0533F">N.</b><h1 style="margin:0;font-size:22px">${h}</h1><p style="margin:0;color:#9AA0AB">${p}</p></body>`;
 
   /* ---------- app: notepad ---------- */
   const openNote = (name, text, doc) => {
@@ -627,20 +597,12 @@ github.com/neckolescano
     if (!text) setTimeout(() => ta.focus(), 50);
   };
 
-  /* ---------- app: the resume ---------- */
-  const pdf = o => {
-    $('.os-body', o.el).innerHTML = `<div class="os-tool"><div class="os-crumb"><b>Resume.pdf</b><i>·</i><span>Nicho Lescano</span></div>
-      <a class="os-tbtn" href="assets/Nicho-Lescano-Resume.pdf" download>${svg('save')}Download</a><button type="button" class="os-tbtn" data-print>${svg('print')}Print</button><a class="os-tbtn" href="assets/Nicho-Lescano-Resume.pdf" target="_blank" rel="noopener">${svg('ext')}Open</a></div>
-      <iframe class="os-frame light" title="Resume" src="assets/Nicho-Lescano-Resume.pdf"></iframe>`;
-    $('[data-print]', o.el).addEventListener('click', () => { try { $('iframe', o.el).contentWindow.print(); } catch { window.open('assets/Nicho-Lescano-Resume.pdf', '_blank'); } });
-  };
-
   /* ---------- open / close ---------- */
   const paintClock = () => { if (!root) return; const [t, d] = now(); const b = root.querySelectorAll('.os-clock b'); b[0].textContent = t; b[1].textContent = d; };
   const open = exitFn => {
     onExit = exitFn; if (!root) build();
     root.classList.add('on'); fit(); paintClock(); clearInterval(tick); tick = setInterval(paintClock, 15000);
-    if (!st.opened) openApp('explorer', '');
+    if (!st.opened) openApp('garden');
     setTimeout(() => { const f = root.querySelector('.os-ic'); f && f.focus({ preventScroll: true }); }, 400);
   };
   const exit = () => { if (!root) return; fly(null); ctx(null); root.classList.remove('on'); clearInterval(tick); changed(); onExit && onExit(); };

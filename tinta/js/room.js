@@ -163,6 +163,8 @@ const plantNext = () => {
   spriteM.map = sheets[id]; spriteM.needsUpdate = true; setFrame(0);
 };
 plantNext();
+// the lab's Garden app can plant a chosen species on the desk
+window.ndPlant = id => { const i = PLANTS.indexOf(id); if (i < 0) return; sprite.i = i - 1; plantNext(); };
 plant.userData.idle = t => {
   if (sprite.t0 === null) sprite.t0 = t;
   const f = Math.min(39, Math.floor((t - sprite.t0) / .8));   // about half a minute from seed to full bloom
@@ -837,7 +839,7 @@ const SPOTS = [
     text: 'A little Belle keychain my girlfriend gave me. It hangs under the shelf, where I can see it while I work.',
     dl: [['From', 'My girlfriend'], ['Kept', 'Under the shelf']], view: [.04, -.02, .34],
     focus: () => G && G.fromTo(keychain.rotation, { z: .5 }, { z: 0, duration: 2.4, ease: 'elastic.out(1, .25)' }) },
-  { id: 'laptop', obj: laptop, at: [0, .16, -.06], label: 'My ASUS laptop', small: 'Use its desktop', c: '#BFD0FF', kind: 'desk' },
+  { id: 'laptop', obj: laptop, at: [0, .16, -.06], label: 'The lab', small: 'My laptop: garden, drafts, notes', c: '#BFD0FF', kind: 'desk' },
   { id: 'lamp', obj: head, at: [0, 0, 0], label: 'Lamp', small: 'Click to switch', c: '#FFB774', kind: 'lamp', side: 'left' },
   { id: 'switch', obj: sw, at: [0, 0, .01], label: 'Light switch', small: 'The room light', c: '#FFE7C8', kind: 'switch' }
 ];

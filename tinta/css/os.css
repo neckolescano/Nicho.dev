@@ -136,7 +136,7 @@
 .os-bar { position: absolute; left: 0; right: 0; bottom: 0; height: 48px; z-index: 1200; background: rgba(19,20,25,.96); border-top: 1px solid rgba(255,255,255,.08); }
 .os-room { position: absolute; left: 10px; top: 8px; width: 151px; height: 32px; padding: 0 12px; border: 1px solid rgba(255,255,255,.18); border-radius: 6px; background: rgba(255,255,255,.04); font-size: 12.5px; text-align: left; white-space: nowrap; }
 .os-room:hover { background: rgba(255,255,255,.12); }
-.os-bar-mid { position: absolute; left: 498px; top: 4px; display: flex; gap: 4px; }
+.os-bar-mid { position: absolute; left: 522px; top: 4px; display: flex; gap: 4px; }
 .os-tb { position: relative; width: 44px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 6px; background: none; color: #E8E9EC; transition: background-color .15s; }
 .os-tb:hover, .os-tb.on { background: rgba(255,255,255,.08); }
 .os-tb:active img { transform: scale(.88); }
@@ -241,3 +241,38 @@
 
 /* the desktop has its own taskbar: the floating Index button steps aside while it is open */
 body:has(.room.desk-mode) .rail { opacity: 0; pointer-events: none; transition: opacity .3s; }
+
+/* ---------- the lab: Garden and Promo drafts ---------- */
+.lab-garden, .lab-promo { flex: 1; min-height: 0; overflow: auto; background: #14161a; }
+.lab-h { padding: 18px 20px 4px; }
+.lab-h h3, .lab-side h3, .lab-grow-t h3 { font-size: 20px; font-weight: 600; color: #E8E9EC; }
+.lab-h p, .lab-side p, .lab-grow-t p { color: #9AA0AB; font-size: 12.5px; margin-top: 4px; }
+.lab-plants { display: grid; grid-template-columns: repeat(auto-fill, 96px); gap: 0; padding: 10px 14px 16px; }
+.lab-plants button { display: grid; justify-items: center; gap: 4px; padding: 6px 2px 10px; border: 1px solid transparent; border-radius: 6px; background: none; color: #C9CCD3; font-size: 11.5px; line-height: 1.2; text-align: center; }
+.lab-plants button:hover, .lab-plants button:focus-visible { background: rgba(255,255,255,.05); border-color: rgba(150,180,255,.3); outline: none; }
+.lab-plants canvas { width: 88px; height: 88px; image-rendering: pixelated; }
+.lab-grow { display: grid; grid-template-columns: 256px 1fr; gap: 24px; align-items: center; padding: 24px; }
+.lab-grow canvas { width: 256px; height: 256px; image-rendering: pixelated; background: radial-gradient(circle at 50% 70%, #23332a, #14161a 70%); border-radius: 8px; }
+.lab-grow-t h3 { font-size: 26px; margin: 4px 0 6px; }
+.lab-frame { color: #7CC46E !important; font-size: 11px !important; letter-spacing: .08em; }
+.lab-acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.lab-acts .os-btn { --pc: #7CC46E; cursor: default; }
+.lab-ok { color: #7CC46E !important; margin-top: 10px !important; }
+.lab-promo { display: grid; grid-template-columns: auto 1fr; gap: 22px; padding: 18px; align-items: start; }
+.lab-compare { position: relative; height: 440px; aspect-ratio: 480 / 854; border-radius: 10px; overflow: hidden; background: #0b0c0f; user-select: none; }
+.lab-compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lab-b { position: absolute; inset: 0; }
+.lab-line { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: #ECE9E2; box-shadow: 0 0 0 1px rgba(0,0,0,.3); pointer-events: none; }
+.lab-compare input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+.lab-tag { position: absolute; top: 10px; padding: 3px 8px; border-radius: 4px; background: rgba(8,9,12,.75); color: #ECE9E2; font-size: 11px; pointer-events: none; }
+.lab-tag.l { left: 10px; } .lab-tag.r { right: 10px; }
+.lab-side { padding-top: 4px; }
+.lab-pick-l { margin-top: 18px !important; font-size: 10.5px !important; letter-spacing: .1em; text-transform: uppercase; }
+.lab-pick { display: flex; gap: 8px; margin-top: 8px; }
+.lab-pick button { display: grid; gap: 2px; padding: 8px 14px; border: 1px solid rgba(255,255,255,.14); border-radius: 6px; background: none; color: #E8E9EC; font-size: 14px; font-weight: 600; text-align: left; }
+.lab-pick button small { font-size: 11px; font-weight: 400; color: #9AA0AB; }
+.lab-pick button[aria-pressed="true"] { border-color: #E0533F; background: rgba(224,83,63,.1); }
+.lab-note { margin-top: 14px !important; color: #C9CCD3 !important; line-height: 1.55; }
+.lab-fin { margin-top: 10px !important; font-size: 11px !important; }
+.os-stage.fluid .lab-grow, .os-stage.fluid .lab-promo { grid-template-columns: 1fr; }
+.os-stage.fluid .lab-compare { height: 380px; }
