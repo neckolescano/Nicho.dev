@@ -1,7 +1,7 @@
 /* The room — Nicho's studio at night, in Three.js.
    Light comes from the room itself: a cool window, a warm LED strip under the shelf, an accent wash on the wall behind the desk,
    the screens and a desk lamp. A wall switch turns on the overhead light. Nothing follows the cursor.
-   On the shelf: kuwaGO's owl, Cinematheque's popcorn and xpera's boxed graphics card.
+   On the shelf: kuwaGO's owl, Cinematheque's popcorn and xpera's boxed graphics card; under it, a keychain that was a gift.
    On the glass desk: the ASUS laptop (its screen is the landing page; click to dive in) and the phone.
    In the drawer: one folder per project; they pop up and can be dragged into a new order.
    On the wall behind the laptop: a desk-wide task board, one note for each part of the main page, photos and sticky notes; drag them around. */
@@ -19,7 +19,7 @@ const loader = document.querySelector('.r-load');
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
 const G = window.gsap;
 // ?shot: a still of the room for the About section (renders on demand, even in a background tab)
-if (/[?&]shot/.test(location.search)) window.__shot = home => { if (home) { cam.px = HOME.pos.x; cam.py = HOME.pos.y; cam.pz = HOME.pos.z; cam.lx = HOME.look.x; cam.ly = HOME.look.y; cam.lz = HOME.look.z; } Object.assign(view, cam); for (let i = 0; i < 3; i++) frame(); return canvas; };
+if (/[?&]shot/.test(location.search)) window.__shot = home => { if (home && typeof home === 'object') Object.assign(cam, home); else if (home) { cam.px = HOME.pos.x; cam.py = HOME.pos.y; cam.pz = HOME.pos.z; cam.lx = HOME.look.x; cam.ly = HOME.look.y; cam.lz = HOME.look.z; } Object.assign(view, cam); for (let i = 0; i < 3; i++) frame(); return canvas; };
 const setLoad = p => { if (!loader) return; loader.style.setProperty('--p', p.toFixed(3)); const o = loader.querySelector('.rl-pct'); if (o) o.textContent = Math.round(p * 100); };
 
 let renderer;
@@ -147,15 +147,66 @@ const leafG = new THREE.SphereGeometry(1, 14, 10), leafM = mat('#2f6b3d', { roug
 for (let i = 0; i < 9; i++) { const l = new THREE.Mesh(leafG, leafM); const a = i / 9 * Math.PI * 2; l.scale.set(.05, .006, .025); l.position.set(Math.cos(a) * .05, .16 + (i % 3) * .05, Math.sin(a) * .05); l.rotation.set(Math.random() * .5, -a, .5 + Math.random() * .4); l.castShadow = true; plant.add(l); }
 
 /* ---------- the ASUS laptop: the way into the portfolio (its screen is the landing page) ---------- */
-const ALU = mat('#3a3f47', { roughness: .32, metalness: .65, envMapIntensity: .6 });
+const ALU = mat('#23262d', { roughness: .42, metalness: .45, envMapIntensity: .5 });   // Vivobook "indie black"
 const laptop = new THREE.Group(); at(laptop, -.02, DESK_Y, -.15); laptop.scale.setScalar(1.6);
 at(box(.31, .014, .215, ALU, .005), 0, .007, 0, laptop);
-const deckTex = canvasTex(620, 430, (g, w, h) => {
-  g.fillStyle = '#2b2f36'; g.fillRect(0, 0, w, h);
-  g.fillStyle = '#16181c';
-  for (let r = 0; r < 6; r++) for (let c = 0; c < 14; c++) g.fillRect(28 + c * 40.5, 22 + r * 36, 34, 30);
-  g.fillStyle = '#16181c'; g.fillRect(140, 248, 340, 24);
-  g.strokeStyle = '#4a505a'; g.lineWidth = 3; g.strokeRect(200, 296, 220, 120);
+const deckTex = liveTex(1240, 856, (g, w, h) => {
+  g.fillStyle = '#20232a'; g.fillRect(0, 0, w, h);
+  const key = (x, y, kw, kh, label, small) => {
+    g.fillStyle = '#121419'; g.beginPath(); g.roundRect ? g.roundRect(x, y, kw, kh, 6) : g.rect(x, y, kw, kh); g.fill();
+    g.strokeStyle = 'rgba(255,255,255,.05)'; g.lineWidth = 1.5; g.stroke();
+    if (!label) return;
+    g.fillStyle = 'rgba(214,224,240,.82)'; g.font = `500 ${small ? 15 : label.length > 1 ? 17 : 24}px "IBM Plex Sans", Arial, sans-serif`;
+    if (label.length > 1 && !small) { g.fillText(label, x + 10, y + kh - 12); } else { g.textAlign = 'center'; g.fillText(label, x + kw / 2, y + kh / 2 + (small ? 5 : 8)); g.textAlign = 'left'; }
+  };
+  // function row across the whole width
+  const FN = ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'PrtSc', 'Ins', 'Del', '⏻'];
+  const fw = (w - 80 - (FN.length - 1) * 8) / FN.length;
+  FN.forEach((l, i) => key(40 + i * (fw + 8), 36, fw, 34, l, true));
+  // the main block, in key units
+  const ROWS = [
+    ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', ['Backspace', 2]],
+    [['Tab', 1.5], 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', ['\\', 1.5]],
+    [['Caps Lock', 1.75], 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", ['Enter', 2.25]],
+    [['Shift', 2.25], 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', ['Shift', 2.75]],
+    [['Ctrl', 1], ['Fn', 1], ['⊞', 1], ['Alt', 1], ['', 6], ['Alt', 1], ['Ctrl', 1], ['◀', 1], ['▲', 1], ['▶', 1]]
+  ];
+  const u = 880 / 15, kh = 58;
+  ROWS.forEach((row, r) => { let x = 40; const y = 84 + r * (kh + 8);
+    row.forEach(k => { const [l, n] = Array.isArray(k) ? k : [k, 1]; key(x, y, n * u - 8, kh, l, l.length === 1 && /[◀▲▶]/.test(l)); x += n * u; }); });
+  // the number pad
+  const NP = [['Num', '/', '*', '−'], ['7', '8', '9', '+'], ['4', '5', '6', '+'], ['1', '2', '3', '⏎'], ['0', '0', '.', '⏎']];
+  const nu = (w - 40 - 940) / 4;
+  NP.forEach((row, r) => row.forEach((l, c) => key(940 + c * nu, 84 + r * (kh + 8), nu - 8, kh, l, l.length > 1)));
+  // the touchpad, left of centre because of the number pad
+  g.strokeStyle = 'rgba(255,255,255,.14)'; g.lineWidth = 3; g.beginPath(); g.roundRect ? g.roundRect(380, 450, 430, 330, 12) : g.rect(380, 450, 430, 330); g.stroke();
+  // the stickers
+  const rr = (x, y, rw, rh, r) => { g.beginPath(); g.roundRect ? g.roundRect(x, y, rw, rh, r) : g.rect(x, y, rw, rh); };
+  // AMD Ryzen 5
+  rr(56, 470, 96, 96, 8); g.fillStyle = '#16181c'; g.fill(); g.strokeStyle = '#b9bec6'; g.lineWidth = 3; g.stroke();
+  g.fillStyle = '#e8eaee'; g.font = '700 13px Arial, sans-serif'; g.fillText('AMD', 68, 494); g.font = '800 21px Arial, sans-serif'; g.fillText('RYZEN', 66, 528);
+  g.fillStyle = '#E8762B'; g.fillRect(126, 540, 20, 20); g.fillStyle = '#fff'; g.font = '800 15px Arial'; g.fillText('5', 131, 556);
+  // AMD Radeon graphics
+  rr(166, 470, 96, 96, 8); g.fillStyle = '#C8102E'; g.fill();
+  g.fillStyle = '#fff'; g.font = '700 13px Arial, sans-serif'; g.fillText('AMD', 178, 494); g.font = '800 19px Arial, sans-serif'; g.fillText('RADEON', 174, 528); g.font = '600 10px Arial'; g.fillText('GRAPHICS', 182, 552);
+  // the green script sticker, white outline
+  g.save(); g.translate(50, 700); g.rotate(-.06);
+  g.font = `italic 700 128px "Caveat", "Brush Script MT", cursive`; g.lineJoin = 'round';
+  g.strokeStyle = '#ffffff'; g.lineWidth = 22; g.strokeText('Yeim', 0, 0);
+  g.fillStyle = '#2F7A4C'; g.fillText('Yeim', 0, 0);
+  g.strokeStyle = '#1d5233'; g.lineWidth = 2; g.strokeText('Yeim', 0, 0);
+  g.restore();
+  // ASUS support sticker with its QR code, and the small Office sticker
+  rr(40, 740, 176, 76, 6); g.fillStyle = '#D9B44A'; g.fill();
+  g.fillStyle = '#1b1b1b'; for (let i = 0; i < 9; i++) for (let j = 0; j < 9; j++) if ((i * 7 + j * 13 + i * j) % 3 === 0 || (i < 3 && j < 3)) g.fillRect(50 + i * 6, 752 + j * 6, 5, 5);
+  g.fillStyle = '#4a3a10'; g.font = '700 14px Arial'; g.fillText('ASUS SUPPORT', 112, 770); g.font = '500 10px Arial'; g.fillText('PH V1.3', 170, 806);
+  rr(226, 740, 80, 76, 4); g.fillStyle = '#F4F4F2'; g.fill(); g.fillStyle = '#6b6f76'; g.font = '600 12px Arial'; g.fillText('Office', 238, 762); g.fillText('Home 2024', 236, 778);
+  ['#2B7CD3', '#21A366', '#D35230'].forEach((c, i) => { g.fillStyle = c; g.beginPath(); g.arc(246 + i * 18, 800, 6, 0, 7); g.fill(); });
+  // the model sticker on the right
+  rr(930, 560, 290, 250, 6); g.fillStyle = '#F7F6F2'; g.fill();
+  g.fillStyle = '#E2BD32'; g.fillRect(930, 560, 290, 52);
+  g.fillStyle = '#5a4a12'; g.font = '700 17px Arial'; g.fillText('ASUS Vivobook Go 15', 946, 593);
+  [[970, 650], [1110, 650], [970, 740], [1110, 740]].forEach(([x, y]) => { g.strokeStyle = '#9aa0a8'; g.lineWidth = 3; g.beginPath(); g.arc(x + 30, y, 18, 0, 7); g.stroke(); g.fillStyle = '#b2b6bc'; g.fillRect(x, y + 28, 64, 5); g.fillRect(x + 6, y + 38, 52, 5); });
 });
 const deck = new THREE.Mesh(new THREE.PlaneGeometry(.29, .2), mat('#ffffff', { map: deckTex, roughness: .6 }));
 deck.rotation.x = -Math.PI / 2; deck.position.set(0, .0142, .002); laptop.add(deck);
@@ -163,8 +214,8 @@ const lid = new THREE.Group(); at(lid, 0, .014, -.1075, laptop); lid.rotation.x 
 at(box(.31, .008, .215, ALU, .004), 0, .004, .1075, lid);
 const lapScreen = new THREE.Mesh(new THREE.PlaneGeometry(.29, .18125), new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false, color: '#d9d9d9' }));
 lapScreen.rotation.x = Math.PI / 2; lapScreen.position.set(0, -.0005, .1155); lid.add(lapScreen);
-const asusTex = canvasTex(256, 48, (g, w, h) => { g.fillStyle = '#0d0e10'; g.fillRect(0, 0, w, h); g.fillStyle = '#c9ced6'; g.font = '600 30px "IBM Plex Mono", monospace'; g.textAlign = 'center'; g.fillText('ASUS', w / 2, 35); });
-const asus = new THREE.Mesh(new THREE.PlaneGeometry(.05, .009), new THREE.MeshBasicMaterial({ map: asusTex }));
+const asusTex = liveTex(420, 48, (g, w, h) => { g.fillStyle = '#0d0e10'; g.fillRect(0, 0, w, h); g.fillStyle = '#8d939c'; g.font = '500 28px "IBM Plex Sans", Arial, sans-serif'; g.textAlign = 'center'; g.fillText('ASUS Vivobook', w / 2, 34); });
+const asus = new THREE.Mesh(new THREE.PlaneGeometry(.075, .0086), new THREE.MeshBasicMaterial({ map: asusTex }));
 asus.rotation.x = Math.PI / 2; asus.position.set(0, -.0006, .016); lid.add(asus);
 
 /* ---------- desk lamp ---------- */
@@ -216,6 +267,38 @@ at(box(1.36, .032, .22, WALNUT, .006), -.12, SHELF_Y, -.5);
 [-.62, .4].forEach(x => at(box(.02, .12, .02, BLACK), x, SHELF_Y - .07, -.58));
 const strip = at(box(1.26, .006, .012, glow('#FFB070', 0)), -.12, SHELF_Y - .02, -.43);
 const shelfTop = SHELF_Y + .016;
+
+// a little princess keychain, a gift from my girlfriend: it hangs from the shelf and sways a little
+const keychain = new THREE.Group(); at(keychain, -.4, SHELF_Y - .016, -.392);
+const kc = new THREE.Group(); keychain.add(kc);
+const silver = mat('#cfd3d8', { roughness: .25, metalness: .9 }), pvc = o => mat(o, { roughness: .42 });
+const SKIN = pvc('#F3CBB0'), HAIR = pvc('#6E4326'), GOWN = pvc('#F6D23C'), TRIM = pvc('#E2A923');
+const tor = (r, t, m, x, y, z, rx = 0, ry = 0, arc = Math.PI * 2) => { const o = new THREE.Mesh(new THREE.TorusGeometry(r, t, 8, 28, arc), m); o.position.set(x, y, z); o.rotation.set(rx, ry, 0); kc.add(o); return o; };
+const ball = (r, m, x, y, z, sx = 1, sy = 1, sz = 1) => { const o = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14), m); o.position.set(x, y, z); o.scale.set(sx, sy, sz); o.castShadow = true; kc.add(o); return o; };
+at(new THREE.Mesh(new THREE.TorusGeometry(.0035, .0008, 6, 16), silver), 0, -.002, 0, keychain);   // the screw eye under the shelf
+tor(.008, .0011, silver, 0, -.011, 0);                         // key ring
+tor(.0028, .0007, silver, 0, -.0215, 0, 0, Math.PI / 2);       // chain
+tor(.0028, .0007, silver, 0, -.0265, 0);
+// head and hair
+ball(.0175, HAIR, 0, -.049, -.004, 1.05, 1, .95);
+ball(.017, SKIN, 0, -.052, .001, 1, .95, .9);
+ball(.0172, HAIR, 0, -.0425, .003, 1, .55, .95);
+ball(.008, HAIR, 0, -.031, -.004);
+tor(.0158, .0011, pvc('#F2C53A'), 0, -.04, -.001, Math.PI / 2 * .78);
+[-1, 1].forEach(sd => ball(.0068, HAIR, sd * .0158, -.066, -.002, .8, 2.2, .8));
+// face
+[-1, 1].forEach(sd => { ball(.0032, pvc('#4a2a18'), sd * .0065, -.054, .0153); ball(.001, pvc('#ffffff'), sd * .0065 + .001, -.0528, .0181); ball(.0016, pvc('#F2C53A'), sd * .0168, -.0605, .004); });
+ball(.0012, pvc('#E9B596'), 0, -.058, .0166);
+tor(.0026, .0006, pvc('#C8463C'), 0, -.0615, .0152, 0, 0, Math.PI).rotation.z = Math.PI;
+// gown
+const neck = new THREE.Mesh(new THREE.CylinderGeometry(.005, .007, .011, 16), GOWN); neck.position.y = -.073; kc.add(neck);
+[-1, 1].forEach(sd => { ball(.0055, GOWN, sd * .0085, -.072, 0, 1.1, .8, 1); const arm = new THREE.Mesh(new THREE.CylinderGeometry(.0017, .0017, .012, 8), SKIN); arm.position.set(sd * .0125, -.081, .001); arm.rotation.z = sd * .6; kc.add(arm); });
+ball(.0016, pvc('#ffffff'), 0, -.0695, .0062);
+const gownSkirt = new THREE.Mesh(new THREE.CylinderGeometry(.0075, .02, .03, 24), GOWN); gownSkirt.position.y = -.0935; gownSkirt.castShadow = true; kc.add(gownSkirt);
+tor(.0158, .0013, TRIM, 0, -.091, 0, Math.PI / 2);
+tor(.0198, .0013, TRIM, 0, -.1075, 0, Math.PI / 2);
+[-1, 1].forEach(sd => ball(.003, GOWN, sd * .005, -.1095, .004));
+keychain.userData.idle = t => { kc.rotation.z = Math.sin(t * 1.1) * .045; kc.rotation.y = Math.sin(t * .6) * .25; };
 
 // kuwaGO — the pixel owl beside a sprouting pot
 const owl = new THREE.Group(); at(owl, -.58, shelfTop, -.5);
@@ -675,6 +758,10 @@ const SPOTS = [
   { id: 'sketch', obj: sketch, at: [0, .03, 0], label: 'Sketchbook', small: 'Where it starts', c: '#E0533F', title: 'Where it starts', side: 'left',
     text: 'Every project begins as a drawing in here: screens, flows, the database on the back pages. Then it goes to Figma, then to code.',
     dl: [['Habit', 'Draw first, build second'], ['Next', 'Figma, then code']], href: 'about.html', cta: 'Read my profile', view: [.05, .32, .42] },
+  { id: 'keychain', obj: keychain, at: [0, -.06, .02], label: 'Keychain', small: 'A gift', c: '#F2C53A', title: 'A gift from her', side: 'left',
+    text: 'A little Belle keychain my girlfriend gave me. It hangs under the shelf, where I can see it while I work.',
+    dl: [['From', 'My girlfriend'], ['Kept', 'Under the shelf']], view: [.04, -.02, .34],
+    focus: () => G && G.fromTo(keychain.rotation, { z: .5 }, { z: 0, duration: 2.4, ease: 'elastic.out(1, .25)' }) },
   { id: 'laptop', obj: laptop, at: [0, .16, -.06], label: 'My ASUS laptop', small: 'Use its desktop', c: '#BFD0FF', kind: 'desk' },
   { id: 'lamp', obj: head, at: [0, 0, 0], label: 'Lamp', small: 'Click to switch', c: '#FFB774', kind: 'lamp', side: 'left' },
   { id: 'switch', obj: sw, at: [0, 0, .01], label: 'Light switch', small: 'The room light', c: '#FFE7C8', kind: 'switch' }
@@ -706,7 +793,7 @@ const showCard = s => {
   card.style.setProperty('--c', s.c);
   card.innerHTML = `${topLine(s, s.label)}<h2 class="rc-title">${s.title}</h2><p class="rc-text">${s.text}</p>
     <dl class="rc-dl">${s.dl.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join('')}</dl>${navRow()}
-    ${s.project ? links(s.project) : `<a class="rc-go" href="${s.href}">${s.cta} <span aria-hidden="true">→</span></a>`}`;
+    ${s.project ? links(s.project) : s.href ? `<a class="rc-go" href="${s.href}">${s.cta} <span aria-hidden="true">→</span></a>` : ''}`;
   wireNav(s);
 };
 const drawerCard = () => {
@@ -986,7 +1073,7 @@ const frame = () => {
   camera.lookAt(view.lx + ptr.x * .05 * drift + sway * .3, view.ly - ptr.y * .025 * drift, view.lz);
   if (pendingHover && !dragging) { doHover(pendingHover); pendingHover = null; }
   if (motion) {
-    owl.userData.idle(t); cine.userData.idle(t); gpu.userData.idle(t, dt);
+    owl.userData.idle(t); cine.userData.idle(t); gpu.userData.idle(t, dt); keychain.userData.idle(t);
     const d = dustG.attributes.position;
     for (let i = 0; i < dustN; i++) { let y = d.getY(i) + dt * .012; if (y > DESK_Y + .65) y = DESK_Y; d.setY(i, y); d.setX(i, d.getX(i) + Math.sin(t + i) * dt * .003); }
     d.needsUpdate = true;
