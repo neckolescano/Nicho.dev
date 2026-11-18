@@ -323,7 +323,7 @@ const gownSkirt = new THREE.Mesh(new THREE.CylinderGeometry(.0075, .02, .03, 24)
 tor(.0158, .0013, TRIM, 0, -.091, 0, Math.PI / 2);
 tor(.0198, .0013, TRIM, 0, -.1075, 0, Math.PI / 2);
 [-1, 1].forEach(sd => ball(.003, GOWN, sd * .005, -.1095, .004));
-const kLight = new THREE.PointLight('#FFD39A', 0, .55, 2); kLight.position.set(0, -.07, .07); keychain.add(kLight);
+const kLight = new THREE.PointLight('#FFD39A', 0, .4, 2); kLight.position.set(0, -.06, .1); keychain.add(kLight);
 let kcLit = false;
 keychain.userData.idle = t => { kc.rotation.z = Math.sin(t * 1.1) * .045; kc.rotation.y = Math.sin(t * .6) * .25; };
 
@@ -792,7 +792,13 @@ const phoneDown = instant => {
   const wasUp = phoneUp; phoneUp = false; phoneUI.hide();
   const opened = phoneOpen;
   phoneOpen = false; noteText = null; if (lockImg.complete) drawLock(lockImg);   // locked again: the passcode is needed next time
-  if (opened && wasUp && !instant) setTimeout(belleCelebrates, 1250);
+  // however it was put down: if it had been unlocked, the camera goes to Belle and she celebrates
+  if (opened && wasUp) setTimeout(() => {
+    if (focus) return;   // she has already moved on to something else
+    kcLit = true;
+    look(SPOTS.find(x => x.id === 'keychain'));
+    setTimeout(belleCelebrates, 1100);
+  }, 900);
   if (wasUp && !instant && focus && focus.kind === 'phone') { focus = null; roomEl.classList.remove('focused'); hsEls.forEach(el => el.classList.remove('on')); camTo(HOME.pos, HOME.look, 1.2); }
   tween(phone.position, { x: PHONE_HOME.x, y: PHONE_HOME.y, z: PHONE_HOME.z, duration: instant ? 0 : .7, ease: 'power3.inOut', overwrite: true, onUpdate: shadowsDirty });
   tween(phone.rotation, { x: PHONE_HOME.rx, y: PHONE_HOME.ry, duration: instant ? 0 : .7, ease: 'power3.inOut', overwrite: true });
@@ -1038,10 +1044,10 @@ const hearts = () => {
 // Belle celebrates: only the one who knows the passcode ever sees this
 const belleCelebrates = () => {
   kcLit = true;
-  if (!G || !motion) { kLight.intensity = .8; return; }
+  if (!G || !motion) { kLight.intensity = .3; return; }
   const y0 = SHELF_Y - .016;
   G.timeline()
-    .to(kLight, { intensity: 2.6, duration: .5, ease: 'power2.out' }, 0)
+    .to(kLight, { intensity: .9, duration: .5, ease: 'power2.out' }, 0)
     .to(keychain.scale, { x: 1.35, y: 1.35, z: 1.35, duration: .4, ease: 'back.out(3)' }, 0)
     .to(keychain.position, { y: y0 + .025, duration: .22, yoyo: true, repeat: 5, ease: 'power1.out' }, .1)
     .to(keychain.rotation, { y: '+=' + (Math.PI * 4), duration: 1.6, ease: 'power2.inOut' }, .15)
@@ -1049,7 +1055,7 @@ const belleCelebrates = () => {
     .set(keychain.rotation, { y: 0 }, 1.8)
     .to(keychain.scale, { x: 1, y: 1, z: 1, duration: .8, ease: 'elastic.out(1, .4)' }, 1.8)
     .to(keychain.position, { y: y0, duration: .3 }, 1.8)
-    .to(kLight, { intensity: .9, duration: 1.4 }, 2);
+    .to(kLight, { intensity: .3, duration: 1.4 }, 2);
   // hearts rise from where she hangs
   const v = new THREE.Vector3(0, -.06, 0); keychain.localToWorld(v); v.project(camera);
   const x = (v.x + 1) / 2 * canvas.clientWidth, y = (1 - v.y) / 2 * canvas.clientHeight;
