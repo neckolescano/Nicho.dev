@@ -32,7 +32,7 @@
   document.body.insertAdjacentHTML('afterbegin', `
 <a class="skip" href="#main">Skip to content</a>
 <aside class="rail" aria-label="Site">
-  <a class="rail-mark" href="${home || 'index.html'}" aria-label="Nicho.dev, back to the start"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><path class="mk-crop" d="M3 9V3h6M31 3h6v6M37 31v6h-6M9 37H3v-6"/><path class="mk-guide" d="M8 6.5L31 35"/><path class="mk-n" d="M10 30V10h5l8 12V10h5v20h-5l-8-12v12z"/><path class="mk-base" d="M8 33.5h18M8 32v3M26 32v3"/><rect class="mk-dot" x="30" y="26.5" width="3.5" height="3.5"/></svg></a>
+  <a class="rail-mark" href="${home || 'index.html'}" aria-label="Nicho.dev, back to the start"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><g class="mk-n"><path d="M11.4 10.4h1.1v19.6h-1.1z"/><path d="M8.6 29.5h6.6v.5H8.6z"/><path d="M8.6 10h5.2v.5H8.6z"/><path d="M11.4 10h4.3l13.2 20.4h-4.3z"/><path d="M27.8 10.4h1.1v20h-1.1z"/><path d="M25.2 10h6.4v.5h-6.4z"/></g><circle class="mk-dot" cx="33.4" cy="29.2" r="1.35"/></svg></a>
   <button class="rail-menu" aria-expanded="false" aria-controls="panel"><span class="burger" aria-hidden="true"><i></i><i></i></span><span class="rail-word">Index</span></button>
   <div class="rail-tools">
     <button class="rtool" data-motion-toggle>${motionIcon}<span class="sr">Motion</span></button>
