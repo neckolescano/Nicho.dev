@@ -814,7 +814,7 @@ const toggleLamp = () => { lampOn = !lampOn; tween(LK, { lamp: lampOn ? 1 : 0, d
 const layersHref = id => `index.html?project=${id}`;
 const SPOTS = [
   { id: 'drawer', obj: drawerFront, at: [0, 0, .012], label: 'Drawer', small: 'The archive', c: '#D8C49A', kind: 'drawer', side: 'left' },
-  { id: 'board', obj: board, at: [.84, .2, .03], label: 'Now', small: 'What I am on, and what is next', c: '#E8B04A', kind: 'board' },
+  { id: 'board', obj: board, pin: true, at: [.62, .24, .03], label: 'Now', small: 'What I am on, and what is next', c: '#E8B04A', kind: 'board' },
   { id: 'kuwago', obj: owl, at: [0, .07, 0], label: 'kuwaGO', small: 'The study owl', c: '#5BB06A', title: 'The study owl',
     text: "kuwaGO's mascot on its pot. Finish a focus session and the sprout grows; give up and it wilts. It's pixel art, because the whole app is.",
     dl: [['System', 'kuwaGO · mobile app'], ['Built with', 'Flutter · Firebase · Gemini'], ['Status', 'v1.0.5 · 18 testers']], project: 'kuwago',
@@ -831,7 +831,7 @@ const SPOTS = [
   { id: 'sketch', obj: sketch, at: [0, .03, 0], label: 'Sketchbook', small: 'Where it starts', c: '#E0533F', title: 'Where it starts', side: 'left',
     text: 'Every project begins as a drawing in here: screens, flows, the database on the back pages. Then it goes to Figma, then to code.',
     dl: [['Habit', 'Draw first, build second'], ['Next', 'Figma, then code']], href: 'index.html#process', cta: 'How I work', view: [.05, .32, .42] },
-  { id: 'plant', obj: plant, at: [0, .2, 0], label: 'Pixel plant', small: 'From kuwaGO', c: '#5BB06A', get title() { return plantName(PLANTS[sprite.i]); },
+  { id: 'plant', obj: plant, pin: true, at: [0, .25, .02], label: 'Pixel plant', small: 'From kuwaGO', c: '#5BB06A', get title() { return plantName(PLANTS[sprite.i]); },
     text: 'One of the 12 plants I drew pixel by pixel for kuwaGO. It grows from a seed while you are in the room. Look again to plant another one.',
     dl: [['Drawn in', 'Piskel, 128 × 128'], ['Growth', '40 frames, seed to bloom']], href: 'projects.html?p=kuwago', cta: 'The kuwaGO case study', view: [.02, .12, .55],
     focus() { plantNext(); showCard(this); } },
@@ -844,15 +844,26 @@ const SPOTS = [
   { id: 'switch', obj: sw, at: [0, 0, .01], label: 'Light switch', small: 'The room light', c: '#FFE7C8', kind: 'switch' }
 ];
 const hots = document.getElementById('hots'), card = document.getElementById('card');
+// each dot sits just above the top edge of its own object (worked out once from the object's bounds), so it never covers it
+{
+  scene.updateMatrixWorld(true);
+  const box = new THREE.Box3(), top = new THREE.Vector3();
+  SPOTS.forEach(s => {
+    if (s.pin) return;   // a few spots keep a hand-placed point
+    box.setFromObject(s.obj); if (box.isEmpty()) return;
+    top.set((box.min.x + box.max.x) / 2, box.max.y, (box.min.z + box.max.z) / 2);
+    s.at = s.obj.worldToLocal(top).toArray();
+  });
+}
 hots.innerHTML = SPOTS.map((s, i) => `<button class="hs${s.side === 'left' ? ' left' : ''}" type="button" data-i="${i}" style="--c:${s.c}" aria-label="${s.label}: ${s.small}"><i class="hs-lead" aria-hidden="true"></i><span class="hs-label">${s.label}<small>${s.small}</small></span></button>`).join('');
 const hsEls = [...hots.children];
 const wp = new THREE.Vector3();
-const HS_DX = 22, HS_DY = 18;
+const HS_DX = 0, HS_DY = 18;
 const placeHots = () => SPOTS.forEach((s, i) => {
   s.obj.localToWorld(wp.set(...s.at)); wp.project(camera);
   const el = hsEls[i];
   // the dot sits a little to the side of the object, tied to it by a short line, so it never covers it
-  const dx = s.side === 'left' ? -HS_DX : HS_DX;
+  const dx = 0;
   el.style.transform = `translate(${((wp.x + 1) / 2 * canvas.clientWidth + dx).toFixed(1)}px, ${((1 - wp.y) / 2 * canvas.clientHeight - HS_DY).toFixed(1)}px)`;
   el.style.visibility = wp.z < 1 ? 'visible' : 'hidden';
 });

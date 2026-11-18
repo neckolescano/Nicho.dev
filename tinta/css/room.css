@@ -152,3 +152,13 @@ html:not(.motion) .r-load path, html:not(.motion) .r-load rect { animation: none
 /* the way back to the portfolio, in the heading */
 .r-head .r-back { pointer-events: auto; color: #ECE9E2; border-bottom: 1px solid rgba(236,233,226,.35); white-space: nowrap; }
 .r-head .r-back:hover { border-color: var(--mark); }
+
+/* Tinta is its own app: no side rail or Index panel. The way back is the "← Nicho.dev" link in the heading. */
+.room-page .rail, .room-page .panel, .room-page .scrim, .room-page .skip { display: none !important; }
+body.room-page.has-rail { padding-left: 0; }
+.room-page .room { left: 0; }
+
+/* the dot sits above its object, with a short line straight down to it */
+.hs-lead { width: 14px; transform: rotate(90deg); }
+.hs.left .hs-lead { transform: rotate(90deg); }
+.hs-lead::after { width: 4px; height: 4px; right: -2px; top: -1.5px; }
