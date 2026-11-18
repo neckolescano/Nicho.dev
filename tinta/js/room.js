@@ -830,7 +830,7 @@ const SPOTS = [
   { id: 'phone', obj: phone, at: [0, .02, 0], label: 'Phone', small: 'My lock screen', c: '#F4A6B8', kind: 'phone' },
   { id: 'sketch', obj: sketch, at: [0, .03, 0], label: 'Sketchbook', small: 'Where it starts', c: '#E0533F', title: 'Where it starts', side: 'left',
     text: 'Every project begins as a drawing in here: screens, flows, the database on the back pages. Then it goes to Figma, then to code.',
-    dl: [['Habit', 'Draw first, build second'], ['Next', 'Figma, then code']], href: 'about.html', cta: 'Read my profile', view: [.05, .32, .42] },
+    dl: [['Habit', 'Draw first, build second'], ['Next', 'Figma, then code']], href: 'index.html#process', cta: 'How I work', view: [.05, .32, .42] },
   { id: 'plant', obj: plant, at: [0, .2, 0], label: 'Pixel plant', small: 'From kuwaGO', c: '#5BB06A', get title() { return plantName(PLANTS[sprite.i]); },
     text: 'One of the 12 plants I drew pixel by pixel for kuwaGO. It grows from a seed while you are in the room. Look again to plant another one.',
     dl: [['Drawn in', 'Piskel, 128 × 128'], ['Growth', '40 frames, seed to bloom']], href: 'projects.html?p=kuwago', cta: 'The kuwaGO case study', view: [.02, .12, .55],

@@ -25,7 +25,7 @@
     ['skills', 'Skills', 'Tools I use'], ['certs', 'Certificates', 'Certiport'], ['contact', 'Contact', 'Say hello']];
   const CASE_ROWS = [['kuwago', 'kuwaGO', 'Mobile app', 'assets/cs/kuwago-garden.jpg', '#5BB06A'], ['cinematheque', 'Cinematheque', 'Web system', 'assets/cs/cinematheque-title.jpg', '#E2763F'],
     ['xpera', 'xpera CRM', 'Desktop system', 'assets/cs/xpera-logo.jpg', '#F4506A']];
-  const MORE = [['projects.html', 'All projects'], ['about.html', 'Profile'], ['skills.html', 'Skills'], ['certifications.html', 'Certificates'], ['resume.html', 'Resume'], ['tinta/', 'Tinta Studio ↗']];
+  const MORE = [['projects.html', 'All projects'], ['resume.html', 'Resume'], ['tinta/', 'Tinta Studio ↗']];
   const motionIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c3-6 6-6 9 0s6 6 9 0"/></svg>';
   const pad = n => String(n).padStart(2, '0');
   const isCur = h => h === file || h === file + location.search;
