@@ -614,7 +614,7 @@ const drawLock = img => {
   g.fillStyle = 'rgba(255,255,255,.85)'; g.fillRect(w / 2 - 60, h - 26, 120, 5);
   lockTex.needsUpdate = true;
 };
-const lockImg = new Image(); manager.itemStart('lock'); lockImg.onload = () => { drawLock(lockImg); manager.itemEnd('lock'); }; lockImg.onerror = () => manager.itemEnd('lock'); lockImg.src = 'assets/photos/lockscreen.jpg';
+const lockImg = new Image(); manager.itemStart('lock'); lockImg.onload = () => { drawLock(lockImg); manager.itemEnd('lock'); }; lockImg.onerror = () => manager.itemEnd('lock'); lockImg.src = 'tinta/assets/photos/lockscreen.jpg';
 const phone = new THREE.Group(); at(phone, .58, DESK_Y, .05); phone.rotation.y = -.35;
 at(box(.074, .008, .152, mat('#101114', { roughness: .3, metalness: .6 }), .009), 0, .004, 0, phone);
 const phoneScreenM = new THREE.MeshBasicMaterial({ map: lockTex, toneMapped: false, color: '#0a0a0a' });

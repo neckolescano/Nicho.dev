@@ -3,16 +3,18 @@
 (() => {
   const root = document.documentElement;
   const motion = root.classList.contains('motion');
-  const file = location.pathname.split('/').pop() || 'index.html';
+  const inTinta = /\/tinta(\/|$)/.test(location.pathname);   // Tinta Studio lives in /tinta/ and resolves its links from the site root
+  const file = inTinta ? 'tinta/' : (location.pathname.split('/').pop() || 'index.html');
   const isHome = file === 'index.html';
   const home = isHome ? '' : 'index.html';
   const store = { get: k => { try { return sessionStorage.getItem(k); } catch { return null; } }, set: (k, v) => { try { sessionStorage.setItem(k, v); } catch {} }, del: k => { try { sessionStorage.removeItem(k); } catch {} } };
 
   /* where each link leads, for the transition caption */
   const NAMES = { 'index.html': ['A-100', 'Cover'], 'projects.html': ['A-101', 'Projects'], 'about.html': ['A-102', 'About'], 'skills.html': ['A-103', 'Skills'],
-    'certifications.html': ['A-104', 'Certifications'], 'contact.html': ['A-105', 'Contact'], 'resume.html': ['R-001', 'Resume'], 'desk.html': ['C-001', 'The room'] };
+    'certifications.html': ['A-104', 'Certifications'], 'contact.html': ['A-105', 'Contact'], 'resume.html': ['R-001', 'Resume'], 'tinta/': ['T-000', 'Tinta Studio'] };
   const CASES = { kuwago: 'kuwaGO', cinematheque: 'Cinematheque', xpera: 'xpera CRM' };
   const nameOf = url => {
+    if (/\/tinta(\/|$)/.test(url.pathname)) return ['T-000', 'Tinta Studio'];
     const f = url.pathname.split('/').pop() || 'index.html', p = url.searchParams.get('p');
     if (f === 'projects.html' && CASES[p]) return ['A-101.' + (Object.keys(CASES).indexOf(p) + 1), CASES[p]];
     return NAMES[f] || ['Sheet', 'Next'];
@@ -23,7 +25,7 @@
     ['skills', 'Skills', 'Tools I use'], ['certs', 'Certificates', 'Certiport'], ['contact', 'Contact', 'Say hello']];
   const CASE_ROWS = [['kuwago', 'kuwaGO', 'Mobile app', 'assets/cs/kuwago-garden.jpg', '#5BB06A'], ['cinematheque', 'Cinematheque', 'Web system', 'assets/cs/cinematheque-title.jpg', '#E2763F'],
     ['xpera', 'xpera CRM', 'Desktop system', 'assets/cs/xpera-logo.jpg', '#F4506A']];
-  const MORE = [['projects.html', 'All projects'], ['about.html', 'Profile'], ['skills.html', 'Skills'], ['certifications.html', 'Certificates'], ['resume.html', 'Resume'], ['desk.html', 'The room']];
+  const MORE = [['projects.html', 'All projects'], ['about.html', 'Profile'], ['skills.html', 'Skills'], ['certifications.html', 'Certificates'], ['resume.html', 'Resume'], ['tinta/', 'Tinta Studio ↗']];
   const motionIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12c3-6 6-6 9 0s6 6 9 0"/></svg>';
   const pad = n => String(n).padStart(2, '0');
   const isCur = h => h === file || h === file + location.search;

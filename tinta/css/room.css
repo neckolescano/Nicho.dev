@@ -148,3 +148,7 @@ html:not(.motion) .r-load path, html:not(.motion) .r-load rect { animation: none
 .hs.left .hs-lead { transform: rotate(39.3deg); }
 .hs-label { left: 26px; }
 .hs.left .hs-label { right: 26px; }
+
+/* the way back to the portfolio, in the heading */
+.r-head .r-back { pointer-events: auto; color: #ECE9E2; border-bottom: 1px solid rgba(236,233,226,.35); white-space: nowrap; }
+.r-head .r-back:hover { border-color: var(--mark); }

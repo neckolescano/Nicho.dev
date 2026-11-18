@@ -11,17 +11,17 @@
   const COND = '"IBM Plex Sans Condensed", "Arial Narrow", sans-serif';
 
   const PROJECTS = [
-    { id: 'kuwago', name: 'kuwaGO', kind: 'Mobile app', year: '2026', c: '#5BB06A', icon: 'assets/icons/kuwago.png', img: 'assets/cs/kuwago-garden.jpg',
+    { id: 'kuwago', name: 'kuwaGO', kind: 'Mobile app', year: '2026', c: '#5BB06A', icon: 'tinta/assets/icons/kuwago.png', img: 'assets/cs/kuwago-garden.jpg',
       text: 'A cozy pixel-art study garden. Finish a focus session and your plant grows; give up and it wilts. AI turns your own notes into quizzes and flashcards.',
       points: ['Flutter · Firebase · Gemini', '30 days to ship · 18 testers', '72 automated tests'] },
-    { id: 'cinematheque', name: 'Cinematheque', kind: 'Web system', year: '2026', c: '#E2763F', icon: 'assets/icons/cinematheque.png', img: 'assets/cs/cinematheque-title.jpg',
+    { id: 'cinematheque', name: 'Cinematheque', kind: 'Web system', year: '2026', c: '#E2763F', icon: 'tinta/assets/icons/cinematheque.png', img: 'assets/cs/cinematheque-title.jpg',
       text: 'Ticketing for a real cinema. Moviegoers pick exact seats, pay online and get an e-ticket; staff schedule films, admit guests and export the head-office report.',
       points: ['Laravel 12 · MySQL · PayMongo', 'Group of three, for a real client', '129 automated tests'] },
-    { id: 'xpera', name: 'xpera CRM', kind: 'Desktop system', year: 'In progress', c: '#F4506A', icon: 'assets/icons/xpera.png', img: 'assets/cs/xpera-logo.jpg',
+    { id: 'xpera', name: 'xpera CRM', kind: 'Desktop system', year: 'In progress', c: '#F4506A', icon: 'tinta/assets/icons/xpera.png', img: 'assets/cs/xpera-logo.jpg',
       text: 'A customer system for small stores that sell gaming PC parts: who each customer is, what they buy, what they owe and what they need.',
       points: ['C# · .NET WinForms · SQL Server', 'One database per store', '15 use cases · 4 user roles'] }
   ];
-  const IC = { nicho: 'assets/icons/nicho.svg', browser: 'assets/icons/browser.svg', folder: 'assets/icons/folder.svg', notepad: 'assets/icons/notepad.svg', pdf: 'assets/icons/pdf.svg', room: 'assets/icons/room.svg' };
+  const IC = { nicho: 'tinta/assets/icons/nicho.svg', browser: 'tinta/assets/icons/browser.svg', folder: 'tinta/assets/icons/folder.svg', notepad: 'tinta/assets/icons/notepad.svg', pdf: 'tinta/assets/icons/pdf.svg', room: 'tinta/assets/icons/room.svg' };
   PROJECTS.forEach(p => (IC[p.id] = p.icon));
   const APPS = {
     browser: { t: 'Nicho.dev', icon: IC.browser },
